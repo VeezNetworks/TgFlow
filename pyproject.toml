@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tgflow"
+version = "1.0.0"
+description = "Modern Asynchronous MTProto 2.0 Telegram Framework with Declarative Routing & Multi-Language Support"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "VeezNetworks", email = "contact@veez.net" },
+    { name = "TgFlow Authors" }
+]
+keywords = [
+    "telegram",
+    "mtproto",
+    "tdlib",
+    "asyncio",
+    "bot-framework",
+    "mtproto2",
+    "telegram-stars",
+    "telegram-bot"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "cryptography>=41.0.0",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx>=7.0.0",
+    "furo>=2023.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "build>=1.0.0",
+    "twine>=4.0.0",
+]
+
+[project.scripts]
+tgflow-session = "tgflow.session:main"
+
+[project.urls]
+Homepage = "https://github.com/VeezNetworks/TgFlow"
+Documentation = "https://tgflow.readthedocs.io"
+Repository = "https://github.com/VeezNetworks/TgFlow.git"
+Issues = "https://github.com/VeezNetworks/TgFlow/issues"
+Changelog = "https://github.com/VeezNetworks/TgFlow/releases"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tgflow*"]
+
+[tool.setuptools.package-data]
+tgflow = ["scheme/*.tl"]
