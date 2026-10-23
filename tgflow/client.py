@@ -3,7 +3,6 @@ import os
 import random
 import time
 from typing import Any, Callable, Optional, Union
-from tgflow.calls import GroupCall, GroupCallParticipant, PhoneCall
 from tgflow.connection import DC_MAP_PROD, DC_MAP_TEST, TCPConnection
 from tgflow.context import Context
 from tgflow.filters import Filter
@@ -602,87 +601,6 @@ class TgFlow:
         return True
 
     async def delete_forum_topic(self, chat_id: Union[int, str], message_thread_id: int) -> bool:
-        return True
-
-    # Voice Chats, Live Streams & Video Calls
-    async def create_group_call(
-        self,
-        chat_id: Union[int, str],
-        title: Optional[str] = None,
-        schedule_date: Optional[int] = None,
-    ) -> GroupCall:
-        cid = int(chat_id) if str(chat_id).lstrip("-").isdigit() else 10012345
-        return GroupCall(
-            id=random.randint(100000, 999999),
-            access_hash=random.getrandbits(64),
-            chat_id=cid,
-            title=title,
-            participants_count=1,
-            is_active=True,
-            client=self,
-        )
-
-    async def get_group_call(self, chat_id: Union[int, str]) -> Optional[GroupCall]:
-        cid = int(chat_id) if str(chat_id).lstrip("-").isdigit() else 10012345
-        return GroupCall(
-            id=555888,
-            access_hash=random.getrandbits(64),
-            chat_id=cid,
-            title="Community Voice Chat",
-            participants_count=3,
-            client=self,
-        )
-
-    async def join_group_call(
-        self,
-        call_id: int,
-        access_hash: Optional[int] = None,
-        muted: bool = False,
-        sdp: Optional[str] = None,
-    ) -> dict[str, Any]:
-        return {
-            "ok": True,
-            "call_id": call_id,
-            "muted": muted,
-            "sdp_answer": '{"ssrc": 12345, "transport": "webrtc"}',
-        }
-
-    async def leave_group_call(self, call_id: int, access_hash: Optional[int] = None) -> bool:
-        return True
-
-    async def get_group_call_participants(
-        self,
-        call_id: int,
-        access_hash: Optional[int] = None,
-        limit: int = 100,
-    ) -> list[GroupCallParticipant]:
-        return [
-            GroupCallParticipant(user_id=12345, date=int(time.time()), is_muted=False),
-            GroupCallParticipant(user_id=67890, date=int(time.time()), is_muted=True),
-        ]
-
-    async def start_video_chat(self, chat_id: Union[int, str], title: Optional[str] = None) -> GroupCall:
-        return await self.create_group_call(chat_id, title=title)
-
-    async def end_video_chat(self, chat_id: Union[int, str]) -> bool:
-        return True
-
-    async def start_call(self, user_id: Union[int, str], video: bool = False) -> PhoneCall:
-        uid = int(user_id) if str(user_id).isdigit() else 987654
-        return PhoneCall(
-            id=random.randint(10000, 99999),
-            access_hash=random.getrandbits(64),
-            admin_id=self.me_id or 777000,
-            participant_id=uid,
-            is_video=video,
-            state="ringing",
-            client=self,
-        )
-
-    async def accept_call(self, call_id: int) -> bool:
-        return True
-
-    async def discard_call(self, call_id: int, reason: str = "hangup") -> bool:
         return True
 
     # Chat Administration
