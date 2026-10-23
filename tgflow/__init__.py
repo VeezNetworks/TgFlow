@@ -1,4 +1,5 @@
 from tgflow import errors, filters, raw, session, tl
+from tgflow.calls import GroupCall, GroupCallParticipant, PhoneCall
 from tgflow.client import TgFlow
 from tgflow.context import Context
 from tgflow.filters import F, Filter, When
@@ -23,6 +24,9 @@ __all__ = [
     "Filter",
     "When",
     "F",
+    "GroupCall",
+    "GroupCallParticipant",
+    "PhoneCall",
     "session",
     "SessionData",
     "encode_session",
