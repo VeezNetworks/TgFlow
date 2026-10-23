@@ -80,12 +80,60 @@ class Context:
     def topic_id(self) -> Optional[int]:
         return self.message.raw.get("message_thread_id")
 
+    @property
+    def quote(self) -> Optional[str]:
+        """Extracted quote text if this message is quoting another."""
+        return self.message.quote.text if self.message.quote else None
+
+    @property
+    def is_ephemeral(self) -> bool:
+        """True if the message has an auto-delete TTL timer or is view-once."""
+        return self.message.is_ephemeral
+
     # Reply shortcuts
     async def reply(self, text: str, **kwargs) -> Any:
         return await self.client.send_message(
             self.chat_id,
             text,
             reply_to_message_id=self.message.id,
+            **kwargs,
+        )
+
+    async def reply_quote(self, text: str, quote_text: Optional[str] = None, **kwargs) -> Any:
+        """Reply quoting a specific sentence or snippet of the user's message."""
+        selected_quote = quote_text or (self.text[:128] if self.text else "")
+        return await self.client.send_message(
+            self.chat_id,
+            text,
+            reply_to_message_id=self.message.id,
+            quote_text=selected_quote,
+            **kwargs,
+        )
+
+    async def reply_ephemeral(self, text: str, ttl: int = 30, **kwargs) -> Any:
+        """Send a self-destructing/auto-delete message with a TTL period in seconds."""
+        return await self.client.send_message(
+            self.chat_id,
+            text,
+            reply_to_message_id=self.message.id,
+            ttl_period=ttl,
+            **kwargs,
+        )
+
+    async def reply_rich(
+        self,
+        text: str,
+        reply_markup: Any = None,
+        link_preview_options: Any = None,
+        **kwargs,
+    ) -> Any:
+        """Send rich message with modern keyboards (e.g. 1-click copy text) and link preview options."""
+        return await self.client.send_message(
+            self.chat_id,
+            text,
+            reply_to_message_id=self.message.id,
+            reply_markup=reply_markup,
+            link_preview_options=link_preview_options,
             **kwargs,
         )
 

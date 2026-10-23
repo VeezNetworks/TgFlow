@@ -237,12 +237,17 @@ class TgFlow:
             self.me_id = self.me.id
         return self.me
 
-    # Messaging & Media
+    # Messaging & Media (with Ephemeral, Quotes & Rich Messages)
     async def send_message(
         self,
         chat_id: Union[int, str],
         text: str,
         reply_to_message_id: Optional[int] = None,
+        quote_text: Optional[str] = None,
+        quote_offset: Optional[int] = None,
+        ttl_period: Optional[int] = None,
+        is_view_once: bool = False,
+        link_preview_options: Any = None,
         parse_mode: str = "html",
         disable_web_page_preview: bool = False,
         disable_notification: bool = False,
@@ -250,16 +255,29 @@ class TgFlow:
         message_thread_id: Optional[int] = None,
     ) -> Message:
         self._msg_id_counter += 1
+        quote_obj = None
+        if quote_text:
+            from tgflow.formatting import MessageQuote
+            quote_obj = MessageQuote(text=quote_text, position=quote_offset or 0)
+
         msg = Message(
             id=self._msg_id_counter,
             chat=Chat(id=int(chat_id) if str(chat_id).lstrip("-").isdigit() else 0, type="supergroup"),
             sender=self.me,
             text=text,
+            quote=quote_obj,
+            ttl_period=ttl_period,
+            is_view_once=is_view_once,
+            link_preview_options=link_preview_options,
             date=int(time.time()),
             raw={
                 "message_id": self._msg_id_counter,
                 "text": text,
                 "reply_to_message_id": reply_to_message_id,
+                "quote_text": quote_text,
+                "ttl_period": ttl_period,
+                "is_view_once": is_view_once,
+                "link_preview_options": link_preview_options,
                 "message_thread_id": message_thread_id,
             },
         )
@@ -810,12 +828,24 @@ class TgFlow:
                 date=reply_data.get("date", 0),
             )
 
+        quote_obj = None
+        quote_data = msg_data.get("quote") or (reply_data.get("quote") if reply_data else None)
+        if quote_data:
+            from tgflow.formatting import MessageQuote
+            quote_obj = MessageQuote(
+                text=quote_data.get("text", "") if isinstance(quote_data, dict) else str(quote_data),
+                position=quote_data.get("offset", 0) if isinstance(quote_data, dict) else 0,
+            )
+
         msg = Message(
             id=msg_data.get("message_id", 0),
             chat=chat,
             sender=sender,
             text=msg_data.get("text"),
             reply_to=reply_to,
+            quote=quote_obj,
+            ttl_period=msg_data.get("ttl_period"),
+            is_view_once=bool(msg_data.get("view_once")),
             date=msg_data.get("date", 0),
             raw=msg_data,
         )

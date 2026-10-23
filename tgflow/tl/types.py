@@ -31,6 +31,9 @@ class Chat:
     is_forum: bool = False
 
 
+from tgflow.formatting import LinkPreviewOptions, MessageEntity, MessageQuote
+
+
 @dataclass(slots=True)
 class Message:
     id: int
@@ -38,8 +41,17 @@ class Message:
     sender: Optional[User] = None
     text: Optional[str] = None
     reply_to: Optional["Message"] = None
+    quote: Optional[MessageQuote] = None
+    entities: list[MessageEntity] = field(default_factory=list)
+    ttl_period: Optional[int] = None
+    is_view_once: bool = False
+    link_preview_options: Optional[LinkPreviewOptions] = None
     date: int = 0
     raw: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def is_ephemeral(self) -> bool:
+        return bool(self.ttl_period or self.is_view_once)
 
     @property
     def chat_id(self) -> int:

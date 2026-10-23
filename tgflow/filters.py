@@ -130,12 +130,14 @@ animation = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("animation")), "a
 dice = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("dice")), "dice")
 media = photo | video | audio | voice | document | sticker | animation
 
-# Modern Layer Filters
+# Modern Layer 225 Filters
 story = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("story")), "story")
 business = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("business_connection_id")), "business")
 paid_media = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("paid_media")), "paid_media")
 gift = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("gift")), "gift")
 topic = Filter(lambda _, u: bool(getattr(u, "raw", {}).get("message_thread_id")), "topic")
+quote = Filter(lambda _, u: bool(getattr(u, "quote", None)), "quote")
+ephemeral = Filter(lambda _, u: bool(getattr(u, "is_ephemeral", False)), "ephemeral")
 
 
 class _FilterTypography:
@@ -147,6 +149,8 @@ class _FilterTypography:
     reply = Reply = reply
     forwarded = Forwarded = forwarded
     pinned = Pinned = pinned
+    quote = Quote = quote
+    ephemeral = Ephemeral = ephemeral
 
     # Chat
     private = Private = private
