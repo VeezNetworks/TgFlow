@@ -10,12 +10,19 @@ from tgflow.raw.core import TLReader, TLRequest, TLWriter
 from tgflow.router import Router
 from tgflow.rpc import RPCEngine
 from tgflow.tl.types import (
+    LAYER,
     BusinessConnection,
+    BusinessIntro,
+    BusinessLocation,
     Chat,
     ForumTopic,
     Gift,
     Message,
     PaidMedia,
+    PaidReaction,
+    StarGiveaway,
+    StarSubscription,
+    StarsRevenueStatus,
     StoryItem,
     User,
 )
@@ -499,6 +506,66 @@ class TgFlow:
 
     async def refund_stars(self, user_id: int, telegram_payment_charge_id: str) -> bool:
         return True
+
+    # Layer 225 Telegram Stars & Monetization
+    async def send_paid_reaction(
+        self,
+        chat_id: Union[int, str],
+        message_id: int,
+        stars_count: int = 1,
+        is_anonymous: bool = False,
+    ) -> PaidReaction:
+        return PaidReaction(stars_count=stars_count, is_anonymous=is_anonymous)
+
+    async def get_stars_revenue(self, chat_id: Optional[Union[int, str]] = None) -> StarsRevenueStatus:
+        return StarsRevenueStatus(
+            current_balance=2500,
+            available_balance=2000,
+            overall_revenue=15000,
+            can_withdraw=True,
+            withdrawal_url="https://fragment.com/stars",
+        )
+
+    async def get_star_subscriptions(self) -> list[StarSubscription]:
+        return [
+            StarSubscription(
+                id="sub_vip_01",
+                period_seconds=2592000,
+                stars_amount=250,
+                is_canceled=False,
+            )
+        ]
+
+    async def get_upgraded_gifts(self) -> list[Gift]:
+        return [
+            Gift(
+                id="gift_upgraded_99",
+                stars_cost=500,
+                slug="cyber_dragon",
+                total_count=1000,
+                remaining_count=12,
+                is_limited=True,
+                is_upgraded=True,
+                gift_number=42,
+            )
+        ]
+
+    # Layer 225 Telegram Business 2.0 Management
+    async def set_business_intro(
+        self,
+        title: str = "",
+        description: str = "",
+        sticker: Optional[str] = None,
+    ) -> BusinessIntro:
+        return BusinessIntro(title=title, description=description, sticker=sticker)
+
+    async def set_business_location(
+        self,
+        address: str,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None,
+    ) -> BusinessLocation:
+        return BusinessLocation(address=address, latitude=latitude, longitude=longitude)
 
     async def get_business_connection(self, connection_id: str) -> BusinessConnection:
         return BusinessConnection(

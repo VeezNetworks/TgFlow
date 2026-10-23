@@ -46,13 +46,14 @@ MTProto 2.0 Cryptographic Pipeline
 
       \text{msg\_key} = \text{SHA256}(\text{auth\_key}_{88..120} + \text{plaintext} + \text{padding})_{0..16}
 
-TDLib Schema Layer 190+
------------------------
+Telegram Schema Layer 225+
+--------------------------
 
-TgFlow integrates modern schemas directly extracted from official TDLib definitions (``tgflow/scheme/``):
+TgFlow integrates modern schemas directly extracted from official TDLib and Telegram API definitions (``tgflow/scheme/``):
 
-* **Telegram Stars**: Supports paid media purchases, star subscriptions, and star transactions (``PaidMedia``, ``PaidMediaPurchased``).
-* **Telegram Business**: First-class handling of business connections, quick replies, and business bot greetings (``BusinessConnection``).
-* **Stories**: Full support for personal and channel stories, story reactions, and story stealth mode (``StoryItem``).
-* **Gifts**: Native types for unique collectible gifts and star gifts (``Gift``).
-* **Forum Topics**: Topic creation, editing, icon formatting, and thread-specific message routing (``ForumTopic``).
+* **Telegram Stars & Subscriptions**: Full ecosystem support for paid media purchases, star subscriptions, star giveaways, and star revenue balances (``PaidMedia``, ``PaidReaction``, ``StarSubscription``, ``StarsRevenueStatus``).
+* **Telegram Business 2.0**: First-class handling of business connections, business intro cards, opening hours, locations, quick replies, and business bot greetings (``BusinessConnection``, ``BusinessIntro``, ``BusinessLocation``).
+* **Stories 2.0**: Full support for personal and channel stories, story albums, story reactions, and story stealth mode (``StoryItem``).
+* **Collectible & Upgraded Gifts**: Native types for limited-edition numbered gifts, upgraded gifts, and star gifts (``Gift``).
+* **Forum Topics 2.0**: Topic creation, editing, icon formatting, thread-specific message routing, and topic reaction management (``ForumTopic``).
+* **Bot Verification & Affiliates**: Custom organization verification badges and affiliate star revenue programs (``BotVerification``, ``AffiliateProgram``).

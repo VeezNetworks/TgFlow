@@ -1,7 +1,22 @@
 from dataclasses import dataclass, field
 from typing import Any, Optional
-from tgflow.raw.core import TLObject, TLReader, TLRequest, TLWriter
 from tgflow.raw import types
+from tgflow.raw.core import TLObject, TLReader, TLRequest, TLWriter
+
+
+# Layer 225 RPC Wrapper
+@dataclass(slots=True)
+class InvokeWithLayer(TLRequest):
+    ID: int = 0xDA9B0D0D
+    QUALNAME: str = "functions.InvokeWithLayer"
+    layer: int = 225
+    query: Optional[TLRequest] = None
+
+    def write(self, writer: TLWriter) -> None:
+        super().write(writer)
+        writer.write_int(self.layer)
+        if self.query:
+            self.query.write(writer)
 
 
 # Auth
@@ -94,7 +109,7 @@ class ResolveUsername(TLRequest):
         writer.write_string(self.username)
 
 
-# Messages
+# Messages & Paid Reactions
 @dataclass(slots=True)
 class SendMessage(TLRequest):
     ID: int = 0x520C3870
@@ -109,6 +124,23 @@ class SendMessage(TLRequest):
         self.peer.write(writer)
         writer.write_string(self.message)
         writer.write_long(self.random_id)
+
+
+@dataclass(slots=True)
+class SendPaidReaction(TLRequest):
+    ID: int = 0x5248F6D9
+    QUALNAME: str = "functions.messages.SendPaidReaction"
+    peer: TLObject = field(default_factory=types.InputPeerSelf)
+    msg_id: int = 0
+    count: int = 1
+    is_anonymous: bool = False
+
+    def write(self, writer: TLWriter) -> None:
+        super().write(writer)
+        self.peer.write(writer)
+        writer.write_int(self.msg_id)
+        writer.write_int(self.count)
+        writer.write_bool(self.is_anonymous)
 
 
 @dataclass(slots=True)
@@ -164,7 +196,7 @@ class GetHistory(TLRequest):
         writer.write_long(self.hash)
 
 
-# Channels & Forum Topics
+# Channels & Forum Topics (Layer 225)
 @dataclass(slots=True)
 class CreateForumTopic(TLRequest):
     ID: int = 0xF40C0224
@@ -172,7 +204,7 @@ class CreateForumTopic(TLRequest):
     channel: TLObject = field(default_factory=types.InputPeerChannel)
     title: str = ""
     icon_color: int = 0
-    icon_emoji_id: Optional[int] = None
+    icon_emoji_id: Optional[str] = None
 
     def write(self, writer: TLWriter) -> None:
         super().write(writer)
@@ -196,7 +228,7 @@ class EditBanned(TLRequest):
         writer.write_int(self.banned_rights)
 
 
-# Modern Payments & Stars
+# Modern Payments, Stars & Revenue (Layer 225)
 @dataclass(slots=True)
 class SendStarsForm(TLRequest):
     ID: int = 0x777085DA
@@ -212,7 +244,7 @@ class SendStarsForm(TLRequest):
 
 @dataclass(slots=True)
 class GetStarsTransactions(TLRequest):
-    ID: int = 0x69da4539
+    ID: int = 0x69DA4539
     QUALNAME: str = "functions.payments.GetStarsTransactions"
     offset: str = ""
     limit: int = 100
@@ -221,3 +253,25 @@ class GetStarsTransactions(TLRequest):
         super().write(writer)
         writer.write_string(self.offset)
         writer.write_int(self.limit)
+
+
+@dataclass(slots=True)
+class GetStarsRevenue(TLRequest):
+    ID: int = 0xD4B901C2
+    QUALNAME: str = "functions.payments.GetStarsRevenue"
+    peer: TLObject = field(default_factory=types.InputPeerSelf)
+
+    def write(self, writer: TLWriter) -> None:
+        super().write(writer)
+        self.peer.write(writer)
+
+
+@dataclass(slots=True)
+class GetAvailableGifts(TLRequest):
+    ID: int = 0x3F61505A
+    QUALNAME: str = "functions.payments.GetAvailableGifts"
+    hash: int = 0
+
+    def write(self, writer: TLWriter) -> None:
+        super().write(writer)
+        writer.write_int(self.hash)

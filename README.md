@@ -11,7 +11,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square" alt="Python Version"/>
   <img src="https://img.shields.io/badge/MTProto-2.0-blueviolet?style=flat-square" alt="MTProto 2.0"/>
-  <img src="https://img.shields.io/badge/TDLib%20Schema-Layer%20190%2B-brightgreen?style=flat-square" alt="Schema Layer"/>
+  <img src="https://img.shields.io/badge/Telegram%20Schema-Layer%20225%2B-brightgreen?style=flat-square" alt="Schema Layer"/>
   <img src="https://img.shields.io/badge/License-MIT-orange?style=flat-square" alt="License"/>
 </p>
 
@@ -20,7 +20,7 @@
 ## Highlights
 
 * **Pure Native MTProto 2.0**: In-house cryptographic core supporting AES-256 IGE, Pollard's rho PQ factorization, 2048-bit Diffie-Hellman key exchange, and Obfuscated2 anti-DPI transport.
-* **TDLib Layer 190+ Schemas**: Direct support for modern Telegram features including Telegram Stars, Business Connections, Stories, Gifts, and Forum Topics.
+* **Telegram Layer 225+ Schemas**: Direct first-class support for modern Telegram features including Telegram Stars, Star Subscriptions, Paid Reactions, Star Revenue, Upgraded & Collectible Gifts, Telegram Business 2.0, Stories 2.0, and Forum Topics.
 * **Declarative Template Routing**: Expressive route patterns with typed parameters (`@client.on("/ban <target> <duration:int=60> <reason*>")`).
 * **Interactive Multi-Turn Dialogues**: Built-in conversational flows without complex state machines (`await ctx.ask()`, `await ctx.choose()`).
 * **Multi-Language IPC Bridge**: Built-in JSON-RPC 2.0 bridge allowing bots in Go, Node.js, Rust, or C# to leverage TgFlow's MTProto session.

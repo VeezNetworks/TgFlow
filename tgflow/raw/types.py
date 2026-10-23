@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 from tgflow.raw.core import TLObject, TLReader, TLWriter
 
+LAYER: int = 225
+
 
 # Input Peers
 @dataclass(slots=True)
@@ -171,7 +173,7 @@ class Updates(TLObject):
     seq: int = 0
 
 
-# Modern Features (Stars, Business, Stories, Topics, Gifts)
+# Layer 225 Modern Features (Stars, Business, Stories, Topics, Gifts)
 @dataclass(slots=True)
 class StarsTransaction(TLObject):
     ID: int = 0x89D29A10
@@ -181,6 +183,34 @@ class StarsTransaction(TLObject):
     date: int = 0
     title: Optional[str] = None
     description: Optional[str] = None
+
+
+@dataclass(slots=True)
+class StarSubscription(TLObject):
+    ID: int = 0x2E4962E8
+    QUALNAME: str = "types.StarSubscription"
+    id: str = ""
+    period: int = 2592000
+    stars: int = 0
+    canceled: bool = False
+
+
+@dataclass(slots=True)
+class StarGiveaway(TLObject):
+    ID: int = 0x65F8E210
+    QUALNAME: str = "types.StarGiveaway"
+    stars: int = 0
+    winners_count: int = 1
+
+
+@dataclass(slots=True)
+class StarsRevenueStatus(TLObject):
+    ID: int = 0x770CB1B4
+    QUALNAME: str = "types.StarsRevenueStatus"
+    current_balance: int = 0
+    available_balance: int = 0
+    overall_revenue: int = 0
+    withdrawal_enabled: bool = False
 
 
 @dataclass(slots=True)
@@ -224,3 +254,13 @@ class StarGift(TLObject):
     stars: int = 0
     total_count: int = 0
     remaining_count: int = 0
+    is_upgraded: bool = False
+
+
+@dataclass(slots=True)
+class BotVerification(TLObject):
+    ID: int = 0x82A10DF3
+    QUALNAME: str = "types.BotVerification"
+    bot_id: int = 0
+    icon_custom_emoji_id: str = ""
+    description: str = ""
