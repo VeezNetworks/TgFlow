@@ -1,5 +1,5 @@
 from typing import Any
-from .core import TLRequest, TLWriter, TLReader, register_tl
+from ..core import TLRequest, TLWriter, TLReader, register_tl
 
 
 @register_tl

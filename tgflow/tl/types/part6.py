@@ -1,2675 +1,737 @@
 from typing import Any
-from ..core import TLObject, TLWriter, TLReader, register_tl
-
-@register_tl
-class InputPrivacyKeyForwards(TLObject):
-    ID: int = 0xa4dd4c08
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyForwards':
-        return cls()
-@register_tl
-class InputPrivacyKeyProfilePhoto(TLObject):
-    ID: int = 0x5719bacc
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyProfilePhoto':
-        return cls()
-@register_tl
-class InputPrivacyKeyPhoneNumber(TLObject):
-    ID: int = 0x352dafa
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyPhoneNumber':
-        return cls()
-@register_tl
-class InputPrivacyKeyAddedByPhone(TLObject):
-    ID: int = 0xd1219bdd
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyAddedByPhone':
-        return cls()
-@register_tl
-class InputPrivacyKeyVoiceMessages(TLObject):
-    ID: int = 0xaee69d68
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyVoiceMessages':
-        return cls()
-@register_tl
-class InputPrivacyKeyAbout(TLObject):
-    ID: int = 0x3823cc40
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyAbout':
-        return cls()
-@register_tl
-class InputPrivacyKeyBirthday(TLObject):
-    ID: int = 0xd65a11cc
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyBirthday':
-        return cls()
-@register_tl
-class InputPrivacyKeyStarGiftsAutoSave(TLObject):
-    ID: int = 0xe1732341
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyStarGiftsAutoSave':
-        return cls()
-@register_tl
-class InputPrivacyKeyNoPaidMessages(TLObject):
-    ID: int = 0xbdc597b4
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeyNoPaidMessages':
-        return cls()
-@register_tl
-class InputPrivacyKeySavedMusic(TLObject):
-    ID: int = 0x4dbe9226
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyKeySavedMusic':
-        return cls()
-@register_tl
-class PrivacyKeyStatusTimestamp(TLObject):
-    ID: int = 0xbc2eab30
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyStatusTimestamp':
-        return cls()
-@register_tl
-class PrivacyKeyChatInvite(TLObject):
-    ID: int = 0x500e6dfa
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyChatInvite':
-        return cls()
-@register_tl
-class PrivacyKeyPhoneCall(TLObject):
-    ID: int = 0x3d662b7b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyPhoneCall':
-        return cls()
-@register_tl
-class PrivacyKeyPhoneP2P(TLObject):
-    ID: int = 0x39491cc8
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyPhoneP2P':
-        return cls()
-@register_tl
-class PrivacyKeyForwards(TLObject):
-    ID: int = 0x69ec56a3
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyForwards':
-        return cls()
-@register_tl
-class PrivacyKeyProfilePhoto(TLObject):
-    ID: int = 0x96151fed
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyProfilePhoto':
-        return cls()
-@register_tl
-class PrivacyKeyPhoneNumber(TLObject):
-    ID: int = 0xd19ae46d
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyPhoneNumber':
-        return cls()
-@register_tl
-class PrivacyKeyAddedByPhone(TLObject):
-    ID: int = 0x42ffd42b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyAddedByPhone':
-        return cls()
-@register_tl
-class PrivacyKeyVoiceMessages(TLObject):
-    ID: int = 0x697f414
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyVoiceMessages':
-        return cls()
-@register_tl
-class PrivacyKeyAbout(TLObject):
-    ID: int = 0xa486b761
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyAbout':
-        return cls()
-@register_tl
-class PrivacyKeyBirthday(TLObject):
-    ID: int = 0x2000a518
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyBirthday':
-        return cls()
-@register_tl
-class PrivacyKeyStarGiftsAutoSave(TLObject):
-    ID: int = 0x2ca4fdf8
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyStarGiftsAutoSave':
-        return cls()
-@register_tl
-class PrivacyKeyNoPaidMessages(TLObject):
-    ID: int = 0x17d348d2
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeyNoPaidMessages':
-        return cls()
-@register_tl
-class PrivacyKeySavedMusic(TLObject):
-    ID: int = 0xff7a571b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyKeySavedMusic':
-        return cls()
-@register_tl
-class InputPrivacyValueAllowContacts(TLObject):
-    ID: int = 0xd09e07b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowContacts':
-        return cls()
-@register_tl
-class InputPrivacyValueAllowAll(TLObject):
-    ID: int = 0x184b35ce
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowAll':
-        return cls()
-@register_tl
-class InputPrivacyValueAllowUsers(TLObject):
-    ID: int = 0x131cc67f
-
-    def __init__(self, users: Any = None) -> None:
-        self.users = users
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.users or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowUsers':
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(users=users)
-@register_tl
-class InputPrivacyValueDisallowContacts(TLObject):
-    ID: int = 0xba52007
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueDisallowContacts':
-        return cls()
-@register_tl
-class InputPrivacyValueDisallowAll(TLObject):
-    ID: int = 0xd66b66c9
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueDisallowAll':
-        return cls()
-@register_tl
-class InputPrivacyValueDisallowUsers(TLObject):
-    ID: int = 0x90110467
-
-    def __init__(self, users: Any = None) -> None:
-        self.users = users
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.users or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueDisallowUsers':
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(users=users)
-@register_tl
-class InputPrivacyValueAllowChatParticipants(TLObject):
-    ID: int = 0x840649cf
-
-    def __init__(self, chats: Any = None) -> None:
-        self.chats = chats
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.chats or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowChatParticipants':
-        chats = reader.read_vector(lambda r: r.read_object())
-        return cls(chats=chats)
-@register_tl
-class InputPrivacyValueDisallowChatParticipants(TLObject):
-    ID: int = 0xe94f0f86
-
-    def __init__(self, chats: Any = None) -> None:
-        self.chats = chats
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.chats or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueDisallowChatParticipants':
-        chats = reader.read_vector(lambda r: r.read_object())
-        return cls(chats=chats)
-@register_tl
-class InputPrivacyValueAllowCloseFriends(TLObject):
-    ID: int = 0x2f453e49
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowCloseFriends':
-        return cls()
-@register_tl
-class InputPrivacyValueAllowPremium(TLObject):
-    ID: int = 0x77cdc9f1
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowPremium':
-        return cls()
-@register_tl
-class InputPrivacyValueAllowBots(TLObject):
-    ID: int = 0x5a4fcce5
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueAllowBots':
-        return cls()
-@register_tl
-class InputPrivacyValueDisallowBots(TLObject):
-    ID: int = 0xc4e57915
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'InputPrivacyValueDisallowBots':
-        return cls()
-@register_tl
-class PrivacyValueAllowContacts(TLObject):
-    ID: int = 0xfffe1bac
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowContacts':
-        return cls()
-@register_tl
-class PrivacyValueAllowAll(TLObject):
-    ID: int = 0x65427b82
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowAll':
-        return cls()
-@register_tl
-class PrivacyValueAllowUsers(TLObject):
-    ID: int = 0xb8905fb2
-
-    def __init__(self, users: Any = None) -> None:
-        self.users = users
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.users or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowUsers':
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(users=users)
-@register_tl
-class PrivacyValueDisallowContacts(TLObject):
-    ID: int = 0xf888fa1a
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueDisallowContacts':
-        return cls()
-@register_tl
-class PrivacyValueDisallowAll(TLObject):
-    ID: int = 0x8b73e763
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueDisallowAll':
-        return cls()
-@register_tl
-class PrivacyValueDisallowUsers(TLObject):
-    ID: int = 0xe4621141
-
-    def __init__(self, users: Any = None) -> None:
-        self.users = users
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.users or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueDisallowUsers':
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(users=users)
-@register_tl
-class PrivacyValueAllowChatParticipants(TLObject):
-    ID: int = 0x6b134e8e
-
-    def __init__(self, chats: Any = None) -> None:
-        self.chats = chats
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.chats or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowChatParticipants':
-        chats = reader.read_vector(lambda r: r.read_object())
-        return cls(chats=chats)
-@register_tl
-class PrivacyValueDisallowChatParticipants(TLObject):
-    ID: int = 0x41c87565
-
-    def __init__(self, chats: Any = None) -> None:
-        self.chats = chats
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.chats or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueDisallowChatParticipants':
-        chats = reader.read_vector(lambda r: r.read_object())
-        return cls(chats=chats)
-@register_tl
-class PrivacyValueAllowCloseFriends(TLObject):
-    ID: int = 0xf7e8d89b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowCloseFriends':
-        return cls()
-@register_tl
-class PrivacyValueAllowPremium(TLObject):
-    ID: int = 0xece9814b
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowPremium':
-        return cls()
-@register_tl
-class PrivacyValueAllowBots(TLObject):
-    ID: int = 0x21461b5d
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueAllowBots':
-        return cls()
-@register_tl
-class PrivacyValueDisallowBots(TLObject):
-    ID: int = 0xf6a5f82f
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'PrivacyValueDisallowBots':
-        return cls()
-@register_tl
-class AccountPrivacyRules(TLObject):
-    ID: int = 0x50a04e45
-
-    def __init__(self, rules: Any = None, chats: Any = None, users: Any = None) -> None:
-        self.rules = rules
-        self.chats = chats
-        self.users = users
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.rules or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-        writer.write_vector(self.chats or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-        writer.write_vector(self.users or [], lambda w, x: w.write_object(x) if hasattr(x, 'write') else w.write_int32(x))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'AccountPrivacyRules':
-        rules = reader.read_vector(lambda r: r.read_object())
-        chats = reader.read_vector(lambda r: r.read_object())
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(rules=rules, chats=chats, users=users)
-@register_tl
-class AccountDaysTTL(TLObject):
-    ID: int = 0xb8d0afdf
-
-    def __init__(self, days: Any = None) -> None:
-        self.days = days
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.days or 0)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'AccountDaysTTL':
-        days = reader.read_int32()
-        return cls(days=days)
-@register_tl
-class DocumentAttributeImageSize(TLObject):
-    ID: int = 0x6c37c15c
-
-    def __init__(self, w: Any = None, h: Any = None) -> None:
-        self.w = w
-        self.h = h
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.w or 0)
-        writer.write_int32(self.h or 0)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeImageSize':
-        w = reader.read_int32()
-        h = reader.read_int32()
-        return cls(w=w, h=h)
-@register_tl
-class DocumentAttributeAnimated(TLObject):
-    ID: int = 0x11b58939
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeAnimated':
-        return cls()
-@register_tl
-class DocumentAttributeSticker(TLObject):
-    ID: int = 0x6319d612
-
-    def __init__(self, mask: bool = False, alt: Any = None, stickerset: Any = None, mask_coords: Any = None) -> None:
-        self.mask = mask
-        self.alt = alt
-        self.stickerset = stickerset
-        self.mask_coords = mask_coords
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.mask:
-            flags |= (1 << 1)
-        if self.mask_coords is not None:
-            flags |= (1 << 0)
-        writer.write_uint32(flags)
-        writer.write_string(str(self.alt or ''))
-        if hasattr(self.stickerset, 'write'):
-            self.stickerset.write(writer)
-        else:
-            writer.write_bytes(self.stickerset or b'')
-        if self.mask_coords is not None:
-            if hasattr(self.mask_coords, 'write'):
-                self.mask_coords.write(writer)
-            else:
-                writer.write_bytes(self.mask_coords or b'')
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeSticker':
-        flags = reader.read_uint32()
-        mask = bool(flags & (1 << 1))
-        alt = reader.read_string()
-        stickerset = reader.read_object()
-        mask_coords = None
-        if flags & (1 << 0):
-            mask_coords = reader.read_object()
-        return cls(mask=mask, alt=alt, stickerset=stickerset, mask_coords=mask_coords)
-@register_tl
-class DocumentAttributeVideo(TLObject):
-    ID: int = 0x43c57c48
-
-    def __init__(self, round_message: bool = False, supports_streaming: bool = False, nosound: bool = False, duration: Any = None, w: Any = None, h: Any = None, preload_prefix_size: Any = None, video_start_ts: Any = None, video_codec: Any = None) -> None:
-        self.round_message = round_message
-        self.supports_streaming = supports_streaming
-        self.nosound = nosound
-        self.duration = duration
-        self.w = w
-        self.h = h
-        self.preload_prefix_size = preload_prefix_size
-        self.video_start_ts = video_start_ts
-        self.video_codec = video_codec
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.round_message:
-            flags |= (1 << 0)
-        if self.supports_streaming:
-            flags |= (1 << 1)
-        if self.nosound:
-            flags |= (1 << 3)
-        if self.preload_prefix_size is not None:
-            flags |= (1 << 2)
-        if self.video_start_ts is not None:
-            flags |= (1 << 4)
-        if self.video_codec is not None:
-            flags |= (1 << 5)
-        writer.write_uint32(flags)
-        writer.write_double(float(self.duration or 0.0))
-        writer.write_int32(self.w or 0)
-        writer.write_int32(self.h or 0)
-        if self.preload_prefix_size is not None:
-            writer.write_int32(self.preload_prefix_size or 0)
-        if self.video_start_ts is not None:
-            writer.write_double(float(self.video_start_ts or 0.0))
-        if self.video_codec is not None:
-            writer.write_string(str(self.video_codec or ''))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeVideo':
-        flags = reader.read_uint32()
-        round_message = bool(flags & (1 << 0))
-        supports_streaming = bool(flags & (1 << 1))
-        nosound = bool(flags & (1 << 3))
-        duration = reader.read_double()
-        w = reader.read_int32()
-        h = reader.read_int32()
-        preload_prefix_size = None
-        if flags & (1 << 2):
-            preload_prefix_size = reader.read_int32()
-        video_start_ts = None
-        if flags & (1 << 4):
-            video_start_ts = reader.read_double()
-        video_codec = None
-        if flags & (1 << 5):
-            video_codec = reader.read_string()
-        return cls(round_message=round_message, supports_streaming=supports_streaming, nosound=nosound, duration=duration, w=w, h=h, preload_prefix_size=preload_prefix_size, video_start_ts=video_start_ts, video_codec=video_codec)
-@register_tl
-class DocumentAttributeAudio(TLObject):
-    ID: int = 0x9852f9c6
-
-    def __init__(self, voice: bool = False, duration: Any = None, title: Any = None, performer: Any = None, waveform: Any = None) -> None:
-        self.voice = voice
-        self.duration = duration
-        self.title = title
-        self.performer = performer
-        self.waveform = waveform
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.voice:
-            flags |= (1 << 10)
-        if self.title is not None:
-            flags |= (1 << 0)
-        if self.performer is not None:
-            flags |= (1 << 1)
-        if self.waveform is not None:
-            flags |= (1 << 2)
-        writer.write_uint32(flags)
-        writer.write_int32(self.duration or 0)
-        if self.title is not None:
-            writer.write_string(str(self.title or ''))
-        if self.performer is not None:
-            writer.write_string(str(self.performer or ''))
-        if self.waveform is not None:
-            writer.write_bytes(self.waveform or b'')
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeAudio':
-        flags = reader.read_uint32()
-        voice = bool(flags & (1 << 10))
-        duration = reader.read_int32()
-        title = None
-        if flags & (1 << 0):
-            title = reader.read_string()
-        performer = None
-        if flags & (1 << 1):
-            performer = reader.read_string()
-        waveform = None
-        if flags & (1 << 2):
-            waveform = reader.read_bytes()
-        return cls(voice=voice, duration=duration, title=title, performer=performer, waveform=waveform)
-@register_tl
-class DocumentAttributeFilename(TLObject):
-    ID: int = 0x15590068
-
-    def __init__(self, file_name: Any = None) -> None:
-        self.file_name = file_name
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(str(self.file_name or ''))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeFilename':
-        file_name = reader.read_string()
-        return cls(file_name=file_name)
-@register_tl
-class DocumentAttributeHasStickers(TLObject):
-    ID: int = 0x9801d2f7
-
-    def __init__(self) -> None:
-        pass
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> 'DocumentAttributeHasStickers':
-        return cls()
-
-@register_tl
-class MessageEntityUnknown(TLObject):
-    ID: int = 0xBB92BA95
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityUnknown":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityMention(TLObject):
-    ID: int = 0xFA04579D
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityMention":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityHashtag(TLObject):
-    ID: int = 0x6F12E79F
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityHashtag":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityBotCommand(TLObject):
-    ID: int = 0x6CEF8AC7
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityBotCommand":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityUrl(TLObject):
-    ID: int = 0x6ED02538
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityUrl":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityEmail(TLObject):
-    ID: int = 0x64E475C2
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityEmail":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityBold(TLObject):
-    ID: int = 0xBD610BC2
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityBold":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
-
-@register_tl
-class MessageEntityItalic(TLObject):
-    ID: int = 0x826F8E60
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityItalic":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+from ..core import TLObject, TLRequest, TLWriter, TLReader, register_tl
 
 @register_tl
 class MessageEntityCode(TLObject):
-    ID: int = 0x28B4E794
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+    ID: int = 0x28a20571
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityCode":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntityCode':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntityPre(TLObject):
-    ID: int = 0x739260E3
-    def __init__(self, offset: int = 0, length: int = 0, language: str = "") -> None:
+    ID: int = 0x73924be0
+
+    def __init__(self, offset: Any = None, length: Any = None, language: Any = None) -> None:
         self.offset = offset
         self.length = length
         self.language = language
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-        writer.write_string(self.language or "")
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_string(self.language or '')
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityPre":
-        return cls(offset=reader.read_int32(), length=reader.read_int32(), language=reader.read_string())
+    def read(cls, reader: TLReader) -> 'MessageEntityPre':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        language = reader.read_string()
+        return cls(offset=offset, length=length, language=language)
+
 
 @register_tl
 class MessageEntityTextUrl(TLObject):
-    ID: int = 0x76A6D327
-    def __init__(self, offset: int = 0, length: int = 0, url: str = "") -> None:
+    ID: int = 0x76a6d327
+
+    def __init__(self, offset: Any = None, length: Any = None, url: Any = None) -> None:
         self.offset = offset
         self.length = length
         self.url = url
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-        writer.write_string(self.url or "")
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_string(self.url or '')
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityTextUrl":
-        return cls(offset=reader.read_int32(), length=reader.read_int32(), url=reader.read_string())
+    def read(cls, reader: TLReader) -> 'MessageEntityTextUrl':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        url = reader.read_string()
+        return cls(offset=offset, length=length, url=url)
+
+
+@register_tl
+class MessageEntityMentionName(TLObject):
+    ID: int = 0xdc7b1140
+
+    def __init__(self, offset: Any = None, length: Any = None, user_id: Any = None) -> None:
+        self.offset = offset
+        self.length = length
+        self.user_id = user_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_int64(self.user_id or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessageEntityMentionName':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        user_id = reader.read_int64()
+        return cls(offset=offset, length=length, user_id=user_id)
+
+
+@register_tl
+class InputMessageEntityMentionName(TLObject):
+    ID: int = 0x208e68c9
+
+    def __init__(self, offset: Any = None, length: Any = None, user_id: Any = None) -> None:
+        self.offset = offset
+        self.length = length
+        self.user_id = user_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        if self.user_id is not None and hasattr(self.user_id, 'write'): self.user_id.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputMessageEntityMentionName':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        user_id = reader.read_object()
+        return cls(offset=offset, length=length, user_id=user_id)
+
 
 @register_tl
 class MessageEntityPhone(TLObject):
-    ID: int = 0x9B69E34B
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+    ID: int = 0x9b69e34b
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityPhone":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntityPhone':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntityCashtag(TLObject):
-    ID: int = 0x4C4E743F
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+    ID: int = 0x4c4e743f
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityCashtag":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntityCashtag':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntityUnderline(TLObject):
-    ID: int = 0x9C792A29
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+    ID: int = 0x9c4e7e8b
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityUnderline":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntityUnderline':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntityStrike(TLObject):
-    ID: int = 0xBF613066
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
-        self.offset = offset
-        self.length = length
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-    @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityStrike":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    ID: int = 0xbf0693d4
 
-@register_tl
-class MessageEntityBlockquote(TLObject):
-    ID: int = 0x20DF5D12
-    def __init__(self, offset: int = 0, length: int = 0, collapsed: bool = False) -> None:
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
-        self.collapsed = collapsed
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        flags = 1 if self.collapsed else 0
-        writer.write_uint32(flags)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityBlockquote":
-        flags = reader.read_uint32()
-        collapsed = bool(flags & 1)
+    def read(cls, reader: TLReader) -> 'MessageEntityStrike':
         offset = reader.read_int32()
         length = reader.read_int32()
-        return cls(offset=offset, length=length, collapsed=collapsed)
+        return cls(offset=offset, length=length)
+
 
 @register_tl
-class MessageEntityExpandableBlockquote(TLObject):
-    ID: int = 0x79069D51
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+class MessageEntityBankCard(TLObject):
+    ID: int = 0x761e6af4
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityExpandableBlockquote":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntityBankCard':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntitySpoiler(TLObject):
-    ID: int = 0x32CA960F
-    def __init__(self, offset: int = 0, length: int = 0) -> None:
+    ID: int = 0x32ca960f
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
         self.offset = offset
         self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntitySpoiler":
-        return cls(offset=reader.read_int32(), length=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'MessageEntitySpoiler':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
 class MessageEntityCustomEmoji(TLObject):
-    ID: int = 0xC8CF05F8
-    def __init__(self, offset: int = 0, length: int = 0, document_id: int = 0) -> None:
+    ID: int = 0xc8cf05f8
+
+    def __init__(self, offset: Any = None, length: Any = None, document_id: Any = None) -> None:
         self.offset = offset
         self.length = length
         self.document_id = document_id
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.offset)
-        writer.write_int32(self.length)
-        writer.write_int64(self.document_id)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_int64(self.document_id or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "MessageEntityCustomEmoji":
-        return cls(offset=reader.read_int32(), length=reader.read_int32(), document_id=reader.read_int64())
+    def read(cls, reader: TLReader) -> 'MessageEntityCustomEmoji':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        document_id = reader.read_int64()
+        return cls(offset=offset, length=length, document_id=document_id)
+
 
 @register_tl
-class InputReplyToMessage(TLObject):
-    ID: int = 0x22C0848D
-    def __init__(
-        self,
-        reply_to_msg_id: int = 0,
-        top_msg_id: int | None = None,
-        reply_to_peer_id: Any = None,
-        quote_text: str | None = None,
-        quote_entities: list[Any] | None = None,
-        quote_offset: int | None = None,
-    ) -> None:
-        self.reply_to_msg_id = reply_to_msg_id
-        self.top_msg_id = top_msg_id
-        self.reply_to_peer_id = reply_to_peer_id
-        self.quote_text = quote_text
-        self.quote_entities = quote_entities
-        self.quote_offset = quote_offset
+class MessageEntityBlockquote(TLObject):
+    ID: int = 0xf1ccaaac
+
+    def __init__(self, collapsed: bool = False, offset: Any = None, length: Any = None) -> None:
+        self.collapsed = collapsed
+        self.offset = offset
+        self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.top_msg_id is not None:
+        if self.collapsed:
             flags |= (1 << 0)
-        if self.reply_to_peer_id is not None:
-            flags |= (1 << 1)
-        if self.quote_text is not None:
-            flags |= (1 << 6)
-        if self.quote_entities is not None:
-            flags |= (1 << 7)
-        if self.quote_offset is not None:
-            flags |= (1 << 10)
         writer.write_uint32(flags)
-        writer.write_int32(self.reply_to_msg_id)
-        if self.top_msg_id is not None:
-            writer.write_int32(self.top_msg_id)
-        if self.reply_to_peer_id is not None:
-            writer.write_object(self.reply_to_peer_id)
-        if self.quote_text is not None:
-            writer.write_string(self.quote_text)
-        if self.quote_entities is not None:
-            writer.write_vector(self.quote_entities, lambda w, x: w.write_object(x))
-        if self.quote_offset is not None:
-            writer.write_int32(self.quote_offset)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "InputReplyToMessage":
+    def read(cls, reader: TLReader) -> 'MessageEntityBlockquote':
         flags = reader.read_uint32()
-        reply_to_msg_id = reader.read_int32()
-        top_msg_id = reader.read_int32() if (flags & (1 << 0)) else None
-        reply_to_peer_id = reader.read_object() if (flags & (1 << 1)) else None
-        quote_text = reader.read_string() if (flags & (1 << 6)) else None
-        quote_entities = reader.read_vector(lambda r: r.read_object()) if (flags & (1 << 7)) else None
-        quote_offset = reader.read_int32() if (flags & (1 << 10)) else None
-        return cls(
-            reply_to_msg_id=reply_to_msg_id,
-            top_msg_id=top_msg_id,
-            reply_to_peer_id=reply_to_peer_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
-            quote_offset=quote_offset,
-        )
+        collapsed = bool(flags & (1 << 0))
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(collapsed=collapsed, offset=offset, length=length)
+
 
 @register_tl
-class ReactionEmpty(TLObject):
-    ID: int = 0x79F5D419
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReactionEmpty":
-        return cls()
+class MessageEntityFormattedDate(TLObject):
+    ID: int = 0x904ac7c7
 
-@register_tl
-class ReactionEmoji(TLObject):
-    ID: int = 0x1B2286B8
-    def __init__(self, emoticon: str = "") -> None:
-        self.emoticon = emoticon
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.emoticon)
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReactionEmoji":
-        return cls(emoticon=reader.read_string())
+    def __init__(self, relative: bool = False, short_time: bool = False, long_time: bool = False, short_date: bool = False, long_date: bool = False, day_of_week: bool = False, offset: Any = None, length: Any = None, date: Any = None) -> None:
+        self.relative = relative
+        self.short_time = short_time
+        self.long_time = long_time
+        self.short_date = short_date
+        self.long_date = long_date
+        self.day_of_week = day_of_week
+        self.offset = offset
+        self.length = length
+        self.date = date
 
-@register_tl
-class ReactionCustomEmoji(TLObject):
-    ID: int = 0x8935FC73
-    def __init__(self, document_id: int = 0) -> None:
-        self.document_id = document_id
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int64(self.document_id)
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReactionCustomEmoji":
-        return cls(document_id=reader.read_int64())
-
-@register_tl
-class ReactionPaid(TLObject):
-    ID: int = 0x523DA4EB
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReactionPaid":
-        return cls()
-
-@register_tl
-class DataJSON(TLObject):
-    ID: int = 0x7D748D04
-    def __init__(self, data: str = "{}") -> None:
-        self.data = data
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.data)
-    @classmethod
-    def read(cls, reader: TLReader) -> "DataJSON":
-        return cls(data=reader.read_string())
-
-@register_tl
-class InputGroupCall(TLObject):
-    ID: int = 0xD8AA840F
-    def __init__(self, id: int = 0, access_hash: int = 0) -> None:
-        self.id = id
-        self.access_hash = access_hash
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-    @classmethod
-    def read(cls, reader: TLReader) -> "InputGroupCall":
-        return cls(id=reader.read_int64(), access_hash=reader.read_int64())
-
-@register_tl
-class GroupCallDiscarded(TLObject):
-    ID: int = 0x7780BCB4
-    def __init__(self, id: int = 0, access_hash: int = 0, duration: int = 0) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.duration = duration
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.duration)
-    @classmethod
-    def read(cls, reader: TLReader) -> "GroupCallDiscarded":
-        return cls(id=reader.read_int64(), access_hash=reader.read_int64(), duration=reader.read_int32())
-
-@register_tl
-class GroupCall(TLObject):
-    ID: int = 0xDCB1183C
-    def __init__(
-        self,
-        id: int = 0,
-        access_hash: int = 0,
-        participants_count: int = 0,
-        unmuted_video_limit: int = 0,
-        version: int = 0,
-        can_change_join_muted: bool = False,
-        join_muted: bool = False,
-        can_start_video: bool = False,
-        record_video_active: bool = False,
-        rtmp_stream: bool = False,
-        listeners_hidden: bool = False,
-        title: str | None = None,
-        stream_dc_id: int | None = None,
-        record_start_date: int | None = None,
-        schedule_date: int | None = None,
-        unmuted_video_count: int | None = None,
-    ) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.participants_count = participants_count
-        self.unmuted_video_limit = unmuted_video_limit
-        self.version = version
-        self.can_change_join_muted = can_change_join_muted
-        self.join_muted = join_muted
-        self.can_start_video = can_start_video
-        self.record_video_active = record_video_active
-        self.rtmp_stream = rtmp_stream
-        self.listeners_hidden = listeners_hidden
-        self.title = title
-        self.stream_dc_id = stream_dc_id
-        self.record_start_date = record_start_date
-        self.schedule_date = schedule_date
-        self.unmuted_video_count = unmuted_video_count
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.can_change_join_muted:
+        if self.relative:
+            flags |= (1 << 0)
+        if self.short_time:
             flags |= (1 << 1)
-        if self.join_muted:
+        if self.long_time:
             flags |= (1 << 2)
-        if self.can_start_video:
-            flags |= (1 << 9)
-        if self.record_video_active:
-            flags |= (1 << 11)
-        if self.rtmp_stream:
-            flags |= (1 << 12)
-        if self.listeners_hidden:
-            flags |= (1 << 13)
-        if self.title is not None:
+        if self.short_date:
             flags |= (1 << 3)
-        if self.stream_dc_id is not None:
+        if self.long_date:
             flags |= (1 << 4)
-        if self.record_start_date is not None:
+        if self.day_of_week:
             flags |= (1 << 5)
-        if self.schedule_date is not None:
-            flags |= (1 << 7)
-        if self.unmuted_video_count is not None:
-            flags |= (1 << 10)
         writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.participants_count)
-        if self.title is not None:
-            writer.write_string(self.title)
-        if self.stream_dc_id is not None:
-            writer.write_int32(self.stream_dc_id)
-        if self.record_start_date is not None:
-            writer.write_int32(self.record_start_date)
-        if self.schedule_date is not None:
-            writer.write_int32(self.schedule_date)
-        if self.unmuted_video_count is not None:
-            writer.write_int32(self.unmuted_video_count)
-        writer.write_int32(self.unmuted_video_limit)
-        writer.write_int32(self.version)
-    @classmethod
-    def read(cls, reader: TLReader) -> "GroupCall":
-        flags = reader.read_uint32()
-        can_change_join_muted = bool(flags & (1 << 1))
-        join_muted = bool(flags & (1 << 2))
-        can_start_video = bool(flags & (1 << 9))
-        record_video_active = bool(flags & (1 << 11))
-        rtmp_stream = bool(flags & (1 << 12))
-        listeners_hidden = bool(flags & (1 << 13))
-        call_id = reader.read_int64()
-        access_hash = reader.read_int64()
-        participants_count = reader.read_int32()
-        title = reader.read_string() if (flags & (1 << 3)) else None
-        stream_dc_id = reader.read_int32() if (flags & (1 << 4)) else None
-        record_start_date = reader.read_int32() if (flags & (1 << 5)) else None
-        schedule_date = reader.read_int32() if (flags & (1 << 7)) else None
-        unmuted_video_count = reader.read_int32() if (flags & (1 << 10)) else None
-        unmuted_video_limit = reader.read_int32()
-        version = reader.read_int32()
-        return cls(
-            id=call_id,
-            access_hash=access_hash,
-            participants_count=participants_count,
-            unmuted_video_limit=unmuted_video_limit,
-            version=version,
-            can_change_join_muted=can_change_join_muted,
-            join_muted=join_muted,
-            can_start_video=can_start_video,
-            record_video_active=record_video_active,
-            rtmp_stream=rtmp_stream,
-            listeners_hidden=listeners_hidden,
-            title=title,
-            stream_dc_id=stream_dc_id,
-            record_start_date=record_start_date,
-            schedule_date=schedule_date,
-            unmuted_video_count=unmuted_video_count,
-        )
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_int32(self.date or 0)
 
-@register_tl
-class GroupCallParticipant(TLObject):
-    ID: int = 0xEBA636FE
-    def __init__(
-        self,
-        peer: Any = None,
-        date: int = 0,
-        source: int = 0,
-        muted: bool = False,
-        left: bool = False,
-        can_self_unmute: bool = False,
-        just_joined: bool = False,
-        versioned: bool = False,
-        min: bool = False,
-        muted_by_you: bool = False,
-        volume_by_admin: bool = False,
-        is_self: bool = False,
-        video_joined: bool = False,
-        active_date: int | None = None,
-        volume: int | None = None,
-        about: str | None = None,
-        raise_hand_rating: int | None = None,
-    ) -> None:
-        self.peer = peer
-        self.date = date
-        self.source = source
-        self.muted = muted
-        self.left = left
-        self.can_self_unmute = can_self_unmute
-        self.just_joined = just_joined
-        self.versioned = versioned
-        self.min = min
-        self.muted_by_you = muted_by_you
-        self.volume_by_admin = volume_by_admin
-        self.is_self = is_self
-        self.video_joined = video_joined
-        self.active_date = active_date
-        self.volume = volume
-        self.about = about
-        self.raise_hand_rating = raise_hand_rating
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.muted:
-            flags |= (1 << 0)
-        if self.left:
-            flags |= (1 << 1)
-        if self.can_self_unmute:
-            flags |= (1 << 2)
-        if self.just_joined:
-            flags |= (1 << 4)
-        if self.versioned:
-            flags |= (1 << 5)
-        if self.min:
-            flags |= (1 << 8)
-        if self.muted_by_you:
-            flags |= (1 << 9)
-        if self.volume_by_admin:
-            flags |= (1 << 10)
-        if self.is_self:
-            flags |= (1 << 12)
-        if self.video_joined:
-            flags |= (1 << 15)
-        if self.active_date is not None:
-            flags |= (1 << 3)
-        if self.volume is not None:
-            flags |= (1 << 7)
-        if self.about is not None:
-            flags |= (1 << 11)
-        if self.raise_hand_rating is not None:
-            flags |= (1 << 13)
-        writer.write_uint32(flags)
-        if hasattr(self.peer, "write"):
-            self.peer.write(writer)
-        writer.write_int32(self.date)
-        if self.active_date is not None:
-            writer.write_int32(self.active_date)
-        writer.write_int32(self.source)
-        if self.volume is not None:
-            writer.write_int32(self.volume)
-        if self.about is not None:
-            writer.write_string(self.about)
-        if self.raise_hand_rating is not None:
-            writer.write_int64(self.raise_hand_rating)
     @classmethod
-    def read(cls, reader: TLReader) -> "GroupCallParticipant":
+    def read(cls, reader: TLReader) -> 'MessageEntityFormattedDate':
         flags = reader.read_uint32()
-        muted = bool(flags & (1 << 0))
-        left = bool(flags & (1 << 1))
-        can_self_unmute = bool(flags & (1 << 2))
-        just_joined = bool(flags & (1 << 4))
-        versioned = bool(flags & (1 << 5))
-        min_flag = bool(flags & (1 << 8))
-        muted_by_you = bool(flags & (1 << 9))
-        volume_by_admin = bool(flags & (1 << 10))
-        is_self = bool(flags & (1 << 12))
-        video_joined = bool(flags & (1 << 15))
-        peer = reader.read_object()
+        relative = bool(flags & (1 << 0))
+        short_time = bool(flags & (1 << 1))
+        long_time = bool(flags & (1 << 2))
+        short_date = bool(flags & (1 << 3))
+        long_date = bool(flags & (1 << 4))
+        day_of_week = bool(flags & (1 << 5))
+        offset = reader.read_int32()
+        length = reader.read_int32()
         date = reader.read_int32()
-        active_date = reader.read_int32() if (flags & (1 << 3)) else None
-        source = reader.read_int32()
-        volume = reader.read_int32() if (flags & (1 << 7)) else None
-        about = reader.read_string() if (flags & (1 << 11)) else None
-        raise_hand_rating = reader.read_int64() if (flags & (1 << 13)) else None
-        return cls(
-            peer=peer,
-            date=date,
-            source=source,
-            muted=muted,
-            left=left,
-            can_self_unmute=can_self_unmute,
-            just_joined=just_joined,
-            versioned=versioned,
-            min=min_flag,
-            muted_by_you=muted_by_you,
-            volume_by_admin=volume_by_admin,
-            is_self=is_self,
-            video_joined=video_joined,
-            active_date=active_date,
-            volume=volume,
-            about=about,
-            raise_hand_rating=raise_hand_rating,
-        )
+        return cls(relative=relative, short_time=short_time, long_time=long_time, short_date=short_date, long_date=long_date, day_of_week=day_of_week, offset=offset, length=length, date=date)
+
 
 @register_tl
-class PhoneGroupCall(TLObject):
-    ID: int = 0x9E727AAD
-    def __init__(
-        self,
-        call: Any = None,
-        participants: list[Any] | None = None,
-        participants_next_offset: str = "",
-        chats: list[Any] | None = None,
-        users: list[Any] | None = None,
-    ) -> None:
-        self.call = call
-        self.participants = participants or []
-        self.participants_next_offset = participants_next_offset
-        self.chats = chats or []
-        self.users = users or []
+class MessageEntityDiffInsert(TLObject):
+    ID: int = 0x71777116
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
+        self.offset = offset
+        self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_object(self.call)
-        writer.write_vector(self.participants, lambda w, x: w.write_object(x))
-        writer.write_string(self.participants_next_offset)
-        writer.write_vector(self.chats, lambda w, x: w.write_object(x))
-        writer.write_vector(self.users, lambda w, x: w.write_object(x))
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "PhoneGroupCall":
-        call = reader.read_object()
-        participants = reader.read_vector(lambda r: r.read_object())
-        next_offset = reader.read_string()
-        chats = reader.read_vector(lambda r: r.read_object())
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(call=call, participants=participants, participants_next_offset=next_offset, chats=chats, users=users)
+    def read(cls, reader: TLReader) -> 'MessageEntityDiffInsert':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
-class PhoneGroupParticipants(TLObject):
-    ID: int = 0xF47751B6
-    def __init__(
-        self,
-        count: int = 0,
-        participants: list[Any] | None = None,
-        next_offset: str = "",
-        chats: list[Any] | None = None,
-        users: list[Any] | None = None,
-        version: int = 0,
-    ) -> None:
-        self.count = count
-        self.participants = participants or []
-        self.next_offset = next_offset
-        self.chats = chats or []
-        self.users = users or []
-        self.version = version
+class MessageEntityDiffReplace(TLObject):
+    ID: int = 0xc6c1e5a7
+
+    def __init__(self, offset: Any = None, length: Any = None, old_text: Any = None) -> None:
+        self.offset = offset
+        self.length = length
+        self.old_text = old_text
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.count)
-        writer.write_vector(self.participants, lambda w, x: w.write_object(x))
-        writer.write_string(self.next_offset)
-        writer.write_vector(self.chats, lambda w, x: w.write_object(x))
-        writer.write_vector(self.users, lambda w, x: w.write_object(x))
-        writer.write_int32(self.version)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+        writer.write_string(self.old_text or '')
+
     @classmethod
-    def read(cls, reader: TLReader) -> "PhoneGroupParticipants":
-        count = reader.read_int32()
-        participants = reader.read_vector(lambda r: r.read_object())
-        next_offset = reader.read_string()
-        chats = reader.read_vector(lambda r: r.read_object())
-        users = reader.read_vector(lambda r: r.read_object())
-        version = reader.read_int32()
-        return cls(count=count, participants=participants, next_offset=next_offset, chats=chats, users=users, version=version)
+    def read(cls, reader: TLReader) -> 'MessageEntityDiffReplace':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        old_text = reader.read_string()
+        return cls(offset=offset, length=length, old_text=old_text)
+
 
 @register_tl
-class InputPhoneCall(TLObject):
-    ID: int = 0x1E36FDDA
-    def __init__(self, id: int = 0, access_hash: int = 0) -> None:
-        self.id = id
-        self.access_hash = access_hash
+class MessageEntityDiffDelete(TLObject):
+    ID: int = 0x652c1c5
+
+    def __init__(self, offset: Any = None, length: Any = None) -> None:
+        self.offset = offset
+        self.length = length
+
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
+        writer.write_int32(self.offset or 0)
+        writer.write_int32(self.length or 0)
+
     @classmethod
-    def read(cls, reader: TLReader) -> "InputPhoneCall":
-        return cls(id=reader.read_int64(), access_hash=reader.read_int64())
+    def read(cls, reader: TLReader) -> 'MessageEntityDiffDelete':
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length)
+
 
 @register_tl
-class PhoneCallEmpty(TLObject):
-    ID: int = 0x5366C915
-    def __init__(self, id: int = 0) -> None:
-        self.id = id
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int64(self.id)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallEmpty":
-        return cls(id=reader.read_int64())
+class InputChannelEmpty(TLObject):
+    ID: int = 0xee8c1e86
 
-@register_tl
-class PhoneCallWaiting(TLObject):
-    ID: int = 0xC5226F1A
-    def __init__(
-        self,
-        id: int = 0,
-        access_hash: int = 0,
-        date: int = 0,
-        admin_id: int = 0,
-        participant_id: int = 0,
-        protocol: Any = None,
-        video: bool = False,
-        receive_date: int | None = None,
-    ) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.date = date
-        self.admin_id = admin_id
-        self.participant_id = participant_id
-        self.protocol = protocol
-        self.video = video
-        self.receive_date = receive_date
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.video:
-            flags |= (1 << 0)
-        if self.receive_date is not None:
-            flags |= (1 << 1)
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.date)
-        writer.write_int64(self.admin_id)
-        writer.write_int64(self.participant_id)
-        writer.write_object(self.protocol)
-        if self.receive_date is not None:
-            writer.write_int32(self.receive_date)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallWaiting":
-        flags = reader.read_uint32()
-        video = bool(flags & (1 << 0))
-        call_id = reader.read_int64()
-        access_hash = reader.read_int64()
-        date = reader.read_int32()
-        admin_id = reader.read_int64()
-        participant_id = reader.read_int64()
-        protocol = reader.read_object()
-        receive_date = reader.read_int32() if (flags & (1 << 1)) else None
-        return cls(
-            id=call_id,
-            access_hash=access_hash,
-            date=date,
-            admin_id=admin_id,
-            participant_id=participant_id,
-            protocol=protocol,
-            video=video,
-            receive_date=receive_date,
-        )
+    def __init__(self) -> None:
+        pass
 
-@register_tl
-class PhoneCallRequested(TLObject):
-    ID: int = 0x14B0ED58
-    def __init__(
-        self,
-        id: int = 0,
-        access_hash: int = 0,
-        date: int = 0,
-        admin_id: int = 0,
-        participant_id: int = 0,
-        g_a_hash: bytes = b"",
-        protocol: Any = None,
-        video: bool = False,
-    ) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.date = date
-        self.admin_id = admin_id
-        self.participant_id = participant_id
-        self.g_a_hash = g_a_hash
-        self.protocol = protocol
-        self.video = video
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        flags = 1 if self.video else 0
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.date)
-        writer.write_int64(self.admin_id)
-        writer.write_int64(self.participant_id)
-        writer.write_bytes(self.g_a_hash)
-        writer.write_object(self.protocol)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallRequested":
-        flags = reader.read_uint32()
-        video = bool(flags & (1 << 0))
-        call_id = reader.read_int64()
-        access_hash = reader.read_int64()
-        date = reader.read_int32()
-        admin_id = reader.read_int64()
-        participant_id = reader.read_int64()
-        g_a_hash = reader.read_bytes()
-        protocol = reader.read_object()
-        return cls(
-            id=call_id,
-            access_hash=access_hash,
-            date=date,
-            admin_id=admin_id,
-            participant_id=participant_id,
-            g_a_hash=g_a_hash,
-            protocol=protocol,
-            video=video,
-        )
 
-@register_tl
-class PhoneCallAccepted(TLObject):
-    ID: int = 0x99D30B42
-    def __init__(
-        self,
-        id: int = 0,
-        access_hash: int = 0,
-        date: int = 0,
-        admin_id: int = 0,
-        participant_id: int = 0,
-        g_b: bytes = b"",
-        protocol: Any = None,
-        video: bool = False,
-    ) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.date = date
-        self.admin_id = admin_id
-        self.participant_id = participant_id
-        self.g_b = g_b
-        self.protocol = protocol
-        self.video = video
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 1 if self.video else 0
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.date)
-        writer.write_int64(self.admin_id)
-        writer.write_int64(self.participant_id)
-        writer.write_bytes(self.g_b)
-        writer.write_object(self.protocol)
     @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallAccepted":
-        flags = reader.read_uint32()
-        video = bool(flags & (1 << 0))
-        call_id = reader.read_int64()
-        access_hash = reader.read_int64()
-        date = reader.read_int32()
-        admin_id = reader.read_int64()
-        participant_id = reader.read_int64()
-        g_b = reader.read_bytes()
-        protocol = reader.read_object()
-        return cls(
-            id=call_id,
-            access_hash=access_hash,
-            date=date,
-            admin_id=admin_id,
-            participant_id=participant_id,
-            g_b=g_b,
-            protocol=protocol,
-            video=video,
-        )
-
-@register_tl
-class PhoneCall(TLObject):
-    ID: int = 0x967F7C4C
-    def __init__(
-        self,
-        id: int = 0,
-        access_hash: int = 0,
-        date: int = 0,
-        admin_id: int = 0,
-        participant_id: int = 0,
-        g_a_or_b: bytes = b"",
-        key_fingerprint: int = 0,
-        protocol: Any = None,
-        connections: list[Any] | None = None,
-        start_date: int = 0,
-        p2p_allowed: bool = True,
-        video: bool = False,
-        custom_parameters: Any = None,
-    ) -> None:
-        self.id = id
-        self.access_hash = access_hash
-        self.date = date
-        self.admin_id = admin_id
-        self.participant_id = participant_id
-        self.g_a_or_b = g_a_or_b
-        self.key_fingerprint = key_fingerprint
-        self.protocol = protocol
-        self.connections = connections or []
-        self.start_date = start_date
-        self.p2p_allowed = p2p_allowed
-        self.video = video
-        self.custom_parameters = custom_parameters
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.p2p_allowed:
-            flags |= (1 << 0)
-        if self.video:
-            flags |= (1 << 5)
-        if self.custom_parameters is not None:
-            flags |= (1 << 7)
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_int64(self.access_hash)
-        writer.write_int32(self.date)
-        writer.write_int64(self.admin_id)
-        writer.write_int64(self.participant_id)
-        writer.write_bytes(self.g_a_or_b)
-        writer.write_int64(self.key_fingerprint)
-        writer.write_object(self.protocol)
-        writer.write_vector(self.connections, lambda w, x: w.write_object(x))
-        writer.write_int32(self.start_date)
-        if self.custom_parameters is not None:
-            writer.write_object(self.custom_parameters)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCall":
-        flags = reader.read_uint32()
-        p2p_allowed = bool(flags & (1 << 0))
-        video = bool(flags & (1 << 5))
-        call_id = reader.read_int64()
-        access_hash = reader.read_int64()
-        date = reader.read_int32()
-        admin_id = reader.read_int64()
-        participant_id = reader.read_int64()
-        g_a_or_b = reader.read_bytes()
-        key_fingerprint = reader.read_int64()
-        protocol = reader.read_object()
-        connections = reader.read_vector(lambda r: r.read_object())
-        start_date = reader.read_int32()
-        custom_parameters = reader.read_object() if (flags & (1 << 7)) else None
-        return cls(
-            id=call_id,
-            access_hash=access_hash,
-            date=date,
-            admin_id=admin_id,
-            participant_id=participant_id,
-            g_a_or_b=g_a_or_b,
-            key_fingerprint=key_fingerprint,
-            protocol=protocol,
-            connections=connections,
-            start_date=start_date,
-            p2p_allowed=p2p_allowed,
-            video=video,
-            custom_parameters=custom_parameters,
-        )
-
-@register_tl
-class PhoneCallDiscarded(TLObject):
-    ID: int = 0x50CA4DE1
-    def __init__(
-        self,
-        id: int = 0,
-        need_rating: bool = False,
-        need_debug: bool = False,
-        video: bool = False,
-        reason: Any = None,
-        duration: int | None = None,
-    ) -> None:
-        self.id = id
-        self.need_rating = need_rating
-        self.need_debug = need_debug
-        self.video = video
-        self.reason = reason
-        self.duration = duration
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.need_rating:
-            flags |= (1 << 2)
-        if self.need_debug:
-            flags |= (1 << 3)
-        if self.video:
-            flags |= (1 << 6)
-        if self.reason is not None:
-            flags |= (1 << 0)
-        if self.duration is not None:
-            flags |= (1 << 1)
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        if self.reason is not None:
-            writer.write_object(self.reason)
-        if self.duration is not None:
-            writer.write_int32(self.duration)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallDiscarded":
-        flags = reader.read_uint32()
-        need_rating = bool(flags & (1 << 2))
-        need_debug = bool(flags & (1 << 3))
-        video = bool(flags & (1 << 6))
-        call_id = reader.read_int64()
-        reason = reader.read_object() if (flags & (1 << 0)) else None
-        duration = reader.read_int32() if (flags & (1 << 1)) else None
-        return cls(id=call_id, need_rating=need_rating, need_debug=need_debug, video=video, reason=reason, duration=duration)
-
-@register_tl
-class PhoneCallProtocol(TLObject):
-    ID: int = 0xFC88194B
-    def __init__(
-        self,
-        min_layer: int = 65,
-        max_layer: int = 225,
-        udp_p2p: bool = True,
-        udp_reflector: bool = True,
-        library_versions: list[str] | None = None,
-    ) -> None:
-        self.min_layer = min_layer
-        self.max_layer = max_layer
-        self.udp_p2p = udp_p2p
-        self.udp_reflector = udp_reflector
-        self.library_versions = library_versions or ["10.0.0"]
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.udp_p2p:
-            flags |= (1 << 0)
-        if self.udp_reflector:
-            flags |= (1 << 1)
-        writer.write_uint32(flags)
-        writer.write_int32(self.min_layer)
-        writer.write_int32(self.max_layer)
-        writer.write_vector(self.library_versions, lambda w, x: w.write_string(x))
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallProtocol":
-        flags = reader.read_uint32()
-        udp_p2p = bool(flags & (1 << 0))
-        udp_reflector = bool(flags & (1 << 1))
-        min_layer = reader.read_int32()
-        max_layer = reader.read_int32()
-        library_versions = reader.read_vector(lambda r: r.read_string())
-        return cls(min_layer=min_layer, max_layer=max_layer, udp_p2p=udp_p2p, udp_reflector=udp_reflector, library_versions=library_versions)
-
-@register_tl
-class PhoneConnection(TLObject):
-    ID: int = 0x9D460E4B
-    def __init__(
-        self,
-        id: int = 0,
-        ip: str = "",
-        ipv6: str = "",
-        port: int = 0,
-        peer_tag: bytes = b"",
-        tcp: bool = False,
-    ) -> None:
-        self.id = id
-        self.ip = ip
-        self.ipv6 = ipv6
-        self.port = port
-        self.peer_tag = peer_tag
-        self.tcp = tcp
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 1 if self.tcp else 0
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_string(self.ip)
-        writer.write_string(self.ipv6)
-        writer.write_int32(self.port)
-        writer.write_bytes(self.peer_tag)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneConnection":
-        flags = reader.read_uint32()
-        tcp = bool(flags & (1 << 0))
-        conn_id = reader.read_int64()
-        ip = reader.read_string()
-        ipv6 = reader.read_string()
-        port = reader.read_int32()
-        peer_tag = reader.read_bytes()
-        return cls(id=conn_id, ip=ip, ipv6=ipv6, port=port, peer_tag=peer_tag, tcp=tcp)
-
-@register_tl
-class PhoneConnectionWebrtc(TLObject):
-    ID: int = 0x635FEAF1
-    def __init__(
-        self,
-        id: int = 0,
-        ip: str = "",
-        ipv6: str = "",
-        port: int = 0,
-        username: str = "",
-        password: str = "",
-        turn: bool = True,
-        stun: bool = False,
-    ) -> None:
-        self.id = id
-        self.ip = ip
-        self.ipv6 = ipv6
-        self.port = port
-        self.username = username
-        self.password = password
-        self.turn = turn
-        self.stun = stun
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.turn:
-            flags |= (1 << 0)
-        if self.stun:
-            flags |= (1 << 1)
-        writer.write_uint32(flags)
-        writer.write_int64(self.id)
-        writer.write_string(self.ip)
-        writer.write_string(self.ipv6)
-        writer.write_int32(self.port)
-        writer.write_string(self.username)
-        writer.write_string(self.password)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneConnectionWebrtc":
-        flags = reader.read_uint32()
-        turn = bool(flags & (1 << 0))
-        stun = bool(flags & (1 << 1))
-        conn_id = reader.read_int64()
-        ip = reader.read_string()
-        ipv6 = reader.read_string()
-        port = reader.read_int32()
-        username = reader.read_string()
-        password = reader.read_string()
-        return cls(id=conn_id, ip=ip, ipv6=ipv6, port=port, username=username, password=password, turn=turn, stun=stun)
-
-@register_tl
-class PhoneCallDiscardReasonMissed(TLObject):
-    ID: int = 0x85E42301
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonMissed":
+    def read(cls, reader: TLReader) -> 'InputChannelEmpty':
         return cls()
 
-@register_tl
-class PhoneCallDiscardReasonDisconnect(TLObject):
-    ID: int = 0xE095C1A0
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonDisconnect":
-        return cls()
-
-@register_tl
-class PhoneCallDiscardReasonHangup(TLObject):
-    ID: int = 0x57ADC690
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonHangup":
-        return cls()
-
-@register_tl
-class PhoneCallDiscardReasonBusy(TLObject):
-    ID: int = 0xFAF7E8C9
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonBusy":
-        return cls()
-
-@register_tl
-class PhonePhoneCall(TLObject):
-    ID: int = 0xEC82E140
-    def __init__(self, phone_call: Any = None, users: list[Any] | None = None) -> None:
-        self.phone_call = phone_call
-        self.users = users or []
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_object(self.phone_call)
-        writer.write_vector(self.users, lambda w, x: w.write_object(x))
-    @classmethod
-    def read(cls, reader: TLReader) -> "PhonePhoneCall":
-        phone_call = reader.read_object()
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(phone_call=phone_call, users=users)
 
 @register_tl
 class InputChannel(TLObject):
-    ID: int = 0xF35AEC28
+    ID: int = 0xf35aec28
 
-    def __init__(self, channel_id: int = 0, access_hash: int = 0) -> None:
+    def __init__(self, channel_id: Any = None, access_hash: Any = None) -> None:
         self.channel_id = channel_id
         self.access_hash = access_hash
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int64(self.channel_id)
-        writer.write_int64(self.access_hash)
+        writer.write_int64(self.channel_id or 0)
+        writer.write_int64(self.access_hash or 0)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "InputChannel":
-        return cls(channel_id=reader.read_int64(), access_hash=reader.read_int64())
+    def read(cls, reader: TLReader) -> 'InputChannel':
+        channel_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        return cls(channel_id=channel_id, access_hash=access_hash)
+
 
 @register_tl
-class InputChannelEmpty(TLObject):
-    ID: int = 0xEE8C1E86
+class InputChannelFromMessage(TLObject):
+    ID: int = 0x5b934f9d
+
+    def __init__(self, peer: Any = None, msg_id: Any = None, channel_id: Any = None) -> None:
+        self.peer = peer
+        self.msg_id = msg_id
+        self.channel_id = channel_id
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
+        if self.peer is not None and hasattr(self.peer, 'write'): self.peer.write(writer)
+        writer.write_int32(self.msg_id or 0)
+        writer.write_int64(self.channel_id or 0)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "InputChannelEmpty":
-        return cls()
+    def read(cls, reader: TLReader) -> 'InputChannelFromMessage':
+        peer = reader.read_object()
+        msg_id = reader.read_int32()
+        channel_id = reader.read_int64()
+        return cls(peer=peer, msg_id=msg_id, channel_id=channel_id)
 
-@register_tl
-class CodeSettings(TLObject):
-    ID: int = 0xAD253D78
-
-    def __init__(
-        self,
-        allow_flashcall: bool = False,
-        current_number: bool = False,
-        allow_app_hash: bool = False,
-        allow_missed_call: bool = False,
-        allow_firebase: bool = False,
-        unknown_number: bool = False,
-    ) -> None:
-        self.allow_flashcall = allow_flashcall
-        self.current_number = current_number
-        self.allow_app_hash = allow_app_hash
-        self.allow_missed_call = allow_missed_call
-        self.allow_firebase = allow_firebase
-        self.unknown_number = unknown_number
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.allow_flashcall:
-            flags |= (1 << 0)
-        if self.current_number:
-            flags |= (1 << 1)
-        if self.allow_app_hash:
-            flags |= (1 << 4)
-        if self.allow_missed_call:
-            flags |= (1 << 5)
-        if self.allow_firebase:
-            flags |= (1 << 7)
-        if self.unknown_number:
-            flags |= (1 << 9)
-        writer.write_uint32(flags)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "CodeSettings":
-        flags = reader.read_uint32()
-        return cls(
-            allow_flashcall=bool(flags & (1 << 0)),
-            current_number=bool(flags & (1 << 1)),
-            allow_app_hash=bool(flags & (1 << 4)),
-            allow_missed_call=bool(flags & (1 << 5)),
-            allow_firebase=bool(flags & (1 << 7)),
-            unknown_number=bool(flags & (1 << 9)),
-        )
 
 @register_tl
 class ContactsResolvedPeer(TLObject):
-    ID: int = 0x7F077AD9
+    ID: int = 0x7f077ad9
 
-    def __init__(self, peer: Any = None, chats: list[Any] | None = None, users: list[Any] | None = None) -> None:
+    def __init__(self, peer: Any = None, chats: Any = None, users: Any = None) -> None:
         self.peer = peer
-        self.chats = chats or []
-        self.users = users or []
+        self.chats = chats
+        self.users = users
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_object(self.peer)
-        writer.write_vector(self.chats, lambda w, c: w.write_object(c))
-        writer.write_vector(self.users, lambda w, u: w.write_object(u))
+        if self.peer is not None and hasattr(self.peer, 'write'): self.peer.write(writer)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ContactsResolvedPeer":
+    def read(cls, reader: TLReader) -> 'ContactsResolvedPeer':
         peer = reader.read_object()
-        chats = reader.read_vector(lambda r: r.read_object())
-        users = reader.read_vector(lambda r: r.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
         return cls(peer=peer, chats=chats, users=users)
 
-@register_tl
-class MessagesAffectedMessages(TLObject):
-    ID: int = 0x84D0CAA0
 
-    def __init__(self, pts: int = 0, pts_count: int = 0) -> None:
+@register_tl
+class MessageRange(TLObject):
+    ID: int = 0xae30253
+
+    def __init__(self, min_id: Any = None, max_id: Any = None) -> None:
+        self.min_id = min_id
+        self.max_id = max_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.min_id or 0)
+        writer.write_int32(self.max_id or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessageRange':
+        min_id = reader.read_int32()
+        max_id = reader.read_int32()
+        return cls(min_id=min_id, max_id=max_id)
+
+
+@register_tl
+class UpdatesChannelDifferenceEmpty(TLObject):
+    ID: int = 0x3e11affb
+
+    def __init__(self, final: bool = False, timeout: Any = None, pts: Any = None) -> None:
+        self.final = final
+        self.timeout = timeout
         self.pts = pts
-        self.pts_count = pts_count
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int32(self.pts)
-        writer.write_int32(self.pts_count)
+        flags = 0
+        if self.final:
+            flags |= (1 << 0)
+        if self.timeout is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_int32(self.pts or 0)
+        if self.timeout is not None:
+            writer.write_int32(self.timeout or 0)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "MessagesAffectedMessages":
+    def read(cls, reader: TLReader) -> 'UpdatesChannelDifferenceEmpty':
+        flags = reader.read_uint32()
+        final = bool(flags & (1 << 0))
         pts = reader.read_int32()
-        pts_count = reader.read_int32()
-        return cls(pts=pts, pts_count=pts_count)
+        timeout = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(final=final, pts=pts, timeout=timeout)
+
 
 @register_tl
-class AuthLoggedOut(TLObject):
-    ID: int = 0xC3A2835F
+class UpdatesChannelDifferenceTooLong(TLObject):
+    ID: int = 0xa4bcc6fe
 
-    def __init__(self, future_auth_token: bytes | None = None) -> None:
-        self.future_auth_token = future_auth_token
+    def __init__(self, final: bool = False, timeout: Any = None, dialog: Any = None, messages: Any = None, chats: Any = None, users: Any = None) -> None:
+        self.final = final
+        self.timeout = timeout
+        self.dialog = dialog
+        self.messages = messages
+        self.chats = chats
+        self.users = users
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.future_auth_token is not None:
+        if self.final:
             flags |= (1 << 0)
-        writer.write_uint32(flags)
-        if self.future_auth_token is not None:
-            writer.write_bytes(self.future_auth_token)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "AuthLoggedOut":
-        flags = reader.read_uint32()
-        future_auth_token = reader.read_bytes() if (flags & (1 << 0)) else None
-        return cls(future_auth_token=future_auth_token)
-
-@register_tl
-class InputCheckPasswordEmpty(TLObject):
-    ID: int = 0x9880F658
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "InputCheckPasswordEmpty":
-        return cls()
-
-@register_tl
-class InputCheckPasswordSRP(TLObject):
-    ID: int = 0xD27FF082
-
-    def __init__(self, srp_id: int = 0, A: bytes = b"", M1: bytes = b"") -> None:
-        self.srp_id = srp_id
-        self.A = A
-        self.M1 = M1
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int64(self.srp_id)
-        writer.write_bytes(self.A)
-        writer.write_bytes(self.M1)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "InputCheckPasswordSRP":
-        return cls(srp_id=reader.read_int64(), A=reader.read_bytes(), M1=reader.read_bytes())
-
-
-@register_tl
-class ChatAdminRights(TLObject):
-    ID: int = 0x5FB224D5
-
-    def __init__(
-        self,
-        change_info: bool = False,
-        post_messages: bool = False,
-        edit_messages: bool = False,
-        delete_messages: bool = False,
-        ban_users: bool = False,
-        invite_users: bool = False,
-        pin_messages: bool = False,
-        add_admins: bool = False,
-        anonymous: bool = False,
-        manage_call: bool = False,
-        other: bool = False,
-        manage_topics: bool = False,
-        post_stories: bool = False,
-        edit_stories: bool = False,
-        delete_stories: bool = False,
-    ) -> None:
-        self.change_info = change_info
-        self.post_messages = post_messages
-        self.edit_messages = edit_messages
-        self.delete_messages = delete_messages
-        self.ban_users = ban_users
-        self.invite_users = invite_users
-        self.pin_messages = pin_messages
-        self.add_admins = add_admins
-        self.anonymous = anonymous
-        self.manage_call = manage_call
-        self.other = other
-        self.manage_topics = manage_topics
-        self.post_stories = post_stories
-        self.edit_stories = edit_stories
-        self.delete_stories = delete_stories
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.change_info:
-            flags |= (1 << 0)
-        if self.post_messages:
+        if self.timeout is not None:
             flags |= (1 << 1)
-        if self.edit_messages:
-            flags |= (1 << 2)
-        if self.delete_messages:
-            flags |= (1 << 3)
-        if self.ban_users:
-            flags |= (1 << 4)
-        if self.invite_users:
-            flags |= (1 << 5)
-        if self.pin_messages:
-            flags |= (1 << 7)
-        if self.add_admins:
-            flags |= (1 << 9)
-        if self.anonymous:
-            flags |= (1 << 10)
-        if self.manage_call:
-            flags |= (1 << 11)
-        if self.other:
-            flags |= (1 << 12)
-        if self.manage_topics:
-            flags |= (1 << 13)
-        if self.post_stories:
-            flags |= (1 << 14)
-        if self.edit_stories:
-            flags |= (1 << 15)
-        if self.delete_stories:
-            flags |= (1 << 16)
         writer.write_uint32(flags)
+        if self.timeout is not None:
+            writer.write_int32(self.timeout or 0)
+        if self.dialog is not None and hasattr(self.dialog, 'write'): self.dialog.write(writer)
+        writer.write_vector(self.messages or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChatAdminRights":
+    def read(cls, reader: TLReader) -> 'UpdatesChannelDifferenceTooLong':
         flags = reader.read_uint32()
-        return cls(
-            change_info=bool(flags & (1 << 0)),
-            post_messages=bool(flags & (1 << 1)),
-            edit_messages=bool(flags & (1 << 2)),
-            delete_messages=bool(flags & (1 << 3)),
-            ban_users=bool(flags & (1 << 4)),
-            invite_users=bool(flags & (1 << 5)),
-            pin_messages=bool(flags & (1 << 7)),
-            add_admins=bool(flags & (1 << 9)),
-            anonymous=bool(flags & (1 << 10)),
-            manage_call=bool(flags & (1 << 11)),
-            other=bool(flags & (1 << 12)),
-            manage_topics=bool(flags & (1 << 13)),
-            post_stories=bool(flags & (1 << 14)),
-            edit_stories=bool(flags & (1 << 15)),
-            delete_stories=bool(flags & (1 << 16)),
-        )
+        final = bool(flags & (1 << 0))
+        timeout = reader.read_int32() if (flags & (1 << 1)) else None
+        dialog = reader.read_object()
+        messages = reader.read_vector(lambda r: reader.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(final=final, timeout=timeout, dialog=dialog, messages=messages, chats=chats, users=users)
 
 
 @register_tl
-class ChatBannedRights(TLObject):
-    ID: int = 0x9F120418
+class UpdatesChannelDifference(TLObject):
+    ID: int = 0x2064674e
 
-    def __init__(
-        self,
-        view_messages: bool = False,
-        send_messages: bool = False,
-        send_media: bool = False,
-        send_stickers: bool = False,
-        send_gifs: bool = False,
-        send_games: bool = False,
-        send_inline: bool = False,
-        embed_links: bool = False,
-        send_polls: bool = False,
-        change_info: bool = False,
-        invite_users: bool = False,
-        pin_messages: bool = False,
-        manage_topics: bool = False,
-        send_photos: bool = False,
-        send_videos: bool = False,
-        send_roundvideos: bool = False,
-        send_audios: bool = False,
-        send_voices: bool = False,
-        send_docs: bool = False,
-        send_plain: bool = False,
-        until_date: int = 0,
-    ) -> None:
-        self.view_messages = view_messages
-        self.send_messages = send_messages
-        self.send_media = send_media
-        self.send_stickers = send_stickers
-        self.send_gifs = send_gifs
-        self.send_games = send_games
-        self.send_inline = send_inline
-        self.embed_links = embed_links
-        self.send_polls = send_polls
-        self.change_info = change_info
-        self.invite_users = invite_users
-        self.pin_messages = pin_messages
-        self.manage_topics = manage_topics
-        self.send_photos = send_photos
-        self.send_videos = send_videos
-        self.send_roundvideos = send_roundvideos
-        self.send_audios = send_audios
-        self.send_voices = send_voices
-        self.send_docs = send_docs
-        self.send_plain = send_plain
-        self.until_date = until_date
+    def __init__(self, final: bool = False, timeout: Any = None, pts: Any = None, new_messages: Any = None, other_updates: Any = None, chats: Any = None, users: Any = None) -> None:
+        self.final = final
+        self.timeout = timeout
+        self.pts = pts
+        self.new_messages = new_messages
+        self.other_updates = other_updates
+        self.chats = chats
+        self.users = users
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.view_messages:
+        if self.final:
             flags |= (1 << 0)
-        if self.send_messages:
+        if self.timeout is not None:
             flags |= (1 << 1)
-        if self.send_media:
-            flags |= (1 << 2)
-        if self.send_stickers:
-            flags |= (1 << 3)
-        if self.send_gifs:
-            flags |= (1 << 4)
-        if self.send_games:
-            flags |= (1 << 5)
-        if self.send_inline:
-            flags |= (1 << 6)
-        if self.embed_links:
-            flags |= (1 << 7)
-        if self.send_polls:
-            flags |= (1 << 8)
-        if self.change_info:
-            flags |= (1 << 10)
-        if self.invite_users:
-            flags |= (1 << 15)
-        if self.pin_messages:
-            flags |= (1 << 17)
-        if self.manage_topics:
-            flags |= (1 << 18)
-        if self.send_photos:
-            flags |= (1 << 19)
-        if self.send_videos:
-            flags |= (1 << 20)
-        if self.send_roundvideos:
-            flags |= (1 << 21)
-        if self.send_audios:
-            flags |= (1 << 22)
-        if self.send_voices:
-            flags |= (1 << 23)
-        if self.send_docs:
-            flags |= (1 << 24)
-        if self.send_plain:
-            flags |= (1 << 25)
         writer.write_uint32(flags)
-        writer.write_int32(self.until_date)
+        writer.write_int32(self.pts or 0)
+        if self.timeout is not None:
+            writer.write_int32(self.timeout or 0)
+        writer.write_vector(self.new_messages or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.other_updates or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChatBannedRights":
+    def read(cls, reader: TLReader) -> 'UpdatesChannelDifference':
         flags = reader.read_uint32()
-        until_date = reader.read_int32()
-        return cls(
-            view_messages=bool(flags & (1 << 0)),
-            send_messages=bool(flags & (1 << 1)),
-            send_media=bool(flags & (1 << 2)),
-            send_stickers=bool(flags & (1 << 3)),
-            send_gifs=bool(flags & (1 << 4)),
-            send_games=bool(flags & (1 << 5)),
-            send_inline=bool(flags & (1 << 6)),
-            embed_links=bool(flags & (1 << 7)),
-            send_polls=bool(flags & (1 << 8)),
-            change_info=bool(flags & (1 << 10)),
-            invite_users=bool(flags & (1 << 15)),
-            pin_messages=bool(flags & (1 << 17)),
-            manage_topics=bool(flags & (1 << 18)),
-            send_photos=bool(flags & (1 << 19)),
-            send_videos=bool(flags & (1 << 20)),
-            send_roundvideos=bool(flags & (1 << 21)),
-            send_audios=bool(flags & (1 << 22)),
-            send_voices=bool(flags & (1 << 23)),
-            send_docs=bool(flags & (1 << 24)),
-            send_plain=bool(flags & (1 << 25)),
-            until_date=until_date,
-        )
+        final = bool(flags & (1 << 0))
+        pts = reader.read_int32()
+        timeout = reader.read_int32() if (flags & (1 << 1)) else None
+        new_messages = reader.read_vector(lambda r: reader.read_object())
+        other_updates = reader.read_vector(lambda r: reader.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(final=final, pts=pts, timeout=timeout, new_messages=new_messages, other_updates=other_updates, chats=chats, users=users)
 
 
 @register_tl
-class ChannelParticipantsRecent(TLObject):
-    ID: int = 0xDE3F3C79
+class ChannelMessagesFilterEmpty(TLObject):
+    ID: int = 0x94d42ee7
+
+    def __init__(self) -> None:
+        pass
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsRecent":
+    def read(cls, reader: TLReader) -> 'ChannelMessagesFilterEmpty':
         return cls()
 
 
 @register_tl
-class ChannelParticipantsAdmins(TLObject):
-    ID: int = 0xB4608969
+class ChannelMessagesFilter(TLObject):
+    ID: int = 0xcd77d957
+
+    def __init__(self, exclude_new_messages: bool = False, ranges: Any = None) -> None:
+        self.exclude_new_messages = exclude_new_messages
+        self.ranges = ranges
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
+        flags = 0
+        if self.exclude_new_messages:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_vector(self.ranges or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsAdmins":
-        return cls()
-
-
-@register_tl
-class ChannelParticipantsKicked(TLObject):
-    ID: int = 0x3C37BB74
-
-    def __init__(self, q: str = "") -> None:
-        self.q = q
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.q)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsKicked":
-        return cls(q=reader.read_string())
-
-
-@register_tl
-class ChannelParticipantsBanned(TLObject):
-    ID: int = 0x1427A5E1
-
-    def __init__(self, q: str = "") -> None:
-        self.q = q
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.q)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsBanned":
-        return cls(q=reader.read_string())
-
-
-@register_tl
-class ChannelParticipantsBots(TLObject):
-    ID: int = 0xB0D1861B
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsBots":
-        return cls()
-
-
-@register_tl
-class ChannelParticipantsSearch(TLObject):
-    ID: int = 0x0656AC4B
-
-    def __init__(self, q: str = "") -> None:
-        self.q = q
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.q)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsSearch":
-        return cls(q=reader.read_string())
-
-
-@register_tl
-class ChannelParticipantsContacts(TLObject):
-    ID: int = 0xBB6AE88D
-
-    def __init__(self, q: str = "") -> None:
-        self.q = q
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.q)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantsContacts":
-        return cls(q=reader.read_string())
-
-
-@register_tl
-class ChannelsChannelParticipants(TLObject):
-    ID: int = 0x9AB0FE02
-
-    def __init__(
-        self,
-        count: int = 0,
-        participants: list[Any] | None = None,
-        chats: list[Any] | None = None,
-        users: list[Any] | None = None,
-    ) -> None:
-        self.count = count
-        self.participants = participants or []
-        self.chats = chats or []
-        self.users = users or []
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_int32(self.count)
-        writer.write_vector(self.participants, lambda w, p: w.write_object(p))
-        writer.write_vector(self.chats, lambda w, c: w.write_object(c))
-        writer.write_vector(self.users, lambda w, u: w.write_object(u))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ChannelsChannelParticipants":
-        count = reader.read_int32()
-        participants = reader.read_vector(lambda r: r.read_object())
-        chats = reader.read_vector(lambda r: r.read_object())
-        users = reader.read_vector(lambda r: r.read_object())
-        return cls(count=count, participants=participants, chats=chats, users=users)
+    def read(cls, reader: TLReader) -> 'ChannelMessagesFilter':
+        flags = reader.read_uint32()
+        exclude_new_messages = bool(flags & (1 << 1))
+        ranges = reader.read_vector(lambda r: reader.read_object())
+        return cls(exclude_new_messages=exclude_new_messages, ranges=ranges)
 
 
 @register_tl
 class ChannelParticipant(TLObject):
-    ID: int = 0xCB44AC3B
+    ID: int = 0x1bd54456
 
-    def __init__(self, user_id: int = 0, date: int = 0) -> None:
+    def __init__(self, subscription_until_date: Any = None, rank: Any = None, user_id: Any = None, date: Any = None) -> None:
+        self.subscription_until_date = subscription_until_date
+        self.rank = rank
         self.user_id = user_id
         self.date = date
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_int64(self.user_id)
-        writer.write_int32(self.date)
+        flags = 0
+        if self.subscription_until_date is not None:
+            flags |= (1 << 0)
+        if self.rank is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_int64(self.user_id or 0)
+        writer.write_int32(self.date or 0)
+        if self.subscription_until_date is not None:
+            writer.write_int32(self.subscription_until_date or 0)
+        if self.rank is not None:
+            writer.write_string(self.rank or '')
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipant":
-        return cls(user_id=reader.read_int64(), date=reader.read_int32())
+    def read(cls, reader: TLReader) -> 'ChannelParticipant':
+        flags = reader.read_uint32()
+        user_id = reader.read_int64()
+        date = reader.read_int32()
+        subscription_until_date = reader.read_int32() if (flags & (1 << 0)) else None
+        rank = reader.read_string() if (flags & (1 << 2)) else None
+        return cls(user_id=user_id, date=date, subscription_until_date=subscription_until_date, rank=rank)
+
+
+@register_tl
+class ChannelParticipantSelf(TLObject):
+    ID: int = 0xa9478a1a
+
+    def __init__(self, via_request: bool = False, subscription_until_date: Any = None, rank: Any = None, user_id: Any = None, inviter_id: Any = None, date: Any = None) -> None:
+        self.via_request = via_request
+        self.subscription_until_date = subscription_until_date
+        self.rank = rank
+        self.user_id = user_id
+        self.inviter_id = inviter_id
+        self.date = date
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.via_request:
+            flags |= (1 << 0)
+        if self.subscription_until_date is not None:
+            flags |= (1 << 1)
+        if self.rank is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_int64(self.user_id or 0)
+        writer.write_int64(self.inviter_id or 0)
+        writer.write_int32(self.date or 0)
+        if self.subscription_until_date is not None:
+            writer.write_int32(self.subscription_until_date or 0)
+        if self.rank is not None:
+            writer.write_string(self.rank or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantSelf':
+        flags = reader.read_uint32()
+        via_request = bool(flags & (1 << 0))
+        user_id = reader.read_int64()
+        inviter_id = reader.read_int64()
+        date = reader.read_int32()
+        subscription_until_date = reader.read_int32() if (flags & (1 << 1)) else None
+        rank = reader.read_string() if (flags & (1 << 2)) else None
+        return cls(via_request=via_request, user_id=user_id, inviter_id=inviter_id, date=date, subscription_until_date=subscription_until_date, rank=rank)
 
 
 @register_tl
 class ChannelParticipantCreator(TLObject):
-    ID: int = 0x2FE601D3
+    ID: int = 0x2fe601d3
 
-    def __init__(self, user_id: int = 0, admin_rights: Any = None, rank: str | None = None) -> None:
+    def __init__(self, rank: Any = None, user_id: Any = None, admin_rights: Any = None) -> None:
+        self.rank = rank
         self.user_id = user_id
         self.admin_rights = admin_rights
-        self.rank = rank
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
@@ -2677,13 +739,13 @@ class ChannelParticipantCreator(TLObject):
         if self.rank is not None:
             flags |= (1 << 0)
         writer.write_uint32(flags)
-        writer.write_int64(self.user_id)
-        writer.write_object(self.admin_rights)
+        writer.write_int64(self.user_id or 0)
+        if self.admin_rights is not None and hasattr(self.admin_rights, 'write'): self.admin_rights.write(writer)
         if self.rank is not None:
-            writer.write_string(self.rank)
+            writer.write_string(self.rank or '')
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantCreator":
+    def read(cls, reader: TLReader) -> 'ChannelParticipantCreator':
         flags = reader.read_uint32()
         user_id = reader.read_int64()
         admin_rights = reader.read_object()
@@ -2693,391 +755,2709 @@ class ChannelParticipantCreator(TLObject):
 
 @register_tl
 class ChannelParticipantAdmin(TLObject):
-    ID: int = 0x34C48969
+    ID: int = 0x34c3bb53
 
-    def __init__(
-        self,
-        user_id: int = 0,
-        promoted_by: int = 0,
-        date: int = 0,
-        admin_rights: Any = None,
-        can_edit: bool = False,
-        rank: str | None = None,
-    ) -> None:
+    def __init__(self, can_edit: bool = False, self_: bool = False, inviter_id: Any = None, rank: Any = None, user_id: Any = None, promoted_by: Any = None, date: Any = None, admin_rights: Any = None) -> None:
+        self.can_edit = can_edit
+        self.self_ = self_
+        self.inviter_id = inviter_id
+        self.rank = rank
         self.user_id = user_id
         self.promoted_by = promoted_by
         self.date = date
         self.admin_rights = admin_rights
-        self.can_edit = can_edit
-        self.rank = rank
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
         if self.can_edit:
             flags |= (1 << 0)
+        if self.self_:
+            flags |= (1 << 1)
+        if self.inviter_id is not None:
+            flags |= (1 << 1)
         if self.rank is not None:
             flags |= (1 << 2)
         writer.write_uint32(flags)
-        writer.write_int64(self.user_id)
-        writer.write_int64(self.promoted_by)
-        writer.write_int32(self.date)
-        writer.write_object(self.admin_rights)
+        writer.write_int64(self.user_id or 0)
+        if self.inviter_id is not None:
+            writer.write_int64(self.inviter_id or 0)
+        writer.write_int64(self.promoted_by or 0)
+        writer.write_int32(self.date or 0)
+        if self.admin_rights is not None and hasattr(self.admin_rights, 'write'): self.admin_rights.write(writer)
         if self.rank is not None:
-            writer.write_string(self.rank)
+            writer.write_string(self.rank or '')
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantAdmin":
+    def read(cls, reader: TLReader) -> 'ChannelParticipantAdmin':
         flags = reader.read_uint32()
         can_edit = bool(flags & (1 << 0))
+        self_ = bool(flags & (1 << 1))
         user_id = reader.read_int64()
+        inviter_id = reader.read_int64() if (flags & (1 << 1)) else None
         promoted_by = reader.read_int64()
         date = reader.read_int32()
         admin_rights = reader.read_object()
         rank = reader.read_string() if (flags & (1 << 2)) else None
-        return cls(
-            user_id=user_id,
-            promoted_by=promoted_by,
-            date=date,
-            admin_rights=admin_rights,
-            can_edit=can_edit,
-            rank=rank,
-        )
+        return cls(can_edit=can_edit, self_=self_, user_id=user_id, inviter_id=inviter_id, promoted_by=promoted_by, date=date, admin_rights=admin_rights, rank=rank)
 
 
 @register_tl
 class ChannelParticipantBanned(TLObject):
-    ID: int = 0x6DF8014E
+    ID: int = 0xd5f0ad91
 
-    def __init__(
-        self,
-        peer: Any = None,
-        date: int = 0,
-        kicked_by: int = 0,
-        banned_rights: Any = None,
-        left: bool = False,
-    ) -> None:
-        self.peer = peer
-        self.date = date
-        self.kicked_by = kicked_by
-        self.banned_rights = banned_rights
+    def __init__(self, left: bool = False, rank: Any = None, peer: Any = None, kicked_by: Any = None, date: Any = None, banned_rights: Any = None) -> None:
         self.left = left
+        self.rank = rank
+        self.peer = peer
+        self.kicked_by = kicked_by
+        self.date = date
+        self.banned_rights = banned_rights
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
         if self.left:
             flags |= (1 << 0)
+        if self.rank is not None:
+            flags |= (1 << 2)
         writer.write_uint32(flags)
-        writer.write_object(self.peer)
-        writer.write_int32(self.date)
-        writer.write_int64(self.kicked_by)
-        writer.write_object(self.banned_rights)
+        if self.peer is not None and hasattr(self.peer, 'write'): self.peer.write(writer)
+        writer.write_int64(self.kicked_by or 0)
+        writer.write_int32(self.date or 0)
+        if self.banned_rights is not None and hasattr(self.banned_rights, 'write'): self.banned_rights.write(writer)
+        if self.rank is not None:
+            writer.write_string(self.rank or '')
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ChannelParticipantBanned":
+    def read(cls, reader: TLReader) -> 'ChannelParticipantBanned':
         flags = reader.read_uint32()
         left = bool(flags & (1 << 0))
         peer = reader.read_object()
-        date = reader.read_int32()
         kicked_by = reader.read_int64()
+        date = reader.read_int32()
         banned_rights = reader.read_object()
-        return cls(peer=peer, date=date, kicked_by=kicked_by, banned_rights=banned_rights, left=left)
+        rank = reader.read_string() if (flags & (1 << 2)) else None
+        return cls(left=left, peer=peer, kicked_by=kicked_by, date=date, banned_rights=banned_rights, rank=rank)
 
 
 @register_tl
-class KeyboardButton(TLObject):
-    ID: int = 0xA2F9C463
+class ChannelParticipantLeft(TLObject):
+    ID: int = 0x1b03f006
 
-    def __init__(self, text: str = "") -> None:
-        self.text = text
+    def __init__(self, peer: Any = None) -> None:
+        self.peer = peer
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_string(self.text)
+        if self.peer is not None and hasattr(self.peer, 'write'): self.peer.write(writer)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButton":
-        return cls(text=reader.read_string())
+    def read(cls, reader: TLReader) -> 'ChannelParticipantLeft':
+        peer = reader.read_object()
+        return cls(peer=peer)
 
 
 @register_tl
-class KeyboardButtonUrl(TLObject):
-    ID: int = 0x258AFF05
+class ChannelParticipantsRecent(TLObject):
+    ID: int = 0xde3f3c79
 
-    def __init__(self, text: str = "", url: str = "") -> None:
-        self.text = text
-        self.url = url
+    def __init__(self) -> None:
+        pass
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
-        writer.write_string(self.text)
-        writer.write_string(self.url)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonUrl":
-        return cls(text=reader.read_string(), url=reader.read_string())
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsRecent':
+        return cls()
 
 
 @register_tl
-class KeyboardButtonCallback(TLObject):
-    ID: int = 0x35BBDB6B
+class ChannelParticipantsAdmins(TLObject):
+    ID: int = 0xb4608969
 
-    def __init__(self, text: str = "", data: bytes = b"", requires_password: bool = False) -> None:
-        self.text = text
-        self.data = data
-        self.requires_password = requires_password
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsAdmins':
+        return cls()
+
+
+@register_tl
+class ChannelParticipantsKicked(TLObject):
+    ID: int = 0xa3b54985
+
+    def __init__(self, q: Any = None) -> None:
+        self.q = q
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.q or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsKicked':
+        q = reader.read_string()
+        return cls(q=q)
+
+
+@register_tl
+class ChannelParticipantsBots(TLObject):
+    ID: int = 0xb0d1865b
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsBots':
+        return cls()
+
+
+@register_tl
+class ChannelParticipantsBanned(TLObject):
+    ID: int = 0x1427a5e1
+
+    def __init__(self, q: Any = None) -> None:
+        self.q = q
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.q or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsBanned':
+        q = reader.read_string()
+        return cls(q=q)
+
+
+@register_tl
+class ChannelParticipantsSearch(TLObject):
+    ID: int = 0x656ac4b
+
+    def __init__(self, q: Any = None) -> None:
+        self.q = q
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.q or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsSearch':
+        q = reader.read_string()
+        return cls(q=q)
+
+
+@register_tl
+class ChannelParticipantsContacts(TLObject):
+    ID: int = 0xbb6ae88d
+
+    def __init__(self, q: Any = None) -> None:
+        self.q = q
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.q or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsContacts':
+        q = reader.read_string()
+        return cls(q=q)
+
+
+@register_tl
+class ChannelParticipantsMentions(TLObject):
+    ID: int = 0xe04b5ceb
+
+    def __init__(self, q: Any = None, top_msg_id: Any = None) -> None:
+        self.q = q
+        self.top_msg_id = top_msg_id
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.requires_password:
+        if self.q is not None:
             flags |= (1 << 0)
-        writer.write_uint32(flags)
-        writer.write_string(self.text)
-        writer.write_bytes(self.data)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonCallback":
-        flags = reader.read_uint32()
-        requires_password = bool(flags & (1 << 0))
-        text = reader.read_string()
-        data = reader.read_bytes()
-        return cls(text=text, data=data, requires_password=requires_password)
-
-
-@register_tl
-class KeyboardButtonCopyText(TLObject):
-    ID: int = 0xB510E197
-
-    def __init__(self, text: str = "", copy_text: str = "") -> None:
-        self.text = text
-        self.copy_text = copy_text
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.text)
-        writer.write_string(self.copy_text)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonCopyText":
-        return cls(text=reader.read_string(), copy_text=reader.read_string())
-
-
-@register_tl
-class KeyboardButtonUserProfile(TLObject):
-    ID: int = 0x308660C1
-
-    def __init__(self, text: str = "", user_id: int = 0) -> None:
-        self.text = text
-        self.user_id = user_id
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.text)
-        writer.write_int64(self.user_id)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonUserProfile":
-        return cls(text=reader.read_string(), user_id=reader.read_int64())
-
-
-@register_tl
-class KeyboardButtonWebView(TLObject):
-    ID: int = 0x10B78D29
-
-    def __init__(self, text: str = "", url: str = "") -> None:
-        self.text = text
-        self.url = url
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.text)
-        writer.write_string(self.url)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonWebView":
-        return cls(text=reader.read_string(), url=reader.read_string())
-
-
-@register_tl
-class KeyboardButtonSwitchInline(TLObject):
-    ID: int = 0x568A74E0
-
-    def __init__(self, text: str = "", query: str = "", same_peer: bool = False) -> None:
-        self.text = text
-        self.query = query
-        self.same_peer = same_peer
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.same_peer:
-            flags |= (1 << 0)
-        writer.write_uint32(flags)
-        writer.write_string(self.text)
-        writer.write_string(self.query)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonSwitchInline":
-        flags = reader.read_uint32()
-        same_peer = bool(flags & (1 << 0))
-        text = reader.read_string()
-        query = reader.read_string()
-        return cls(text=text, query=query, same_peer=same_peer)
-
-
-@register_tl
-class KeyboardButtonBuy(TLObject):
-    ID: int = 0xAFD93FBB
-
-    def __init__(self, text: str = "") -> None:
-        self.text = text
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_string(self.text)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonBuy":
-        return cls(text=reader.read_string())
-
-
-@register_tl
-class KeyboardButtonRow(TLObject):
-    ID: int = 0x776288D4
-
-    def __init__(self, buttons: list[Any] | None = None) -> None:
-        self.buttons = buttons or []
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.buttons, lambda w, b: w.write_object(b))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "KeyboardButtonRow":
-        return cls(buttons=reader.read_vector(lambda r: r.read_object()))
-
-
-@register_tl
-class ReplyInlineMarkup(TLObject):
-    ID: int = 0x48A30254
-
-    def __init__(self, rows: list[Any] | None = None) -> None:
-        self.rows = rows or []
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        writer.write_vector(self.rows, lambda w, r: w.write_object(r))
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReplyInlineMarkup":
-        return cls(rows=reader.read_vector(lambda r: r.read_object()))
-
-
-@register_tl
-class ReplyKeyboardMarkup(TLObject):
-    ID: int = 0x85DD99D1
-
-    def __init__(
-        self,
-        rows: list[Any] | None = None,
-        resize: bool = False,
-        single_use: bool = False,
-        selective: bool = False,
-        persistent: bool = False,
-        placeholder: str | None = None,
-    ) -> None:
-        self.rows = rows or []
-        self.resize = resize
-        self.single_use = single_use
-        self.selective = selective
-        self.persistent = persistent
-        self.placeholder = placeholder
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.resize:
-            flags |= (1 << 0)
-        if self.single_use:
+        if self.top_msg_id is not None:
             flags |= (1 << 1)
-        if self.selective:
-            flags |= (1 << 2)
-        if self.placeholder is not None:
+        writer.write_uint32(flags)
+        if self.q is not None:
+            writer.write_string(self.q or '')
+        if self.top_msg_id is not None:
+            writer.write_int32(self.top_msg_id or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelParticipantsMentions':
+        flags = reader.read_uint32()
+        q = reader.read_string() if (flags & (1 << 0)) else None
+        top_msg_id = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(q=q, top_msg_id=top_msg_id)
+
+
+@register_tl
+class ChannelsChannelParticipants(TLObject):
+    ID: int = 0x9ab0feaf
+
+    def __init__(self, count: Any = None, participants: Any = None, chats: Any = None, users: Any = None) -> None:
+        self.count = count
+        self.participants = participants
+        self.chats = chats
+        self.users = users
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.count or 0)
+        writer.write_vector(self.participants or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelsChannelParticipants':
+        count = reader.read_int32()
+        participants = reader.read_vector(lambda r: reader.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(count=count, participants=participants, chats=chats, users=users)
+
+
+@register_tl
+class ChannelsChannelParticipantsNotModified(TLObject):
+    ID: int = 0xf0173fe9
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelsChannelParticipantsNotModified':
+        return cls()
+
+
+@register_tl
+class ChannelsChannelParticipant(TLObject):
+    ID: int = 0xdfb80317
+
+    def __init__(self, participant: Any = None, chats: Any = None, users: Any = None) -> None:
+        self.participant = participant
+        self.chats = chats
+        self.users = users
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.participant is not None and hasattr(self.participant, 'write'): self.participant.write(writer)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ChannelsChannelParticipant':
+        participant = reader.read_object()
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(participant=participant, chats=chats, users=users)
+
+
+@register_tl
+class HelpTermsOfService(TLObject):
+    ID: int = 0x780a0310
+
+    def __init__(self, popup: bool = False, min_age_confirm: Any = None, id: Any = None, text: Any = None, entities: Any = None) -> None:
+        self.popup = popup
+        self.min_age_confirm = min_age_confirm
+        self.id = id
+        self.text = text
+        self.entities = entities
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.popup:
+            flags |= (1 << 0)
+        if self.min_age_confirm is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        if self.id is not None and hasattr(self.id, 'write'): self.id.write(writer)
+        writer.write_string(self.text or '')
+        writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.min_age_confirm is not None:
+            writer.write_int32(self.min_age_confirm or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'HelpTermsOfService':
+        flags = reader.read_uint32()
+        popup = bool(flags & (1 << 0))
+        id = reader.read_object()
+        text = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object())
+        min_age_confirm = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(popup=popup, id=id, text=text, entities=entities, min_age_confirm=min_age_confirm)
+
+
+@register_tl
+class MessagesSavedGifsNotModified(TLObject):
+    ID: int = 0xe8025ca2
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesSavedGifsNotModified':
+        return cls()
+
+
+@register_tl
+class MessagesSavedGifs(TLObject):
+    ID: int = 0x84a02a0d
+
+    def __init__(self, hash: Any = None, gifs: Any = None) -> None:
+        self.hash = hash
+        self.gifs = gifs
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.hash or 0)
+        writer.write_vector(self.gifs or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesSavedGifs':
+        hash = reader.read_int64()
+        gifs = reader.read_vector(lambda r: reader.read_object())
+        return cls(hash=hash, gifs=gifs)
+
+
+@register_tl
+class InputBotInlineMessageMediaAuto(TLObject):
+    ID: int = 0x3380c786
+
+    def __init__(self, invert_media: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None) -> None:
+        self.invert_media = invert_media
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.invert_media:
             flags |= (1 << 3)
-        if self.persistent:
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaAuto':
+        flags = reader.read_uint32()
+        invert_media = bool(flags & (1 << 3))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(invert_media=invert_media, message=message, entities=entities, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageText(TLObject):
+    ID: int = 0x3dcd7a87
+
+    def __init__(self, no_webpage: bool = False, invert_media: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None) -> None:
+        self.no_webpage = no_webpage
+        self.invert_media = invert_media
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.no_webpage:
+            flags |= (1 << 0)
+        if self.invert_media:
+            flags |= (1 << 3)
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageText':
+        flags = reader.read_uint32()
+        no_webpage = bool(flags & (1 << 0))
+        invert_media = bool(flags & (1 << 3))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(no_webpage=no_webpage, invert_media=invert_media, message=message, entities=entities, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageMediaGeo(TLObject):
+    ID: int = 0x96929a85
+
+    def __init__(self, heading: Any = None, period: Any = None, proximity_notification_radius: Any = None, reply_markup: Any = None, geo_point: Any = None) -> None:
+        self.heading = heading
+        self.period = period
+        self.proximity_notification_radius = proximity_notification_radius
+        self.reply_markup = reply_markup
+        self.geo_point = geo_point
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.heading is not None:
+            flags |= (1 << 0)
+        if self.period is not None:
+            flags |= (1 << 1)
+        if self.proximity_notification_radius is not None:
+            flags |= (1 << 3)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.geo_point is not None and hasattr(self.geo_point, 'write'): self.geo_point.write(writer)
+        if self.heading is not None:
+            writer.write_int32(self.heading or 0)
+        if self.period is not None:
+            writer.write_int32(self.period or 0)
+        if self.proximity_notification_radius is not None:
+            writer.write_int32(self.proximity_notification_radius or 0)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaGeo':
+        flags = reader.read_uint32()
+        geo_point = reader.read_object()
+        heading = reader.read_int32() if (flags & (1 << 0)) else None
+        period = reader.read_int32() if (flags & (1 << 1)) else None
+        proximity_notification_radius = reader.read_int32() if (flags & (1 << 3)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(geo_point=geo_point, heading=heading, period=period, proximity_notification_radius=proximity_notification_radius, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageMediaVenue(TLObject):
+    ID: int = 0x417bbf11
+
+    def __init__(self, reply_markup: Any = None, geo_point: Any = None, title: Any = None, address: Any = None, provider: Any = None, venue_id: Any = None, venue_type: Any = None) -> None:
+        self.reply_markup = reply_markup
+        self.geo_point = geo_point
+        self.title = title
+        self.address = address
+        self.provider = provider
+        self.venue_id = venue_id
+        self.venue_type = venue_type
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.geo_point is not None and hasattr(self.geo_point, 'write'): self.geo_point.write(writer)
+        writer.write_string(self.title or '')
+        writer.write_string(self.address or '')
+        writer.write_string(self.provider or '')
+        writer.write_string(self.venue_id or '')
+        writer.write_string(self.venue_type or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaVenue':
+        flags = reader.read_uint32()
+        geo_point = reader.read_object()
+        title = reader.read_string()
+        address = reader.read_string()
+        provider = reader.read_string()
+        venue_id = reader.read_string()
+        venue_type = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(geo_point=geo_point, title=title, address=address, provider=provider, venue_id=venue_id, venue_type=venue_type, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageMediaContact(TLObject):
+    ID: int = 0xa6edbffd
+
+    def __init__(self, reply_markup: Any = None, phone_number: Any = None, first_name: Any = None, last_name: Any = None, vcard: Any = None) -> None:
+        self.reply_markup = reply_markup
+        self.phone_number = phone_number
+        self.first_name = first_name
+        self.last_name = last_name
+        self.vcard = vcard
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.phone_number or '')
+        writer.write_string(self.first_name or '')
+        writer.write_string(self.last_name or '')
+        writer.write_string(self.vcard or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaContact':
+        flags = reader.read_uint32()
+        phone_number = reader.read_string()
+        first_name = reader.read_string()
+        last_name = reader.read_string()
+        vcard = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageGame(TLObject):
+    ID: int = 0x4b425864
+
+    def __init__(self, reply_markup: Any = None) -> None:
+        self.reply_markup = reply_markup
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageGame':
+        flags = reader.read_uint32()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageMediaInvoice(TLObject):
+    ID: int = 0xd7e78225
+
+    def __init__(self, photo: Any = None, reply_markup: Any = None, title: Any = None, description: Any = None, invoice: Any = None, payload: Any = None, provider: Any = None, provider_data: Any = None) -> None:
+        self.photo = photo
+        self.reply_markup = reply_markup
+        self.title = title
+        self.description = description
+        self.invoice = invoice
+        self.payload = payload
+        self.provider = provider
+        self.provider_data = provider_data
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.photo is not None:
+            flags |= (1 << 0)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.title or '')
+        writer.write_string(self.description or '')
+        if self.photo is not None:
+            if self.photo is not None and hasattr(self.photo, 'write'): self.photo.write(writer)
+        if self.invoice is not None and hasattr(self.invoice, 'write'): self.invoice.write(writer)
+        writer.write_bytes(self.payload or b'')
+        writer.write_string(self.provider or '')
+        if self.provider_data is not None and hasattr(self.provider_data, 'write'): self.provider_data.write(writer)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaInvoice':
+        flags = reader.read_uint32()
+        title = reader.read_string()
+        description = reader.read_string()
+        photo = reader.read_object() if (flags & (1 << 0)) else None
+        invoice = reader.read_object()
+        payload = reader.read_bytes()
+        provider = reader.read_string()
+        provider_data = reader.read_object()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(title=title, description=description, photo=photo, invoice=invoice, payload=payload, provider=provider, provider_data=provider_data, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineMessageMediaWebPage(TLObject):
+    ID: int = 0xbddcc510
+
+    def __init__(self, invert_media: bool = False, force_large_media: bool = False, force_small_media: bool = False, optional: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None, url: Any = None) -> None:
+        self.invert_media = invert_media
+        self.force_large_media = force_large_media
+        self.force_small_media = force_small_media
+        self.optional = optional
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+        self.url = url
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.invert_media:
+            flags |= (1 << 3)
+        if self.force_large_media:
+            flags |= (1 << 4)
+        if self.force_small_media:
+            flags |= (1 << 5)
+        if self.optional:
+            flags |= (1 << 6)
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_string(self.url or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageMediaWebPage':
+        flags = reader.read_uint32()
+        invert_media = bool(flags & (1 << 3))
+        force_large_media = bool(flags & (1 << 4))
+        force_small_media = bool(flags & (1 << 5))
+        optional = bool(flags & (1 << 6))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        url = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(invert_media=invert_media, force_large_media=force_large_media, force_small_media=force_small_media, optional=optional, message=message, entities=entities, url=url, reply_markup=reply_markup)
+
+
+@register_tl
+class InputBotInlineResult(TLObject):
+    ID: int = 0x88bf9319
+
+    def __init__(self, title: Any = None, description: Any = None, url: Any = None, thumb: Any = None, content: Any = None, id: Any = None, type: Any = None, send_message: Any = None) -> None:
+        self.title = title
+        self.description = description
+        self.url = url
+        self.thumb = thumb
+        self.content = content
+        self.id = id
+        self.type = type
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.title is not None:
+            flags |= (1 << 1)
+        if self.description is not None:
+            flags |= (1 << 2)
+        if self.url is not None:
+            flags |= (1 << 3)
+        if self.thumb is not None:
+            flags |= (1 << 4)
+        if self.content is not None:
+            flags |= (1 << 5)
+        writer.write_uint32(flags)
+        writer.write_string(self.id or '')
+        writer.write_string(self.type or '')
+        if self.title is not None:
+            writer.write_string(self.title or '')
+        if self.description is not None:
+            writer.write_string(self.description or '')
+        if self.url is not None:
+            writer.write_string(self.url or '')
+        if self.thumb is not None:
+            if self.thumb is not None and hasattr(self.thumb, 'write'): self.thumb.write(writer)
+        if self.content is not None:
+            if self.content is not None and hasattr(self.content, 'write'): self.content.write(writer)
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineResult':
+        flags = reader.read_uint32()
+        id = reader.read_string()
+        type = reader.read_string()
+        title = reader.read_string() if (flags & (1 << 1)) else None
+        description = reader.read_string() if (flags & (1 << 2)) else None
+        url = reader.read_string() if (flags & (1 << 3)) else None
+        thumb = reader.read_object() if (flags & (1 << 4)) else None
+        content = reader.read_object() if (flags & (1 << 5)) else None
+        send_message = reader.read_object()
+        return cls(id=id, type=type, title=title, description=description, url=url, thumb=thumb, content=content, send_message=send_message)
+
+
+@register_tl
+class InputBotInlineResultPhoto(TLObject):
+    ID: int = 0xa8d864a7
+
+    def __init__(self, id: Any = None, type: Any = None, photo: Any = None, send_message: Any = None) -> None:
+        self.id = id
+        self.type = type
+        self.photo = photo
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.id or '')
+        writer.write_string(self.type or '')
+        if self.photo is not None and hasattr(self.photo, 'write'): self.photo.write(writer)
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineResultPhoto':
+        id = reader.read_string()
+        type = reader.read_string()
+        photo = reader.read_object()
+        send_message = reader.read_object()
+        return cls(id=id, type=type, photo=photo, send_message=send_message)
+
+
+@register_tl
+class InputBotInlineResultDocument(TLObject):
+    ID: int = 0xfff8fdc4
+
+    def __init__(self, title: Any = None, description: Any = None, id: Any = None, type: Any = None, document: Any = None, send_message: Any = None) -> None:
+        self.title = title
+        self.description = description
+        self.id = id
+        self.type = type
+        self.document = document
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.title is not None:
+            flags |= (1 << 1)
+        if self.description is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.id or '')
+        writer.write_string(self.type or '')
+        if self.title is not None:
+            writer.write_string(self.title or '')
+        if self.description is not None:
+            writer.write_string(self.description or '')
+        if self.document is not None and hasattr(self.document, 'write'): self.document.write(writer)
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineResultDocument':
+        flags = reader.read_uint32()
+        id = reader.read_string()
+        type = reader.read_string()
+        title = reader.read_string() if (flags & (1 << 1)) else None
+        description = reader.read_string() if (flags & (1 << 2)) else None
+        document = reader.read_object()
+        send_message = reader.read_object()
+        return cls(id=id, type=type, title=title, description=description, document=document, send_message=send_message)
+
+
+@register_tl
+class InputBotInlineResultGame(TLObject):
+    ID: int = 0x4fa417f2
+
+    def __init__(self, id: Any = None, short_name: Any = None, send_message: Any = None) -> None:
+        self.id = id
+        self.short_name = short_name
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.id or '')
+        writer.write_string(self.short_name or '')
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineResultGame':
+        id = reader.read_string()
+        short_name = reader.read_string()
+        send_message = reader.read_object()
+        return cls(id=id, short_name=short_name, send_message=send_message)
+
+
+@register_tl
+class BotInlineMessageMediaAuto(TLObject):
+    ID: int = 0x764cf810
+
+    def __init__(self, invert_media: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None) -> None:
+        self.invert_media = invert_media
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.invert_media:
+            flags |= (1 << 3)
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaAuto':
+        flags = reader.read_uint32()
+        invert_media = bool(flags & (1 << 3))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(invert_media=invert_media, message=message, entities=entities, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageText(TLObject):
+    ID: int = 0x8c7f65e2
+
+    def __init__(self, no_webpage: bool = False, invert_media: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None) -> None:
+        self.no_webpage = no_webpage
+        self.invert_media = invert_media
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.no_webpage:
+            flags |= (1 << 0)
+        if self.invert_media:
+            flags |= (1 << 3)
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageText':
+        flags = reader.read_uint32()
+        no_webpage = bool(flags & (1 << 0))
+        invert_media = bool(flags & (1 << 3))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(no_webpage=no_webpage, invert_media=invert_media, message=message, entities=entities, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageMediaGeo(TLObject):
+    ID: int = 0x51846fd
+
+    def __init__(self, heading: Any = None, period: Any = None, proximity_notification_radius: Any = None, reply_markup: Any = None, geo: Any = None) -> None:
+        self.heading = heading
+        self.period = period
+        self.proximity_notification_radius = proximity_notification_radius
+        self.reply_markup = reply_markup
+        self.geo = geo
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.heading is not None:
+            flags |= (1 << 0)
+        if self.period is not None:
+            flags |= (1 << 1)
+        if self.proximity_notification_radius is not None:
+            flags |= (1 << 3)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.geo is not None and hasattr(self.geo, 'write'): self.geo.write(writer)
+        if self.heading is not None:
+            writer.write_int32(self.heading or 0)
+        if self.period is not None:
+            writer.write_int32(self.period or 0)
+        if self.proximity_notification_radius is not None:
+            writer.write_int32(self.proximity_notification_radius or 0)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaGeo':
+        flags = reader.read_uint32()
+        geo = reader.read_object()
+        heading = reader.read_int32() if (flags & (1 << 0)) else None
+        period = reader.read_int32() if (flags & (1 << 1)) else None
+        proximity_notification_radius = reader.read_int32() if (flags & (1 << 3)) else None
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(geo=geo, heading=heading, period=period, proximity_notification_radius=proximity_notification_radius, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageMediaVenue(TLObject):
+    ID: int = 0x8a86659c
+
+    def __init__(self, reply_markup: Any = None, geo: Any = None, title: Any = None, address: Any = None, provider: Any = None, venue_id: Any = None, venue_type: Any = None) -> None:
+        self.reply_markup = reply_markup
+        self.geo = geo
+        self.title = title
+        self.address = address
+        self.provider = provider
+        self.venue_id = venue_id
+        self.venue_type = venue_type
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.geo is not None and hasattr(self.geo, 'write'): self.geo.write(writer)
+        writer.write_string(self.title or '')
+        writer.write_string(self.address or '')
+        writer.write_string(self.provider or '')
+        writer.write_string(self.venue_id or '')
+        writer.write_string(self.venue_type or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaVenue':
+        flags = reader.read_uint32()
+        geo = reader.read_object()
+        title = reader.read_string()
+        address = reader.read_string()
+        provider = reader.read_string()
+        venue_id = reader.read_string()
+        venue_type = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(geo=geo, title=title, address=address, provider=provider, venue_id=venue_id, venue_type=venue_type, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageMediaContact(TLObject):
+    ID: int = 0x18d1cdc2
+
+    def __init__(self, reply_markup: Any = None, phone_number: Any = None, first_name: Any = None, last_name: Any = None, vcard: Any = None) -> None:
+        self.reply_markup = reply_markup
+        self.phone_number = phone_number
+        self.first_name = first_name
+        self.last_name = last_name
+        self.vcard = vcard
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.phone_number or '')
+        writer.write_string(self.first_name or '')
+        writer.write_string(self.last_name or '')
+        writer.write_string(self.vcard or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaContact':
+        flags = reader.read_uint32()
+        phone_number = reader.read_string()
+        first_name = reader.read_string()
+        last_name = reader.read_string()
+        vcard = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageMediaInvoice(TLObject):
+    ID: int = 0x354a9b09
+
+    def __init__(self, shipping_address_requested: bool = False, test: bool = False, photo: Any = None, reply_markup: Any = None, title: Any = None, description: Any = None, currency: Any = None, total_amount: Any = None) -> None:
+        self.shipping_address_requested = shipping_address_requested
+        self.test = test
+        self.photo = photo
+        self.reply_markup = reply_markup
+        self.title = title
+        self.description = description
+        self.currency = currency
+        self.total_amount = total_amount
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.shipping_address_requested:
+            flags |= (1 << 1)
+        if self.test:
+            flags |= (1 << 3)
+        if self.photo is not None:
+            flags |= (1 << 0)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.title or '')
+        writer.write_string(self.description or '')
+        if self.photo is not None:
+            if self.photo is not None and hasattr(self.photo, 'write'): self.photo.write(writer)
+        writer.write_string(self.currency or '')
+        writer.write_int64(self.total_amount or 0)
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaInvoice':
+        flags = reader.read_uint32()
+        shipping_address_requested = bool(flags & (1 << 1))
+        test = bool(flags & (1 << 3))
+        title = reader.read_string()
+        description = reader.read_string()
+        photo = reader.read_object() if (flags & (1 << 0)) else None
+        currency = reader.read_string()
+        total_amount = reader.read_int64()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(shipping_address_requested=shipping_address_requested, test=test, title=title, description=description, photo=photo, currency=currency, total_amount=total_amount, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineMessageMediaWebPage(TLObject):
+    ID: int = 0x809ad9a6
+
+    def __init__(self, invert_media: bool = False, force_large_media: bool = False, force_small_media: bool = False, manual: bool = False, safe: bool = False, entities: Any = None, reply_markup: Any = None, message: Any = None, url: Any = None) -> None:
+        self.invert_media = invert_media
+        self.force_large_media = force_large_media
+        self.force_small_media = force_small_media
+        self.manual = manual
+        self.safe = safe
+        self.entities = entities
+        self.reply_markup = reply_markup
+        self.message = message
+        self.url = url
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.invert_media:
+            flags |= (1 << 3)
+        if self.force_large_media:
+            flags |= (1 << 4)
+        if self.force_small_media:
+            flags |= (1 << 5)
+        if self.manual:
+            flags |= (1 << 7)
+        if self.safe:
+            flags |= (1 << 8)
+        if self.entities is not None:
+            flags |= (1 << 1)
+        if self.reply_markup is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_string(self.url or '')
+        if self.reply_markup is not None:
+            if self.reply_markup is not None and hasattr(self.reply_markup, 'write'): self.reply_markup.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMessageMediaWebPage':
+        flags = reader.read_uint32()
+        invert_media = bool(flags & (1 << 3))
+        force_large_media = bool(flags & (1 << 4))
+        force_small_media = bool(flags & (1 << 5))
+        manual = bool(flags & (1 << 7))
+        safe = bool(flags & (1 << 8))
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 1)) else None
+        url = reader.read_string()
+        reply_markup = reader.read_object() if (flags & (1 << 2)) else None
+        return cls(invert_media=invert_media, force_large_media=force_large_media, force_small_media=force_small_media, manual=manual, safe=safe, message=message, entities=entities, url=url, reply_markup=reply_markup)
+
+
+@register_tl
+class BotInlineResult(TLObject):
+    ID: int = 0x11965f3a
+
+    def __init__(self, title: Any = None, description: Any = None, url: Any = None, thumb: Any = None, content: Any = None, id: Any = None, type: Any = None, send_message: Any = None) -> None:
+        self.title = title
+        self.description = description
+        self.url = url
+        self.thumb = thumb
+        self.content = content
+        self.id = id
+        self.type = type
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.title is not None:
+            flags |= (1 << 1)
+        if self.description is not None:
+            flags |= (1 << 2)
+        if self.url is not None:
+            flags |= (1 << 3)
+        if self.thumb is not None:
+            flags |= (1 << 4)
+        if self.content is not None:
+            flags |= (1 << 5)
+        writer.write_uint32(flags)
+        writer.write_string(self.id or '')
+        writer.write_string(self.type or '')
+        if self.title is not None:
+            writer.write_string(self.title or '')
+        if self.description is not None:
+            writer.write_string(self.description or '')
+        if self.url is not None:
+            writer.write_string(self.url or '')
+        if self.thumb is not None:
+            if self.thumb is not None and hasattr(self.thumb, 'write'): self.thumb.write(writer)
+        if self.content is not None:
+            if self.content is not None and hasattr(self.content, 'write'): self.content.write(writer)
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineResult':
+        flags = reader.read_uint32()
+        id = reader.read_string()
+        type = reader.read_string()
+        title = reader.read_string() if (flags & (1 << 1)) else None
+        description = reader.read_string() if (flags & (1 << 2)) else None
+        url = reader.read_string() if (flags & (1 << 3)) else None
+        thumb = reader.read_object() if (flags & (1 << 4)) else None
+        content = reader.read_object() if (flags & (1 << 5)) else None
+        send_message = reader.read_object()
+        return cls(id=id, type=type, title=title, description=description, url=url, thumb=thumb, content=content, send_message=send_message)
+
+
+@register_tl
+class BotInlineMediaResult(TLObject):
+    ID: int = 0x17db940b
+
+    def __init__(self, photo: Any = None, document: Any = None, title: Any = None, description: Any = None, id: Any = None, type: Any = None, send_message: Any = None) -> None:
+        self.photo = photo
+        self.document = document
+        self.title = title
+        self.description = description
+        self.id = id
+        self.type = type
+        self.send_message = send_message
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.photo is not None:
+            flags |= (1 << 0)
+        if self.document is not None:
+            flags |= (1 << 1)
+        if self.title is not None:
+            flags |= (1 << 2)
+        if self.description is not None:
+            flags |= (1 << 3)
+        writer.write_uint32(flags)
+        writer.write_string(self.id or '')
+        writer.write_string(self.type or '')
+        if self.photo is not None:
+            if self.photo is not None and hasattr(self.photo, 'write'): self.photo.write(writer)
+        if self.document is not None:
+            if self.document is not None and hasattr(self.document, 'write'): self.document.write(writer)
+        if self.title is not None:
+            writer.write_string(self.title or '')
+        if self.description is not None:
+            writer.write_string(self.description or '')
+        if self.send_message is not None and hasattr(self.send_message, 'write'): self.send_message.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'BotInlineMediaResult':
+        flags = reader.read_uint32()
+        id = reader.read_string()
+        type = reader.read_string()
+        photo = reader.read_object() if (flags & (1 << 0)) else None
+        document = reader.read_object() if (flags & (1 << 1)) else None
+        title = reader.read_string() if (flags & (1 << 2)) else None
+        description = reader.read_string() if (flags & (1 << 3)) else None
+        send_message = reader.read_object()
+        return cls(id=id, type=type, photo=photo, document=document, title=title, description=description, send_message=send_message)
+
+
+@register_tl
+class MessagesBotResults(TLObject):
+    ID: int = 0xe021f2f6
+
+    def __init__(self, gallery: bool = False, next_offset: Any = None, switch_pm: Any = None, switch_webview: Any = None, query_id: Any = None, results: Any = None, cache_time: Any = None, users: Any = None) -> None:
+        self.gallery = gallery
+        self.next_offset = next_offset
+        self.switch_pm = switch_pm
+        self.switch_webview = switch_webview
+        self.query_id = query_id
+        self.results = results
+        self.cache_time = cache_time
+        self.users = users
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.gallery:
+            flags |= (1 << 0)
+        if self.next_offset is not None:
+            flags |= (1 << 1)
+        if self.switch_pm is not None:
+            flags |= (1 << 2)
+        if self.switch_webview is not None:
+            flags |= (1 << 3)
+        writer.write_uint32(flags)
+        writer.write_int64(self.query_id or 0)
+        if self.next_offset is not None:
+            writer.write_string(self.next_offset or '')
+        if self.switch_pm is not None:
+            if self.switch_pm is not None and hasattr(self.switch_pm, 'write'): self.switch_pm.write(writer)
+        if self.switch_webview is not None:
+            if self.switch_webview is not None and hasattr(self.switch_webview, 'write'): self.switch_webview.write(writer)
+        writer.write_vector(self.results or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_int32(self.cache_time or 0)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesBotResults':
+        flags = reader.read_uint32()
+        gallery = bool(flags & (1 << 0))
+        query_id = reader.read_int64()
+        next_offset = reader.read_string() if (flags & (1 << 1)) else None
+        switch_pm = reader.read_object() if (flags & (1 << 2)) else None
+        switch_webview = reader.read_object() if (flags & (1 << 3)) else None
+        results = reader.read_vector(lambda r: reader.read_object())
+        cache_time = reader.read_int32()
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(gallery=gallery, query_id=query_id, next_offset=next_offset, switch_pm=switch_pm, switch_webview=switch_webview, results=results, cache_time=cache_time, users=users)
+
+
+@register_tl
+class ExportedMessageLink(TLObject):
+    ID: int = 0x5dab1af4
+
+    def __init__(self, link: Any = None, html: Any = None) -> None:
+        self.link = link
+        self.html = html
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.link or '')
+        writer.write_string(self.html or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ExportedMessageLink':
+        link = reader.read_string()
+        html = reader.read_string()
+        return cls(link=link, html=html)
+
+
+@register_tl
+class MessageFwdHeader(TLObject):
+    ID: int = 0x4e4df4bb
+
+    def __init__(self, imported: bool = False, saved_out: bool = False, from_id: Any = None, from_name: Any = None, channel_post: Any = None, post_author: Any = None, saved_from_peer: Any = None, saved_from_msg_id: Any = None, saved_from_id: Any = None, saved_from_name: Any = None, saved_date: Any = None, psa_type: Any = None, date: Any = None) -> None:
+        self.imported = imported
+        self.saved_out = saved_out
+        self.from_id = from_id
+        self.from_name = from_name
+        self.channel_post = channel_post
+        self.post_author = post_author
+        self.saved_from_peer = saved_from_peer
+        self.saved_from_msg_id = saved_from_msg_id
+        self.saved_from_id = saved_from_id
+        self.saved_from_name = saved_from_name
+        self.saved_date = saved_date
+        self.psa_type = psa_type
+        self.date = date
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.imported:
+            flags |= (1 << 7)
+        if self.saved_out:
+            flags |= (1 << 11)
+        if self.from_id is not None:
+            flags |= (1 << 0)
+        if self.from_name is not None:
+            flags |= (1 << 5)
+        if self.channel_post is not None:
+            flags |= (1 << 2)
+        if self.post_author is not None:
+            flags |= (1 << 3)
+        if self.saved_from_peer is not None:
+            flags |= (1 << 4)
+        if self.saved_from_msg_id is not None:
+            flags |= (1 << 4)
+        if self.saved_from_id is not None:
+            flags |= (1 << 8)
+        if self.saved_from_name is not None:
+            flags |= (1 << 9)
+        if self.saved_date is not None:
+            flags |= (1 << 10)
+        if self.psa_type is not None:
+            flags |= (1 << 6)
+        writer.write_uint32(flags)
+        if self.from_id is not None:
+            if self.from_id is not None and hasattr(self.from_id, 'write'): self.from_id.write(writer)
+        if self.from_name is not None:
+            writer.write_string(self.from_name or '')
+        writer.write_int32(self.date or 0)
+        if self.channel_post is not None:
+            writer.write_int32(self.channel_post or 0)
+        if self.post_author is not None:
+            writer.write_string(self.post_author or '')
+        if self.saved_from_peer is not None:
+            if self.saved_from_peer is not None and hasattr(self.saved_from_peer, 'write'): self.saved_from_peer.write(writer)
+        if self.saved_from_msg_id is not None:
+            writer.write_int32(self.saved_from_msg_id or 0)
+        if self.saved_from_id is not None:
+            if self.saved_from_id is not None and hasattr(self.saved_from_id, 'write'): self.saved_from_id.write(writer)
+        if self.saved_from_name is not None:
+            writer.write_string(self.saved_from_name or '')
+        if self.saved_date is not None:
+            writer.write_int32(self.saved_date or 0)
+        if self.psa_type is not None:
+            writer.write_string(self.psa_type or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessageFwdHeader':
+        flags = reader.read_uint32()
+        imported = bool(flags & (1 << 7))
+        saved_out = bool(flags & (1 << 11))
+        from_id = reader.read_object() if (flags & (1 << 0)) else None
+        from_name = reader.read_string() if (flags & (1 << 5)) else None
+        date = reader.read_int32()
+        channel_post = reader.read_int32() if (flags & (1 << 2)) else None
+        post_author = reader.read_string() if (flags & (1 << 3)) else None
+        saved_from_peer = reader.read_object() if (flags & (1 << 4)) else None
+        saved_from_msg_id = reader.read_int32() if (flags & (1 << 4)) else None
+        saved_from_id = reader.read_object() if (flags & (1 << 8)) else None
+        saved_from_name = reader.read_string() if (flags & (1 << 9)) else None
+        saved_date = reader.read_int32() if (flags & (1 << 10)) else None
+        psa_type = reader.read_string() if (flags & (1 << 6)) else None
+        return cls(imported=imported, saved_out=saved_out, from_id=from_id, from_name=from_name, date=date, channel_post=channel_post, post_author=post_author, saved_from_peer=saved_from_peer, saved_from_msg_id=saved_from_msg_id, saved_from_id=saved_from_id, saved_from_name=saved_from_name, saved_date=saved_date, psa_type=psa_type)
+
+
+@register_tl
+class AuthCodeTypeSms(TLObject):
+    ID: int = 0x72a3158c
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthCodeTypeSms':
+        return cls()
+
+
+@register_tl
+class AuthCodeTypeCall(TLObject):
+    ID: int = 0x741cd3e3
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthCodeTypeCall':
+        return cls()
+
+
+@register_tl
+class AuthCodeTypeFlashCall(TLObject):
+    ID: int = 0x226ccefb
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthCodeTypeFlashCall':
+        return cls()
+
+
+@register_tl
+class AuthCodeTypeMissedCall(TLObject):
+    ID: int = 0xd61ad6ee
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthCodeTypeMissedCall':
+        return cls()
+
+
+@register_tl
+class AuthCodeTypeFragmentSms(TLObject):
+    ID: int = 0x6ed998c
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthCodeTypeFragmentSms':
+        return cls()
+
+
+@register_tl
+class AuthSentCodeTypeApp(TLObject):
+    ID: int = 0x3dbb5986
+
+    def __init__(self, length: Any = None) -> None:
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeApp':
+        length = reader.read_int32()
+        return cls(length=length)
+
+
+@register_tl
+class AuthSentCodeTypeSms(TLObject):
+    ID: int = 0xc000bba2
+
+    def __init__(self, length: Any = None) -> None:
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeSms':
+        length = reader.read_int32()
+        return cls(length=length)
+
+
+@register_tl
+class AuthSentCodeTypeCall(TLObject):
+    ID: int = 0x5353e5a7
+
+    def __init__(self, length: Any = None) -> None:
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeCall':
+        length = reader.read_int32()
+        return cls(length=length)
+
+
+@register_tl
+class AuthSentCodeTypeFlashCall(TLObject):
+    ID: int = 0xab03c6d9
+
+    def __init__(self, pattern: Any = None) -> None:
+        self.pattern = pattern
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.pattern or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeFlashCall':
+        pattern = reader.read_string()
+        return cls(pattern=pattern)
+
+
+@register_tl
+class AuthSentCodeTypeMissedCall(TLObject):
+    ID: int = 0x82006484
+
+    def __init__(self, prefix: Any = None, length: Any = None) -> None:
+        self.prefix = prefix
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.prefix or '')
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeMissedCall':
+        prefix = reader.read_string()
+        length = reader.read_int32()
+        return cls(prefix=prefix, length=length)
+
+
+@register_tl
+class AuthSentCodeTypeEmailCode(TLObject):
+    ID: int = 0xf450f59b
+
+    def __init__(self, apple_signin_allowed: bool = False, google_signin_allowed: bool = False, reset_available_period: Any = None, reset_pending_date: Any = None, email_pattern: Any = None, length: Any = None) -> None:
+        self.apple_signin_allowed = apple_signin_allowed
+        self.google_signin_allowed = google_signin_allowed
+        self.reset_available_period = reset_available_period
+        self.reset_pending_date = reset_pending_date
+        self.email_pattern = email_pattern
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.apple_signin_allowed:
+            flags |= (1 << 0)
+        if self.google_signin_allowed:
+            flags |= (1 << 1)
+        if self.reset_available_period is not None:
+            flags |= (1 << 3)
+        if self.reset_pending_date is not None:
             flags |= (1 << 4)
         writer.write_uint32(flags)
-        writer.write_vector(self.rows, lambda w, r: w.write_object(r))
-        if self.placeholder is not None:
-            writer.write_string(self.placeholder)
+        writer.write_string(self.email_pattern or '')
+        writer.write_int32(self.length or 0)
+        if self.reset_available_period is not None:
+            writer.write_int32(self.reset_available_period or 0)
+        if self.reset_pending_date is not None:
+            writer.write_int32(self.reset_pending_date or 0)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ReplyKeyboardMarkup":
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeEmailCode':
         flags = reader.read_uint32()
-        resize = bool(flags & (1 << 0))
-        single_use = bool(flags & (1 << 1))
-        selective = bool(flags & (1 << 2))
-        persistent = bool(flags & (1 << 4))
-        rows = reader.read_vector(lambda r: r.read_object())
-        placeholder = reader.read_string() if (flags & (1 << 3)) else None
-        return cls(
-            rows=rows,
-            resize=resize,
-            single_use=single_use,
-            selective=selective,
-            persistent=persistent,
-            placeholder=placeholder,
-        )
+        apple_signin_allowed = bool(flags & (1 << 0))
+        google_signin_allowed = bool(flags & (1 << 1))
+        email_pattern = reader.read_string()
+        length = reader.read_int32()
+        reset_available_period = reader.read_int32() if (flags & (1 << 3)) else None
+        reset_pending_date = reader.read_int32() if (flags & (1 << 4)) else None
+        return cls(apple_signin_allowed=apple_signin_allowed, google_signin_allowed=google_signin_allowed, email_pattern=email_pattern, length=length, reset_available_period=reset_available_period, reset_pending_date=reset_pending_date)
 
 
 @register_tl
-class ReplyKeyboardHide(TLObject):
-    ID: int = 0xA03E5B85
+class AuthSentCodeTypeSetUpEmailRequired(TLObject):
+    ID: int = 0xa5491dea
 
-    def __init__(self, selective: bool = False) -> None:
-        self.selective = selective
+    def __init__(self, apple_signin_allowed: bool = False, google_signin_allowed: bool = False) -> None:
+        self.apple_signin_allowed = apple_signin_allowed
+        self.google_signin_allowed = google_signin_allowed
 
     def write(self, writer: TLWriter) -> None:
         writer.write_uint32(self.ID)
         flags = 0
-        if self.selective:
-            flags |= (1 << 2)
-        writer.write_uint32(flags)
-
-    @classmethod
-    def read(cls, reader: TLReader) -> "ReplyKeyboardHide":
-        flags = reader.read_uint32()
-        return cls(selective=bool(flags & (1 << 2)))
-
-
-@register_tl
-class ReplyKeyboardForceReply(TLObject):
-    ID: int = 0xF072834B
-
-    def __init__(self, single_use: bool = False, selective: bool = False, placeholder: str | None = None) -> None:
-        self.single_use = single_use
-        self.selective = selective
-        self.placeholder = placeholder
-
-    def write(self, writer: TLWriter) -> None:
-        writer.write_uint32(self.ID)
-        flags = 0
-        if self.single_use:
+        if self.apple_signin_allowed:
+            flags |= (1 << 0)
+        if self.google_signin_allowed:
             flags |= (1 << 1)
-        if self.selective:
-            flags |= (1 << 2)
-        if self.placeholder is not None:
-            flags |= (1 << 3)
         writer.write_uint32(flags)
-        if self.placeholder is not None:
-            writer.write_string(self.placeholder)
 
     @classmethod
-    def read(cls, reader: TLReader) -> "ReplyKeyboardForceReply":
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeSetUpEmailRequired':
         flags = reader.read_uint32()
-        single_use = bool(flags & (1 << 1))
-        selective = bool(flags & (1 << 2))
-        placeholder = reader.read_string() if (flags & (1 << 3)) else None
-        return cls(single_use=single_use, selective=selective, placeholder=placeholder)
+        apple_signin_allowed = bool(flags & (1 << 0))
+        google_signin_allowed = bool(flags & (1 << 1))
+        return cls(apple_signin_allowed=apple_signin_allowed, google_signin_allowed=google_signin_allowed)
+
+
+@register_tl
+class AuthSentCodeTypeFragmentSms(TLObject):
+    ID: int = 0xd9565c39
+
+    def __init__(self, url: Any = None, length: Any = None) -> None:
+        self.url = url
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.url or '')
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeFragmentSms':
+        url = reader.read_string()
+        length = reader.read_int32()
+        return cls(url=url, length=length)
+
+
+@register_tl
+class AuthSentCodeTypeFirebaseSms(TLObject):
+    ID: int = 0x9fd736
+
+    def __init__(self, nonce: Any = None, play_integrity_project_id: Any = None, play_integrity_nonce: Any = None, receipt: Any = None, push_timeout: Any = None, length: Any = None) -> None:
+        self.nonce = nonce
+        self.play_integrity_project_id = play_integrity_project_id
+        self.play_integrity_nonce = play_integrity_nonce
+        self.receipt = receipt
+        self.push_timeout = push_timeout
+        self.length = length
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.nonce is not None:
+            flags |= (1 << 0)
+        if self.play_integrity_project_id is not None:
+            flags |= (1 << 2)
+        if self.play_integrity_nonce is not None:
+            flags |= (1 << 2)
+        if self.receipt is not None:
+            flags |= (1 << 1)
+        if self.push_timeout is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        if self.nonce is not None:
+            writer.write_bytes(self.nonce or b'')
+        if self.play_integrity_project_id is not None:
+            writer.write_int64(self.play_integrity_project_id or 0)
+        if self.play_integrity_nonce is not None:
+            writer.write_bytes(self.play_integrity_nonce or b'')
+        if self.receipt is not None:
+            writer.write_string(self.receipt or '')
+        if self.push_timeout is not None:
+            writer.write_int32(self.push_timeout or 0)
+        writer.write_int32(self.length or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeFirebaseSms':
+        flags = reader.read_uint32()
+        nonce = reader.read_bytes() if (flags & (1 << 0)) else None
+        play_integrity_project_id = reader.read_int64() if (flags & (1 << 2)) else None
+        play_integrity_nonce = reader.read_bytes() if (flags & (1 << 2)) else None
+        receipt = reader.read_string() if (flags & (1 << 1)) else None
+        push_timeout = reader.read_int32() if (flags & (1 << 1)) else None
+        length = reader.read_int32()
+        return cls(nonce=nonce, play_integrity_project_id=play_integrity_project_id, play_integrity_nonce=play_integrity_nonce, receipt=receipt, push_timeout=push_timeout, length=length)
+
+
+@register_tl
+class AuthSentCodeTypeSmsWord(TLObject):
+    ID: int = 0xa416ac81
+
+    def __init__(self, beginning: Any = None) -> None:
+        self.beginning = beginning
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.beginning is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        if self.beginning is not None:
+            writer.write_string(self.beginning or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeSmsWord':
+        flags = reader.read_uint32()
+        beginning = reader.read_string() if (flags & (1 << 0)) else None
+        return cls(beginning=beginning)
+
+
+@register_tl
+class AuthSentCodeTypeSmsPhrase(TLObject):
+    ID: int = 0xb37794af
+
+    def __init__(self, beginning: Any = None) -> None:
+        self.beginning = beginning
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.beginning is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        if self.beginning is not None:
+            writer.write_string(self.beginning or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'AuthSentCodeTypeSmsPhrase':
+        flags = reader.read_uint32()
+        beginning = reader.read_string() if (flags & (1 << 0)) else None
+        return cls(beginning=beginning)
+
+
+@register_tl
+class MessagesBotCallbackAnswer(TLObject):
+    ID: int = 0x36585ea4
+
+    def __init__(self, alert: bool = False, has_url: bool = False, native_ui: bool = False, message: Any = None, url: Any = None, cache_time: Any = None) -> None:
+        self.alert = alert
+        self.has_url = has_url
+        self.native_ui = native_ui
+        self.message = message
+        self.url = url
+        self.cache_time = cache_time
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.alert:
+            flags |= (1 << 1)
+        if self.has_url:
+            flags |= (1 << 3)
+        if self.native_ui:
+            flags |= (1 << 4)
+        if self.message is not None:
+            flags |= (1 << 0)
+        if self.url is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.message is not None:
+            writer.write_string(self.message or '')
+        if self.url is not None:
+            writer.write_string(self.url or '')
+        writer.write_int32(self.cache_time or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesBotCallbackAnswer':
+        flags = reader.read_uint32()
+        alert = bool(flags & (1 << 1))
+        has_url = bool(flags & (1 << 3))
+        native_ui = bool(flags & (1 << 4))
+        message = reader.read_string() if (flags & (1 << 0)) else None
+        url = reader.read_string() if (flags & (1 << 2)) else None
+        cache_time = reader.read_int32()
+        return cls(alert=alert, has_url=has_url, native_ui=native_ui, message=message, url=url, cache_time=cache_time)
+
+
+@register_tl
+class MessagesMessageEditData(TLObject):
+    ID: int = 0x26b5dde6
+
+    def __init__(self, caption: bool = False) -> None:
+        self.caption = caption
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.caption:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesMessageEditData':
+        flags = reader.read_uint32()
+        caption = bool(flags & (1 << 0))
+        return cls(caption=caption)
+
+
+@register_tl
+class InputBotInlineMessageID(TLObject):
+    ID: int = 0x890c3d89
+
+    def __init__(self, dc_id: Any = None, id: Any = None, access_hash: Any = None) -> None:
+        self.dc_id = dc_id
+        self.id = id
+        self.access_hash = access_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.dc_id or 0)
+        writer.write_int64(self.id or 0)
+        writer.write_int64(self.access_hash or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageID':
+        dc_id = reader.read_int32()
+        id = reader.read_int64()
+        access_hash = reader.read_int64()
+        return cls(dc_id=dc_id, id=id, access_hash=access_hash)
+
+
+@register_tl
+class InputBotInlineMessageID64(TLObject):
+    ID: int = 0xb6d915d7
+
+    def __init__(self, dc_id: Any = None, owner_id: Any = None, id: Any = None, access_hash: Any = None) -> None:
+        self.dc_id = dc_id
+        self.owner_id = owner_id
+        self.id = id
+        self.access_hash = access_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.dc_id or 0)
+        writer.write_int64(self.owner_id or 0)
+        writer.write_int32(self.id or 0)
+        writer.write_int64(self.access_hash or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputBotInlineMessageID64':
+        dc_id = reader.read_int32()
+        owner_id = reader.read_int64()
+        id = reader.read_int32()
+        access_hash = reader.read_int64()
+        return cls(dc_id=dc_id, owner_id=owner_id, id=id, access_hash=access_hash)
+
+
+@register_tl
+class InlineBotSwitchPM(TLObject):
+    ID: int = 0x3c20629f
+
+    def __init__(self, text: Any = None, start_param: Any = None) -> None:
+        self.text = text
+        self.start_param = start_param
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.text or '')
+        writer.write_string(self.start_param or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InlineBotSwitchPM':
+        text = reader.read_string()
+        start_param = reader.read_string()
+        return cls(text=text, start_param=start_param)
+
+
+@register_tl
+class MessagesPeerDialogs(TLObject):
+    ID: int = 0x3371c354
+
+    def __init__(self, dialogs: Any = None, messages: Any = None, chats: Any = None, users: Any = None, state: Any = None) -> None:
+        self.dialogs = dialogs
+        self.messages = messages
+        self.chats = chats
+        self.users = users
+        self.state = state
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.dialogs or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.messages or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.state is not None and hasattr(self.state, 'write'): self.state.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesPeerDialogs':
+        dialogs = reader.read_vector(lambda r: reader.read_object())
+        messages = reader.read_vector(lambda r: reader.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        state = reader.read_object()
+        return cls(dialogs=dialogs, messages=messages, chats=chats, users=users, state=state)
+
+
+@register_tl
+class TopPeer(TLObject):
+    ID: int = 0xedcdc05b
+
+    def __init__(self, peer: Any = None, rating: Any = None) -> None:
+        self.peer = peer
+        self.rating = rating
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.peer is not None and hasattr(self.peer, 'write'): self.peer.write(writer)
+        writer.write_double(self.rating or 0.0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeer':
+        peer = reader.read_object()
+        rating = reader.read_double()
+        return cls(peer=peer, rating=rating)
+
+
+@register_tl
+class TopPeerCategoryBotsPM(TLObject):
+    ID: int = 0xab661b5b
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryBotsPM':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryBotsInline(TLObject):
+    ID: int = 0x148677e2
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryBotsInline':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryCorrespondents(TLObject):
+    ID: int = 0x637b7ed
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryCorrespondents':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryGroups(TLObject):
+    ID: int = 0xbd17a14a
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryGroups':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryChannels(TLObject):
+    ID: int = 0x161d9628
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryChannels':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryPhoneCalls(TLObject):
+    ID: int = 0x1e76a78c
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryPhoneCalls':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryForwardUsers(TLObject):
+    ID: int = 0xa8406ca9
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryForwardUsers':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryForwardChats(TLObject):
+    ID: int = 0xfbeec0f0
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryForwardChats':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryBotsApp(TLObject):
+    ID: int = 0xfd9e7bec
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryBotsApp':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryBotsGuestChat(TLObject):
+    ID: int = 0x6c24f3dd
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryBotsGuestChat':
+        return cls()
+
+
+@register_tl
+class TopPeerCategoryPeers(TLObject):
+    ID: int = 0xfb834291
+
+    def __init__(self, category: Any = None, count: Any = None, peers: Any = None) -> None:
+        self.category = category
+        self.count = count
+        self.peers = peers
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.category is not None and hasattr(self.category, 'write'): self.category.write(writer)
+        writer.write_int32(self.count or 0)
+        writer.write_vector(self.peers or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TopPeerCategoryPeers':
+        category = reader.read_object()
+        count = reader.read_int32()
+        peers = reader.read_vector(lambda r: reader.read_object())
+        return cls(category=category, count=count, peers=peers)
+
+
+@register_tl
+class ContactsTopPeersNotModified(TLObject):
+    ID: int = 0xde266ef5
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ContactsTopPeersNotModified':
+        return cls()
+
+
+@register_tl
+class ContactsTopPeers(TLObject):
+    ID: int = 0x70b772a8
+
+    def __init__(self, categories: Any = None, chats: Any = None, users: Any = None) -> None:
+        self.categories = categories
+        self.chats = chats
+        self.users = users
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.categories or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.chats or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ContactsTopPeers':
+        categories = reader.read_vector(lambda r: reader.read_object())
+        chats = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(categories=categories, chats=chats, users=users)
+
+
+@register_tl
+class ContactsTopPeersDisabled(TLObject):
+    ID: int = 0xb52c939d
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'ContactsTopPeersDisabled':
+        return cls()
+
+
+@register_tl
+class DraftMessageEmpty(TLObject):
+    ID: int = 0x1b0c841a
+
+    def __init__(self, date: Any = None) -> None:
+        self.date = date
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.date is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        if self.date is not None:
+            writer.write_int32(self.date or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'DraftMessageEmpty':
+        flags = reader.read_uint32()
+        date = reader.read_int32() if (flags & (1 << 0)) else None
+        return cls(date=date)
+
+
+@register_tl
+class DraftMessage(TLObject):
+    ID: int = 0x96eaa5eb
+
+    def __init__(self, no_webpage: bool = False, invert_media: bool = False, reply_to: Any = None, entities: Any = None, media: Any = None, effect: Any = None, suggested_post: Any = None, message: Any = None, date: Any = None) -> None:
+        self.no_webpage = no_webpage
+        self.invert_media = invert_media
+        self.reply_to = reply_to
+        self.entities = entities
+        self.media = media
+        self.effect = effect
+        self.suggested_post = suggested_post
+        self.message = message
+        self.date = date
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.no_webpage:
+            flags |= (1 << 1)
+        if self.invert_media:
+            flags |= (1 << 6)
+        if self.reply_to is not None:
+            flags |= (1 << 4)
+        if self.entities is not None:
+            flags |= (1 << 3)
+        if self.media is not None:
+            flags |= (1 << 5)
+        if self.effect is not None:
+            flags |= (1 << 7)
+        if self.suggested_post is not None:
+            flags |= (1 << 8)
+        writer.write_uint32(flags)
+        if self.reply_to is not None:
+            if self.reply_to is not None and hasattr(self.reply_to, 'write'): self.reply_to.write(writer)
+        writer.write_string(self.message or '')
+        if self.entities is not None:
+            writer.write_vector(self.entities or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        if self.media is not None:
+            if self.media is not None and hasattr(self.media, 'write'): self.media.write(writer)
+        writer.write_int32(self.date or 0)
+        if self.effect is not None:
+            writer.write_int64(self.effect or 0)
+        if self.suggested_post is not None:
+            if self.suggested_post is not None and hasattr(self.suggested_post, 'write'): self.suggested_post.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'DraftMessage':
+        flags = reader.read_uint32()
+        no_webpage = bool(flags & (1 << 1))
+        invert_media = bool(flags & (1 << 6))
+        reply_to = reader.read_object() if (flags & (1 << 4)) else None
+        message = reader.read_string()
+        entities = reader.read_vector(lambda r: reader.read_object()) if (flags & (1 << 3)) else None
+        media = reader.read_object() if (flags & (1 << 5)) else None
+        date = reader.read_int32()
+        effect = reader.read_int64() if (flags & (1 << 7)) else None
+        suggested_post = reader.read_object() if (flags & (1 << 8)) else None
+        return cls(no_webpage=no_webpage, invert_media=invert_media, reply_to=reply_to, message=message, entities=entities, media=media, date=date, effect=effect, suggested_post=suggested_post)
+
+
+@register_tl
+class MessagesFeaturedStickersNotModified(TLObject):
+    ID: int = 0xc6dc0c66
+
+    def __init__(self, count: Any = None) -> None:
+        self.count = count
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.count or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesFeaturedStickersNotModified':
+        count = reader.read_int32()
+        return cls(count=count)
+
+
+@register_tl
+class MessagesFeaturedStickers(TLObject):
+    ID: int = 0xbe382906
+
+    def __init__(self, premium: bool = False, hash: Any = None, count: Any = None, sets: Any = None, unread: Any = None) -> None:
+        self.premium = premium
+        self.hash = hash
+        self.count = count
+        self.sets = sets
+        self.unread = unread
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.premium:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_int64(self.hash or 0)
+        writer.write_int32(self.count or 0)
+        writer.write_vector(self.sets or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.unread or [], lambda w, x: w.write_int64(x))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesFeaturedStickers':
+        flags = reader.read_uint32()
+        premium = bool(flags & (1 << 0))
+        hash = reader.read_int64()
+        count = reader.read_int32()
+        sets = reader.read_vector(lambda r: reader.read_object())
+        unread = reader.read_vector(lambda r: r.read_int64())
+        return cls(premium=premium, hash=hash, count=count, sets=sets, unread=unread)
+
+
+@register_tl
+class MessagesRecentStickersNotModified(TLObject):
+    ID: int = 0xb17f890
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesRecentStickersNotModified':
+        return cls()
+
+
+@register_tl
+class MessagesRecentStickers(TLObject):
+    ID: int = 0x88d37c56
+
+    def __init__(self, hash: Any = None, packs: Any = None, stickers: Any = None, dates: Any = None) -> None:
+        self.hash = hash
+        self.packs = packs
+        self.stickers = stickers
+        self.dates = dates
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.hash or 0)
+        writer.write_vector(self.packs or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.stickers or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.dates or [], lambda w, x: w.write_int32(x))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesRecentStickers':
+        hash = reader.read_int64()
+        packs = reader.read_vector(lambda r: reader.read_object())
+        stickers = reader.read_vector(lambda r: reader.read_object())
+        dates = reader.read_vector(lambda r: r.read_int32())
+        return cls(hash=hash, packs=packs, stickers=stickers, dates=dates)
+
+
+@register_tl
+class MessagesArchivedStickers(TLObject):
+    ID: int = 0x4fcba9c8
+
+    def __init__(self, count: Any = None, sets: Any = None) -> None:
+        self.count = count
+        self.sets = sets
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.count or 0)
+        writer.write_vector(self.sets or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesArchivedStickers':
+        count = reader.read_int32()
+        sets = reader.read_vector(lambda r: reader.read_object())
+        return cls(count=count, sets=sets)
+
+
+@register_tl
+class MessagesStickerSetInstallResultSuccess(TLObject):
+    ID: int = 0x38641628
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesStickerSetInstallResultSuccess':
+        return cls()
+
+
+@register_tl
+class MessagesStickerSetInstallResultArchive(TLObject):
+    ID: int = 0x35e410a8
+
+    def __init__(self, sets: Any = None) -> None:
+        self.sets = sets
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.sets or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesStickerSetInstallResultArchive':
+        sets = reader.read_vector(lambda r: reader.read_object())
+        return cls(sets=sets)
+
+
+@register_tl
+class StickerSetCovered(TLObject):
+    ID: int = 0x6410a5d2
+
+    def __init__(self, set: Any = None, cover: Any = None) -> None:
+        self.set = set
+        self.cover = cover
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.set is not None and hasattr(self.set, 'write'): self.set.write(writer)
+        if self.cover is not None and hasattr(self.cover, 'write'): self.cover.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'StickerSetCovered':
+        set = reader.read_object()
+        cover = reader.read_object()
+        return cls(set=set, cover=cover)
+
+
+@register_tl
+class StickerSetMultiCovered(TLObject):
+    ID: int = 0x3407e51b
+
+    def __init__(self, set: Any = None, covers: Any = None) -> None:
+        self.set = set
+        self.covers = covers
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.set is not None and hasattr(self.set, 'write'): self.set.write(writer)
+        writer.write_vector(self.covers or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'StickerSetMultiCovered':
+        set = reader.read_object()
+        covers = reader.read_vector(lambda r: reader.read_object())
+        return cls(set=set, covers=covers)
+
+
+@register_tl
+class StickerSetFullCovered(TLObject):
+    ID: int = 0x40d13c0e
+
+    def __init__(self, set: Any = None, packs: Any = None, keywords: Any = None, documents: Any = None) -> None:
+        self.set = set
+        self.packs = packs
+        self.keywords = keywords
+        self.documents = documents
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.set is not None and hasattr(self.set, 'write'): self.set.write(writer)
+        writer.write_vector(self.packs or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.keywords or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.documents or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'StickerSetFullCovered':
+        set = reader.read_object()
+        packs = reader.read_vector(lambda r: reader.read_object())
+        keywords = reader.read_vector(lambda r: reader.read_object())
+        documents = reader.read_vector(lambda r: reader.read_object())
+        return cls(set=set, packs=packs, keywords=keywords, documents=documents)
+
+
+@register_tl
+class StickerSetNoCovered(TLObject):
+    ID: int = 0x77b15d1c
+
+    def __init__(self, set: Any = None) -> None:
+        self.set = set
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.set is not None and hasattr(self.set, 'write'): self.set.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'StickerSetNoCovered':
+        set = reader.read_object()
+        return cls(set=set)
+
+
+@register_tl
+class MaskCoords(TLObject):
+    ID: int = 0xaed6dbb2
+
+    def __init__(self, n: Any = None, x: Any = None, y: Any = None, zoom: Any = None) -> None:
+        self.n = n
+        self.x = x
+        self.y = y
+        self.zoom = zoom
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.n or 0)
+        writer.write_double(self.x or 0.0)
+        writer.write_double(self.y or 0.0)
+        writer.write_double(self.zoom or 0.0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MaskCoords':
+        n = reader.read_int32()
+        x = reader.read_double()
+        y = reader.read_double()
+        zoom = reader.read_double()
+        return cls(n=n, x=x, y=y, zoom=zoom)
+
+
+@register_tl
+class InputStickeredMediaPhoto(TLObject):
+    ID: int = 0x4a992157
+
+    def __init__(self, id: Any = None) -> None:
+        self.id = id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.id is not None and hasattr(self.id, 'write'): self.id.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputStickeredMediaPhoto':
+        id = reader.read_object()
+        return cls(id=id)
+
+
+@register_tl
+class InputStickeredMediaDocument(TLObject):
+    ID: int = 0x438865b
+
+    def __init__(self, id: Any = None) -> None:
+        self.id = id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.id is not None and hasattr(self.id, 'write'): self.id.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputStickeredMediaDocument':
+        id = reader.read_object()
+        return cls(id=id)
+
+
+@register_tl
+class Game(TLObject):
+    ID: int = 0xbdf9653b
+
+    def __init__(self, document: Any = None, id: Any = None, access_hash: Any = None, short_name: Any = None, title: Any = None, description: Any = None, photo: Any = None) -> None:
+        self.document = document
+        self.id = id
+        self.access_hash = access_hash
+        self.short_name = short_name
+        self.title = title
+        self.description = description
+        self.photo = photo
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.document is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id or 0)
+        writer.write_int64(self.access_hash or 0)
+        writer.write_string(self.short_name or '')
+        writer.write_string(self.title or '')
+        writer.write_string(self.description or '')
+        if self.photo is not None and hasattr(self.photo, 'write'): self.photo.write(writer)
+        if self.document is not None:
+            if self.document is not None and hasattr(self.document, 'write'): self.document.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'Game':
+        flags = reader.read_uint32()
+        id = reader.read_int64()
+        access_hash = reader.read_int64()
+        short_name = reader.read_string()
+        title = reader.read_string()
+        description = reader.read_string()
+        photo = reader.read_object()
+        document = reader.read_object() if (flags & (1 << 0)) else None
+        return cls(id=id, access_hash=access_hash, short_name=short_name, title=title, description=description, photo=photo, document=document)
+
+
+@register_tl
+class InputGameID(TLObject):
+    ID: int = 0x32c3e77
+
+    def __init__(self, id: Any = None, access_hash: Any = None) -> None:
+        self.id = id
+        self.access_hash = access_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id or 0)
+        writer.write_int64(self.access_hash or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputGameID':
+        id = reader.read_int64()
+        access_hash = reader.read_int64()
+        return cls(id=id, access_hash=access_hash)
+
+
+@register_tl
+class InputGameShortName(TLObject):
+    ID: int = 0xc331e80a
+
+    def __init__(self, bot_id: Any = None, short_name: Any = None) -> None:
+        self.bot_id = bot_id
+        self.short_name = short_name
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.bot_id is not None and hasattr(self.bot_id, 'write'): self.bot_id.write(writer)
+        writer.write_string(self.short_name or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'InputGameShortName':
+        bot_id = reader.read_object()
+        short_name = reader.read_string()
+        return cls(bot_id=bot_id, short_name=short_name)
+
+
+@register_tl
+class HighScore(TLObject):
+    ID: int = 0x73a379eb
+
+    def __init__(self, pos: Any = None, user_id: Any = None, score: Any = None) -> None:
+        self.pos = pos
+        self.user_id = user_id
+        self.score = score
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.pos or 0)
+        writer.write_int64(self.user_id or 0)
+        writer.write_int32(self.score or 0)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'HighScore':
+        pos = reader.read_int32()
+        user_id = reader.read_int64()
+        score = reader.read_int32()
+        return cls(pos=pos, user_id=user_id, score=score)
+
+
+@register_tl
+class MessagesHighScores(TLObject):
+    ID: int = 0x9a3bfd99
+
+    def __init__(self, scores: Any = None, users: Any = None) -> None:
+        self.scores = scores
+        self.users = users
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.scores or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+        writer.write_vector(self.users or [], lambda w, x: x.write(w) if hasattr(x, 'write') else None)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'MessagesHighScores':
+        scores = reader.read_vector(lambda r: reader.read_object())
+        users = reader.read_vector(lambda r: reader.read_object())
+        return cls(scores=scores, users=users)
+
+
+@register_tl
+class TextEmpty(TLObject):
+    ID: int = 0xdc3d824f
+
+    def __init__(self) -> None:
+        pass
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TextEmpty':
+        return cls()
+
+
+@register_tl
+class TextPlain(TLObject):
+    ID: int = 0x744694e0
+
+    def __init__(self, text: Any = None) -> None:
+        self.text = text
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.text or '')
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TextPlain':
+        text = reader.read_string()
+        return cls(text=text)
+
+
+@register_tl
+class TextBold(TLObject):
+    ID: int = 0x6724abc4
+
+    def __init__(self, text: Any = None) -> None:
+        self.text = text
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        if self.text is not None and hasattr(self.text, 'write'): self.text.write(writer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> 'TextBold':
+        text = reader.read_object()
+        return cls(text=text)
+

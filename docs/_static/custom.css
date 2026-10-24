@@ -139,3 +139,95 @@ html[data-theme="dark"] .sig-name {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 136, 204, 0.5);
 }
+html {
+  scroll-behavior: smooth;
+}
+
+.toc-tree a {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 2.5px solid transparent;
+  padding-left: 6px;
+  display: block;
+}
+
+.toc-tree a:hover {
+  color: #0088cc !important;
+  transform: translateX(3px);
+}
+
+.toc-tree a.tgflow-toc-active {
+  color: #0088cc !important;
+  font-weight: 600;
+  border-left: 2.5px solid #0088cc !important;
+  background: rgba(0, 136, 204, 0.08);
+  border-radius: 0 4px 4px 0;
+  transform: translateX(4px);
+}
+
+html[data-theme="dark"] .toc-tree a.tgflow-toc-active {
+  color: #24a1de !important;
+  border-left-color: #24a1de !important;
+  background: rgba(36, 161, 222, 0.12);
+}
+
+.tgflow-scroll-rail {
+  position: fixed;
+  right: 8px;
+  top: 90px;
+  bottom: 90px;
+  width: 14px;
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .tgflow-scroll-rail {
+    display: none;
+  }
+}
+
+.tgflow-scroll-track {
+  position: relative;
+  width: 10px;
+  height: 100%;
+  border-right: 2px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+html[data-theme="dark"] .tgflow-scroll-track {
+  border-right: 2px solid rgba(255, 255, 255, 0.18);
+}
+
+.tgflow-scroll-tick {
+  position: absolute;
+  right: -2px;
+  width: 5px;
+  height: 1.5px;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .tgflow-scroll-tick {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tgflow-scroll-thumb {
+  position: absolute;
+  right: -3px;
+  top: 0;
+  width: 4px;
+  height: 36px;
+  background: #0088cc;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 136, 204, 0.6);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .tgflow-scroll-thumb {
+  background: #24a1de;
+  box-shadow: 0 0 12px rgba(36, 161, 222, 0.7);
+}

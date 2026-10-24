@@ -1,7 +1,27 @@
-MTProto 2.0 Specifications
-==========================
+MTProto 2.0 & Official Schema Specifications
+=============================================
 
-TgFlow implements the MTProto 2.0 protocol directly in Python without relying on external native wrappers.
+TgFlow implements the MTProto 2.0 protocol and official Telegram API schema directly in pure Python without external native wrappers.
+
+Official Telegram Schema
+------------------------
+
+TgFlow compiles 100% of the official Telegram schema from `core.telegram.org/schema <https://core.telegram.org/schema>`_:
+
+* **1,573 TL Types**: Complete data structures including peers, users, chats, channels, media, stickers, messages, and reactions.
+* **783 RPC Functions**: Full RPC requests covering messages, channels, phone calls, auth, contacts, account, users, photos, and upload operations.
+* **Over 2,350 Registered Constructors**: Registered in the global ``REGISTRY`` for binary serialization and deserialization.
+
+MTProto Schema Browser Coverage
+-------------------------------
+
+TgFlow incorporates constructors and methods detailed in the `Telegram MTProto Browser <https://core.telegram.org/mtproto/browser>`_:
+
+* **Animated Dice & Slot Reel Scrolling**: Supports ``inputMediaDice`` and ``messageMediaDice`` with emojis such as ``🎲``, ``🎯``, ``🏀``, ``⚽``, ``🎳``, and the slot machine ``🎰`` with animated reel scroll simulation.
+* **Full-Screen Message Effects**: Supports ``messages.getAvailableEffects``, returning ``availableEffect`` objects with animated sticker assets and sound effects.
+* **Animated Reactions**: Supports ``messages.getAvailableReactions`` and ``messages.sendReaction`` for standard, premium, and custom animated emoji reactions.
+* **Group Calls & Streaming**: Full VoIP and WebRTC coordination types including ``PhoneCallProtocol``, ``GroupCallParticipant``, and payload transport.
+* **AI Compose Tones**: Support for ``AiComposeTone`` structures for assisted drafting.
 
 Obfuscated2 Transport Framing
 -----------------------------
@@ -36,3 +56,8 @@ Message IDs and Ordering
 ------------------------
 
 Client message IDs are monotonically strictly increasing 64-bit integers with the lowest bit set to 1 (odd for client messages, even for server responses).
+
+UI Scroll Indicator & Navigation
+--------------------------------
+
+TgFlow documentation features a custom animated scroll rail on the right margin with dynamic position tracking and smooth scrolling matching high-end documentation layouts.
