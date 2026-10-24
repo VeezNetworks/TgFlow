@@ -10,7 +10,7 @@ Install TgFlow from PyPI:
 
 .. code-block:: bash
 
-   pip install tgflow
+   pip install pytgflow
 
 Modern Bot Example
 ------------------

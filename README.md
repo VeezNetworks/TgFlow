@@ -30,7 +30,7 @@
 ## Installation
 
 ```bash
-pip install tgflow
+pip install pytgflow
 ```
 
 ---

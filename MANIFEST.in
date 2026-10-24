@@ -2,6 +2,10 @@ include README.md
 include LICENSE
 include CHANGELOG.md
 include pyproject.toml
+include setup.py
+include requirements.txt
+include requirements-dev.txt
+include *.sh
 include schema_official.tl
 include tgflow/py.typed
 recursive-include docs *.rst *.py *.css *.js *.png *.svg

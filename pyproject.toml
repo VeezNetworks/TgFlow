@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tgflow"
+name = "pytgflow"
 version = "1.8.0"
 description = "Pure Python MTProto 2.0 Telegram framework engineered for speed, clean architecture, and modern bot development"
 readme = "README.md"
