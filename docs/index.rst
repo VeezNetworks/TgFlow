@@ -1,40 +1,30 @@
-.. image:: _static/logo.png
-   :align: center
-   :alt: TgFlow Logo
-   :width: 220px
+TgFlow Documentation
+====================
 
-====================================
-TgFlow: Modern Asynchronous MTProto
-====================================
+Welcome to **TgFlow**, a pure Python MTProto 2.0 Telegram framework engineered for speed, clean line-by-line architecture, and modern bot development.
 
-**TgFlow** is an advanced, high-performance Python MTProto library designed from first principles. It combines native MTProto 2.0 cryptographic primitives, full Telegram Layer 225+ schema models (including Telegram Stars, Star Subscriptions, Paid Reactions, Business Connections 2.0, Stories 2.0, Upgraded Gifts, and Forum Topics), a declarative routing engine with inline conversational dialogues, and a multi-language IPC bridge for cross-language bot development.
+TgFlow is crafted from the ground up to strictly obey official Telegram MTProto rules while incorporating the ergonomic API design of leading frameworks like Pyrogram and Telethon.
 
-Key Features
-------------
+Key Architectural Pillars
+-------------------------
 
-* **Native MTProto 2.0 Cryptography**: In-house pure AES-256 IGE, Pollard's rho PQ factorization, 2048-bit Diffie-Hellman key exchange, and Obfuscated2 framing for DPI evasion.
-* **Modern Schema Support**: Integrated Telegram API & TDLib schemas supporting Layer 225+ updates — Telegram Stars, Paid Reactions, Star Subscriptions, Business 2.0, Stories 2.0, Upgraded Collectibles, and Forum Topics.
-* **Declarative Template Routing**: Expressive route syntax with typed parameter extraction (``@bot.on("/ban <target> <duration:int=60>")``).
-* **Interactive Conversational Flow**: Asynchronous multi-turn dialogues built right into the context (``await m.ask()``, ``await m.choose()``).
-* **Multi-Language IPC Bridge**: Built-in JSON-RPC server and protocol client enabling bot logic in Go, Node.js, Rust, or C# without re-implementing MTProto.
-* **Async by Design**: Clean, line-by-line asynchronous execution using standard ``asyncio``.
+* **Zero-bloat MTProto 2.0**: Native implementation of Obfuscated2 transport, AES-256 IGE, Pollard's rho PQ factorization, and Diffie-Hellman key derivation.
+* **Complete TL Schema**: Over 540 official Telegram TL constructors and methods compiled directly into type-safe Python classes with exact 4-byte aligned binary serialization.
+* **Composable Routing**: Expressive filter combinators supporting ``&`` (AND), ``|`` (OR), and ``~`` (NOT) for declarative event routing.
+* **Modern Messaging**: Built-in support for expandable blockquotes, spoilers, custom animated emoji, ephemeral auto-deleting timers, and quote replies.
+* **Tamper-Evident Sessions**: Portable base64 sessions with CRC32 integrity checks.
+* **Pure Clean Code**: Core library implemented without comment clutter, ensuring clean maintainability and rapid debugging.
 
-Contents
---------
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Documentation
+   :caption: User Guide
 
    quickstart
-   routing
-   architecture
-   multilingual
+   mtproto
+   filters
+   formatting
+   sessions
    api
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

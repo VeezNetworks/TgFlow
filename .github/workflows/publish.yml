@@ -7,13 +7,9 @@ on:
 
 jobs:
   build-and-publish:
-    name: Build wheels and upload to PyPI
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -26,13 +22,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install build twine
 
-      - name: Build distributions
-        run: python -m build
-
-      - name: Verify packages with Twine
-        run: twine check dist/*
+      - name: Build binary wheel and sdist
+        run: |
+          python -m build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          skip-existing: true
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          twine upload dist/*

@@ -1,55 +1,35 @@
-import asyncio
 import os
-import struct
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 
-class Obfuscated2Stream:
-    PROTOCOL_INTERMEDIATE = b"\xee\xee\xee\xee"
-    PROTOCOL_PADDED = b"\xdd\xdd\xdd\xdd"
-
-    def __init__(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
-        self.reader = reader
-        self.writer = writer
-        self._encryptor = None
-        self._decryptor = None
-
-    async def handshake(self) -> None:
+class Obfuscated2:
+    def __init__(self, protocol_tag: bytes = b"\xee\xee\xee\xee") -> None:
         while True:
             init = bytearray(os.urandom(64))
-            val = struct.unpack("<I", init[:4])[0]
-            val2 = struct.unpack("<I", init[4:8])[0]
-            if init[0] != 0xEF and val not in (0x44414548, 0x54534F50, 0x20544547, 0x4954504F) and val2 != 0:
-                init[56:60] = self.PROTOCOL_PADDED
-                break
+            if init[0] == 0xef:
+                continue
+            first4 = bytes(init[:4])
+            if first4 in (b"HEAD", b"POST", b"GET ", b"\xee\xee\xee\xee", b"\xdd\xdd\xdd\xdd"):
+                continue
+            if bytes(init[4:8]) == b"\x00\x00\x00\x00":
+                continue
+            break
 
-        key_enc = bytes(init[8:40])
-        iv_enc = bytes(init[40:56])
+        enc_key = bytes(init[8:40])
+        enc_iv = bytes(init[40:56])
+        self._encryptor = Cipher(algorithms.AES(enc_key), modes.CTR(enc_iv)).encryptor()
 
-        reversed_init = bytes(init[8:56])[::-1]
-        key_dec = reversed_init[:32]
-        iv_dec = reversed_init[32:48]
+        rev = bytes(init[55:7:-1])
+        dec_key = bytes(rev[:32])
+        dec_iv = bytes(rev[32:48])
+        self._decryptor = Cipher(algorithms.AES(dec_key), modes.CTR(dec_iv)).decryptor()
 
-        self._encryptor = Cipher(algorithms.AES(key_enc), modes.CTR(iv_enc)).encryptor()
-        self._decryptor = Cipher(algorithms.AES(key_dec), modes.CTR(iv_dec)).decryptor()
+        enc_tag = self._encryptor.update(protocol_tag)
+        init[56:60] = enc_tag
+        self.header = bytes(init)
 
-        encrypted_tail = self._encryptor.update(bytes(init[56:]))
-        init[56:] = encrypted_tail
+    def encrypt(self, data: bytes) -> bytes:
+        return self._encryptor.update(data)
 
-        self.writer.write(init)
-        await self.writer.drain()
-
-    async def send_packet(self, payload: bytes) -> None:
-        pad_len = len(payload) % 16
-        padding = os.urandom(pad_len)
-        frame = payload + padding
-        raw = struct.pack("<I", len(frame)) + frame
-        self.writer.write(self._encryptor.update(raw))
-        await self.writer.drain()
-
-    async def read_packet(self) -> bytes:
-        raw_len = await self.reader.readexactly(4)
-        dec_len = self._decryptor.update(raw_len)
-        length = struct.unpack("<I", dec_len)[0]
-        encrypted_payload = await self.reader.readexactly(length)
-        return self._decryptor.update(encrypted_payload)
+    def decrypt(self, data: bytes) -> bytes:
+        return self._decryptor.update(data)

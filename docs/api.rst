@@ -1,94 +1,54 @@
 API Reference
 =============
 
-Client & Flow Control
----------------------
+Client
+------
 
-.. automodule:: tgflow.client
+.. autoclass:: tgflow.client.TgFlow
    :members:
    :undoc-members:
    :show-inheritance:
 
-Session & Token Security
-------------------------
+Types
+-----
 
-.. automodule:: tgflow.session
+.. autoclass:: tgflow.types.message.Message
    :members:
    :undoc-members:
    :show-inheritance:
 
-Filters System
---------------
-
-.. automodule:: tgflow.filters
+.. autoclass:: tgflow.types.user.User
    :members:
    :undoc-members:
    :show-inheritance:
 
-Context & Dialogues
--------------------
-
-.. automodule:: tgflow.context
+.. autoclass:: tgflow.types.chat.Chat
    :members:
    :undoc-members:
    :show-inheritance:
 
-Routing & Pattern Matching
---------------------------
-
-.. automodule:: tgflow.router
+.. autoclass:: tgflow.types.updates.CallbackQuery
    :members:
    :undoc-members:
    :show-inheritance:
 
-Raw MTProto Serialization & RPC
--------------------------------
+Session
+-------
 
-.. automodule:: tgflow.raw.core
+.. autoclass:: tgflow.session.Session
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: tgflow.raw.types
+Errors
+------
+
+.. autoclass:: tgflow.errors.RPCError
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: tgflow.raw.functions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Type Definitions & Models
--------------------------
-
-.. automodule:: tgflow.tl.types
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-MTProto 2.0 Cryptography
-------------------------
-
-.. automodule:: tgflow.crypto.aes_ige
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: tgflow.crypto.factorization
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: tgflow.crypto.diffie_hellman
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Errors & Exceptions
--------------------
-
-.. automodule:: tgflow.errors
+.. autoclass:: tgflow.errors.FloodWait
    :members:
    :undoc-members:
    :show-inheritance:

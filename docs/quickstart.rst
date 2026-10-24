@@ -1,78 +1,66 @@
 Quickstart Guide
 ================
 
-This guide gets you up and running with **TgFlow** in under five minutes.
+This guide demonstrates how to install TgFlow and build your first Telegram bot using the MTProto 2.0 protocol.
 
 Installation
 ------------
 
-TgFlow requires Python 3.10+ and the ``cryptography`` package:
+Install TgFlow from PyPI:
 
 .. code-block:: bash
 
-   pip install cryptography
+   pip install tgflow
 
-If installing from source:
+Minimal Bot Example
+-------------------
 
-.. code-block:: bash
-
-   cd D:\personal\TgFlow
-   pip install -e .
-
-Generating a Unique TgFlow Session Token
------------------------------------------
-
-TgFlow departs from legacy string session formats. It produces a **tamper-evident, CRC32-checksummed Base64URL token** prefixed with ``tgflow_live_`` or ``tgflow_test_``:
-
-.. code-block:: bash
-
-   python tools/generate_session.py
-
-Example output:
-
-.. code-block:: text
-
-   =================================================================
-   GENERATED TGFlow SESSION STRING:
-   =================================================================
-   tgflow_live_VEdGTDECAQAAAAAAAAC1e...
-   =================================================================
-
-Bootstrapping Client with Session
----------------------------------
-
-You can instantiate your client instantly with the exported token without requiring local SQLite files:
+Here is a minimal bot that answers the ``/start`` command:
 
 .. code-block:: python
 
    import asyncio
-   from tgflow import TgFlow, When, F
+   from tgflow import TgFlow, filters
+   from tgflow.types import Message
 
-   client = TgFlow(session="tgflow_live_VEdGTDECAQAAAAAAAAC1e...")
+   bot = TgFlow(
+       session="my_bot",
+       bot_token="YOUR_BOT_TOKEN_HERE",
+   )
 
-   # Natural typography routing with When
-   @client.on(When.Command("start") & When.Private)
-   async def handle_start(ctx):
-       await ctx.reply(f"Hello, {ctx.sender.first_name}! Welcome to TgFlow.")
+   @bot.on_message(filters.command("start") & filters.private)
+   async def handle_start(client: TgFlow, message: Message):
+       await message.reply("Hello from TgFlow!")
 
-   # Short modern typography with F
-   @client.on(F.command("help") & F.group)
-   async def handle_help(ctx):
-       await ctx.reply("Group help commands: /stats, /ban, /info")
+   asyncio.run(bot.run())
 
-   async def main():
-       await client.start()
-       print("TgFlow client running...")
-       await client.idle()
+Advanced Message Features
+-------------------------
 
-   if __name__ == "__main__":
-       asyncio.run(main())
+Native Quoted Reply
+~~~~~~~~~~~~~~~~~~~
 
-Testing Data Center Handshake
------------------------------
+TgFlow allows quoting specific text segments in replies according to official MTProto quote specifications:
 
-TgFlow provides a built-in verification script to confirm TCP connectivity and MTProto PQ authorization handshake with Telegram's data centers:
+.. code-block:: python
 
-.. code-block:: bash
+   @bot.on_message(filters.command("quote"))
+   async def handle_quote(client: TgFlow, message: Message):
+       await message.reply_quote(
+           text="Replying with a quoted segment.",
+           quote=message.text,
+       )
 
-   python tests/test_dc_connect.py
+Ephemeral Self-Destructing Messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Send messages that automatically delete after a specified duration:
+
+.. code-block:: python
+
+   @bot.on_message(filters.command("temp"))
+   async def handle_temp(client: TgFlow, message: Message):
+       await message.reply_ephemeral(
+           text="This message disappears in 5 seconds.",
+           ttl_seconds=5,
+       )

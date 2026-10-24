@@ -1,49 +1,45 @@
 import os
 import unittest
-from tgflow.crypto.aes_ige import aes_ige_decrypt, aes_ige_encrypt
-from tgflow.crypto.diffie_hellman import compute_auth_key_id, compute_msg_key, perform_dh_step
-from tgflow.crypto.factorization import factorize_pq
+from tgflow.crypto.aes_ige import aes_ige_encrypt, aes_ige_decrypt
+from tgflow.crypto.factorization import factorize
+from tgflow.crypto.obfuscated2 import Obfuscated2
+from tgflow.crypto.diffie_hellman import derive_keys, compute_auth_key_id, create_auth_key
 
 
 class TestCrypto(unittest.TestCase):
-    def test_aes_ige_roundtrip(self):
+    def test_aes_ige_roundtrip(self) -> None:
         key = os.urandom(32)
         iv = os.urandom(32)
-        plaintext = b"Telegram MTProto 2.0 AES-IGE Testing Block!!"
-        padding = (16 - (len(plaintext) % 16)) % 16
-        plaintext += b"\x00" * padding
+        plain = b"TelegramMTProto2.0SecurityBlock!" * 4
+        cipher = aes_ige_encrypt(plain, key, iv)
+        recovered = aes_ige_decrypt(cipher, key, iv)
+        self.assertEqual(recovered, plain)
 
-        encrypted = aes_ige_encrypt(plaintext, key, iv)
-        self.assertNotEqual(encrypted, plaintext)
-        self.assertEqual(len(encrypted), len(plaintext))
+    def test_factorize(self) -> None:
+        p1 = 1000000007
+        p2 = 1000000009
+        p, q = factorize(p1 * p2)
+        self.assertEqual(p, p1)
+        self.assertEqual(q, p2)
 
-        decrypted = aes_ige_decrypt(encrypted, key, iv)
-        self.assertEqual(decrypted, plaintext)
+    def test_obfuscated2_handshake(self) -> None:
+        obf = Obfuscated2()
+        self.assertEqual(len(obf.header), 64)
+        msg = b"PING"
+        enc = obf.encrypt(msg)
+        self.assertEqual(len(enc), len(msg))
 
-    def test_factorize_pq(self):
-        p_expected = 1000000007
-        q_expected = 1000000009
-        pq = p_expected * q_expected
+    def test_kdf(self) -> None:
+        ak = os.urandom(256)
+        mk = os.urandom(16)
+        k, iv = derive_keys(ak, mk, to_server=True)
+        self.assertEqual(len(k), 32)
+        self.assertEqual(len(iv), 32)
 
-        p, q = factorize_pq(pq)
-        self.assertEqual(p * q, pq)
-        self.assertTrue(p <= q)
-        self.assertEqual(p, p_expected)
-        self.assertEqual(q, q_expected)
-
-    def test_diffie_hellman(self):
-        g = 3
-        b = 123456789
-        p = 2147483647
-        result = perform_dh_step(g, b, p)
-        expected = pow(g, b, p)
-        self.assertEqual(result, expected)
-
-    def test_auth_key_id(self):
-        auth_key = os.urandom(256)
-        key_id = compute_auth_key_id(auth_key)
-        self.assertIsInstance(key_id, int)
-        self.assertGreater(key_id, 0)
+    def test_auth_key_id(self) -> None:
+        ak = os.urandom(256)
+        kid = compute_auth_key_id(ak)
+        self.assertIsInstance(kid, int)
 
 
 if __name__ == "__main__":

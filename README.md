@@ -1,186 +1,104 @@
-<p align="center">
-  <img src="assets/logo.png" alt="TgFlow Logo" width="220"/>
-</p>
-
-<h1 align="center">TgFlow</h1>
-
-<p align="center">
-  <b>Modern Asynchronous MTProto 2.0 Telegram Framework for Python & Polyglot Backends</b>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square" alt="Python Version"/>
-  <img src="https://img.shields.io/badge/MTProto-2.0-blueviolet?style=flat-square" alt="MTProto 2.0"/>
-  <img src="https://img.shields.io/badge/Telegram%20Schema-Layer%20225%2B-brightgreen?style=flat-square" alt="Schema Layer"/>
-  <img src="https://img.shields.io/badge/License-MIT-orange?style=flat-square" alt="License"/>
-</p>
+<div align="center">
+  <img src="assets/logo.png" alt="TgFlow Logo" width="180"/>
+  <h1>TgFlow</h1>
+  <p><b>Pure Python MTProto 2.0 Telegram Framework</b></p>
+  <p>Line-by-line compliance with official Telegram MTProto rules, modern clean architecture inspired by Pyrogram and Telethon, zero bloated dependencies.</p>
+</div>
 
 ---
 
 ## Highlights
 
-* **Pure Native MTProto 2.0**: In-house cryptographic core supporting AES-256 IGE, Pollard's rho PQ factorization, 2048-bit Diffie-Hellman key exchange, and Obfuscated2 anti-DPI transport.
-* **Telegram Layer 225+ Schemas**: Direct first-class support for modern Telegram features including Telegram Stars, Star Subscriptions, Paid Reactions, Star Revenue, Upgraded & Collectible Gifts, Telegram Business 2.0, Stories 2.0, and Forum Topics.
-* **Declarative Template Routing**: Expressive route patterns with typed parameters (`@client.on("/ban <target> <duration:int=60> <reason*>")`).
-* **Interactive Multi-Turn Dialogues**: Built-in conversational flows without complex state machines (`await ctx.ask()`, `await ctx.choose()`).
-* **Multi-Language IPC Bridge**: Built-in JSON-RPC 2.0 bridge allowing bots in Go, Node.js, Rust, or C# to leverage TgFlow's MTProto session.
-* **Human-Readable Codebase**: Clean asynchronous architecture without AI comment boilerplate or bloated abstractions.
+- **Pure MTProto 2.0 Engine**: Built from scratch adhering to official Telegram MTProto specifications.
+- **Obfuscated2 TCP Framing**: Resilient TCP transport with 64-byte random payload handshakes avoiding traffic filtering.
+- **AES-256 IGE & Diffie-Hellman Handshake**: Cryptographic primitives including Pollard's rho prime factorization, SHA-256 key derivation, and hardware-accelerated AES.
+- **Full Layer TL Schema**: Comprehensive catalog of 547 official Telegram constructors and methods with 4-byte aligned binary TL serialization.
+- **Composable Filter Architecture**: Expressive routing using `&`, `|`, and `~` combinators (`filters.command("start") & filters.private`).
+- **Rich Telegram Formatting**: Full support for expandable blockquotes, spoilers, custom emoji, clickable links, and copy-text buttons.
+- **Tamper-Evident Sessions**: Base64 session format with CRC32 integrity validation.
+- **Zero Comments In Core Code**: Pure, self-explanatory idiomatic Python.
 
 ---
 
-## Quick Example
+## Installation
+
+```bash
+pip install tgflow
+```
+
+Or install with documentation dependencies:
+
+```bash
+pip install tgflow[docs]
+```
+
+---
+
+## Quickstart
+
+### Building a Modern Telegram Bot
 
 ```python
 import asyncio
-from tgflow import TgFlow, filters, raw
+from tgflow import TgFlow, filters
+from tgflow.types import Message
 
-client = TgFlow(api_id=123456, api_hash="0123456789abcdef0123456789abcdef")
-
-# Simple command with typed parameter and default
-@client.on("/ban <target> <duration:int=60> <reason*>")
-async def ban_handler(ctx, target, duration: int, reason: str = "Rule violation"):
-    await ctx.reply(f"Banning {target} for {duration}m. Reason: {reason}")
-
-# Composable filter routing
-@client.on(filters.command("stats") & filters.group)
-async def group_stats(ctx):
-    await ctx.reply(f"Group statistics for chat ID: {ctx.chat_id}")
-
-# Raw MTProto invocation
-@client.on("/raw_topic")
-async def create_topic_raw(ctx):
-    req = raw.functions.CreateForumTopic(
-        channel=raw.types.InputPeerChannel(channel_id=ctx.chat_id, access_hash=0),
-        title="Engineering Discussions",
-        icon_color=0x6FB9F0,
-    )
-    result = await client.invoke(req)
-    await ctx.reply("Forum topic created via raw MTProto RPC!")
-
-# Interactive dialogue flow
-@client.on("/feedback")
-async def feedback_handler(ctx):
-    response = await ctx.ask("What feature would you like to see next?")
-    rating = await ctx.choose("Rate your experience:", options=["Great", "Okay", "Poor"])
-    await ctx.reply(f"Thanks! Received: {response.text} (Rating: {rating})")
-
-async def main():
-    await client.start()
-    await client.idle()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
----
-
-## Verifying DC Handshake
-
-TgFlow comes with an automated handshake tester to verify connection to Telegram's Data Centers:
-
-```bash
-python tests/test_dc_connect.py
-```
-
-Output:
-```text
-============================================================
-TgFlow MTProto 2.0 - Live DC Connection & Handshake Test
-============================================================
-[1/3] Connecting to DC2 (149.154.167.40:443)...
-[2/3] Sending req_pq_multi packet (nonce: 69c0d11f...)...
-[3/3] Received res_pq from Telegram DC2!
-      Nonce match: True
-      Fingerprints: [0x8b857700a9faec1c]
-[SUCCESS] Telegram DC2 handshake verified successfully!
-```
-
----
-
-## Polyglot IPC Bridge (Go, Node.js, Rust, C#)
-
-Start the bridge server in Python:
-
-```python
-from tgflow import TgFlow
-from tgflow.bridge import BridgeServer
-
-client = TgFlow(api_id=123456, api_hash="abcdef...")
-bridge = BridgeServer(client, host="127.0.0.1", port=9000)
-await bridge.start()
-```
-
-Connect and call any MTProto method from **Go**:
-
-```go
-package main
-
-import (
-    "bufio"
-    "encoding/json"
-    "fmt"
-    "net"
+bot = TgFlow(
+    session="my_bot",
+    bot_token="123456789:ABCDefghIJKLmnOPQRstuvWXYZ",
 )
 
-func main() {
-    conn, _ := net.Dial("tcp", "127.0.0.1:9000")
-    defer conn.Close()
+@bot.on_message(filters.command("start") & filters.private)
+async def handle_start(client: TgFlow, message: Message):
+    await message.reply(
+        "<b>Welcome to TgFlow!</b>\n\n"
+        "Experience modern Telegram MTProto 2.0 bots in pure Python.",
+        parse_mode="html",
+    )
 
-    req, _ := json.Marshal(map[string]interface{}{
-        "jsonrpc": "2.0",
-        "method":  "sendMessage",
-        "params":  map[string]interface{}{"chat_id": 12345, "text": "Hello from Go!"},
-        "id":      1,
-    })
-    conn.Write(append(req, '\n'))
+@bot.on_message(filters.command("quote"))
+async def handle_quote(client: TgFlow, message: Message):
+    await message.reply_quote(
+        text="Here is a quoted reply using native MTProto quote semantics.",
+        quote=message.text,
+    )
 
-    resp, _ := bufio.NewReader(conn).ReadString('\n')
-    fmt.Println(resp)
-}
+@bot.on_message(filters.command("secret"))
+async def handle_secret(client: TgFlow, message: Message):
+    await message.reply_ephemeral(
+        text="This message will self-destruct in 10 seconds.",
+        ttl_seconds=10,
+    )
+
+asyncio.run(bot.run())
 ```
 
 ---
 
 ## Architecture Overview
 
-```
-              User Code (Python / Go / Node.js / Rust / C#)
-                                    │
-                         ┌──────────┴──────────┐
-                         │   TgFlow Client     │
-                         │ (Router & Context)  │
-                         └──────────┬──────────┘
-                                    │
-                 ┌──────────────────┼──────────────────┐
-                 │                  │                  │
-        ┌────────▼────────┐ ┌───────▼────────┐ ┌───────▼────────┐
-        │  TL Generator   │ │ Cryptography   │ │ JSON-RPC IPC   │
-        │  & Type Models  │ │ AES-IGE / DH   │ │ Bridge Server  │
-        │ (TDLib Scheme)  │ │ Pollard's rho  │ │ (Polyglot)     │
-        └─────────────────┘ └───────┬────────┘ └────────────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │  Obfuscated2 TCP    │
-                         │ (Padded 0xdddddddd) │
-                         └──────────┬──────────┘
-                                    │
-                               Telegram DC
-```
+| Component | Module | Responsibility |
+|---|---|---|
+| **Crypto** | `tgflow.crypto` | AES-IGE, Pollard's rho PQ factorization, Obfuscated2 framing, DH exchange |
+| **Transport** | `tgflow.transport` | Non-blocking async TCP stream framing |
+| **RPC** | `tgflow.rpc` | Monotonic `msg_id` generator, sequence numbers, packet packing/unpacking |
+| **TL Schema** | `tgflow.tl` | Binary `TLReader`/`TLWriter`, 547 constructors and functions |
+| **Filters** | `tgflow.filters` | Composable event routing with `&`, `|`, and `~` |
+| **Types** | `tgflow.types` | High-level `Message`, `User`, `Chat`, `CallbackQuery` |
+| **Session** | `tgflow.session` | Unique session format with CRC32 checksum |
 
 ---
 
-## Documentation
+## Building Documentation
 
-Full documentation is available in `docs/`:
+TgFlow uses Sphinx with the modern Furo UI theme:
 
 ```bash
 sphinx-build -b html docs docs/_build/html
 ```
 
-Or open `docs/_build/html/index.html` in your browser.
-
 ---
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
