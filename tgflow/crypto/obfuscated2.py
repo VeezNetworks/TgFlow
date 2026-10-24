@@ -15,6 +15,7 @@ class Obfuscated2:
                 continue
             break
 
+        init[56:60] = protocol_tag
         enc_key = bytes(init[8:40])
         enc_iv = bytes(init[40:56])
         self._encryptor = Cipher(algorithms.AES(enc_key), modes.CTR(enc_iv)).encryptor()
@@ -24,8 +25,8 @@ class Obfuscated2:
         dec_iv = bytes(rev[32:48])
         self._decryptor = Cipher(algorithms.AES(dec_key), modes.CTR(dec_iv)).decryptor()
 
-        enc_tag = self._encryptor.update(protocol_tag)
-        init[56:60] = enc_tag
+        encrypted_init = self._encryptor.update(bytes(init))
+        init[56:64] = encrypted_init[56:64]
         self.header = bytes(init)
 
     def encrypt(self, data: bytes) -> bytes:
