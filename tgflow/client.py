@@ -112,7 +112,7 @@ class TgFlow:
         if isinstance(session, Session):
             self.session = session
         elif isinstance(session, str):
-            if session.startswith("tgflow_"):
+            if session.startswith("tgflow_live_") or session.startswith("tgflow_test_"):
                 self.session = Session.from_string(session)
             elif os.path.isfile(session):
                 self.session = Session.load_file(session)
