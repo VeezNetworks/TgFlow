@@ -25,6 +25,20 @@ class MessageEntity:
         self.custom_emoji_id = custom_emoji_id
         self.language = language
 
+    def to_dict(self) -> dict[str, Any]:
+        d: dict[str, Any] = {
+            "type": self.type,
+            "offset": self.offset,
+            "length": self.length,
+        }
+        if self.url:
+            d["url"] = self.url
+        if self.custom_emoji_id:
+            d["custom_emoji_id"] = str(self.custom_emoji_id)
+        if self.language:
+            d["language"] = self.language
+        return d
+
     def to_tl(self) -> Any:
         if self.type == "bold":
             return tl.MessageEntityBold(offset=self.offset, length=self.length)
@@ -70,6 +84,8 @@ class MessageEntity:
         if cname == "MessageEntitySpoiler":
             return cls("spoiler", offset, length)
         if cname == "MessageEntityBlockquote":
+            if getattr(obj, "collapsed", False):
+                return cls("expandable_blockquote", offset, length)
             return cls("blockquote", offset, length)
         if cname == "MessageEntityExpandableBlockquote":
             return cls("expandable_blockquote", offset, length)

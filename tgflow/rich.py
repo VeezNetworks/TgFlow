@@ -1,3 +1,4 @@
+import html
 from typing import Any
 from .tl import types as tl
 from .formatting import utf16_len
@@ -39,6 +40,9 @@ class RichText:
     def strike(self, text: str) -> "RichText":
         return self._append(text, tl.MessageEntityStrike(offset=0, length=0))
 
+    def strikethrough(self, text: str) -> "RichText":
+        return self.strike(text)
+
     def code(self, text: str) -> "RichText":
         return self._append(text, tl.MessageEntityCode(offset=0, length=0))
 
@@ -48,8 +52,8 @@ class RichText:
     def spoiler(self, text: str) -> "RichText":
         return self._append(text, tl.MessageEntitySpoiler(offset=0, length=0))
 
-    def blockquote(self, text: str, collapsed: bool = False) -> "RichText":
-        if collapsed:
+    def blockquote(self, text: str, collapsed: bool = False, expandable: bool = False) -> "RichText":
+        if collapsed or expandable:
             return self._append(text, tl.MessageEntityBlockquote(offset=0, length=0, collapsed=True))
         return self._append(text, tl.MessageEntityBlockquote(offset=0, length=0))
 
@@ -81,6 +85,32 @@ class RichText:
 
 class AIComposer:
     TONES: list[str] = ["professional", "casual", "concise", "elaborate", "humorous"]
+
+    def __init__(self) -> None:
+        self._parts: list[str] = []
+
+    def header(self, text: str, level: int = 1) -> "AIComposer":
+        self._parts.append(f"<b>{html.escape(text)}</b>\n\n")
+        return self
+
+    def bullet(self, text: str) -> "AIComposer":
+        self._parts.append(f"• {html.escape(text)}\n")
+        return self
+
+    def code_block(self, code: str, language: str = "") -> "AIComposer":
+        self._parts.append(f"\n<pre><code>{html.escape(code)}</code></pre>\n")
+        return self
+
+    def text(self, text: str) -> "AIComposer":
+        self._parts.append(html.escape(text))
+        return self
+
+    def line(self, text: str = "") -> "AIComposer":
+        self._parts.append(html.escape(text) + "\n")
+        return self
+
+    def build(self) -> str:
+        return "".join(self._parts).strip()
 
     @staticmethod
     def compose(

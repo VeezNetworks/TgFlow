@@ -217,8 +217,9 @@ class FlowButton:
         return InlineKeyboardButton(text=text, web_app=url)
 
     @staticmethod
-    def copy(text: str, copy_text: str) -> InlineKeyboardButton:
-        return InlineKeyboardButton(text=text, copy_text=copy_text)
+    def copy(text: str, copy_text: str | None = None, **kwargs: Any) -> InlineKeyboardButton:
+        c_text = copy_text or kwargs.get("text") or text
+        return InlineKeyboardButton(text=text, copy_text=c_text)
 
     @staticmethod
     def user(text: str, user_id: int) -> InlineKeyboardButton:
@@ -235,7 +236,9 @@ class FlowButton:
         return InlineKeyboardButton(text=text, callback_data="buy")
 
     @staticmethod
-    def text(text: str) -> KeyboardButton:
+    def text(text: str, callback_data: str | None = None) -> Any:
+        if callback_data is not None:
+            return InlineKeyboardButton(text=text, callback_data=callback_data)
         return KeyboardButton(text=text)
 
     @staticmethod
@@ -252,21 +255,40 @@ class FlowButton:
 
 
 class FlowMarkup:
-    @staticmethod
-    def inline(rows: list[list[InlineKeyboardButton]]) -> InlineKeyboardMarkup:
+    def __init__(self, rows: list[list[Any]] | None = None) -> None:
+        self.rows: list[list[Any]] = [list(r) for r in rows] if rows else []
+
+    def row(self, *buttons: Any) -> Any:
+        if isinstance(self, FlowMarkup):
+            self.rows.append(list(buttons))
+            return self
+        return [self] + list(buttons)
+
+    def add(self, *buttons: Any) -> "FlowMarkup":
+        if not self.rows:
+            self.rows.append([])
+        self.rows[-1].extend(buttons)
+        return self
+
+    def build(self) -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=self.rows)
+
+    @classmethod
+    def inline(cls, rows: list[list[InlineKeyboardButton]]) -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup(inline_keyboard=rows)
 
-    @staticmethod
-    def grid(buttons: list[InlineKeyboardButton], cols: int = 2) -> InlineKeyboardMarkup:
+    @classmethod
+    def grid(cls, buttons: list[InlineKeyboardButton], cols: int = 2) -> InlineKeyboardMarkup:
         rows = [buttons[i : i + cols] for i in range(0, len(buttons), cols)]
         return InlineKeyboardMarkup(inline_keyboard=rows)
 
     @staticmethod
-    def row(*buttons: InlineKeyboardButton) -> list[InlineKeyboardButton]:
+    def create_row(*buttons: InlineKeyboardButton) -> list[InlineKeyboardButton]:
         return list(buttons)
 
-    @staticmethod
+    @classmethod
     def reply(
+        cls,
         rows: list[list[KeyboardButton]],
         resize: bool = True,
         persistent: bool = False,
@@ -281,10 +303,10 @@ class FlowMarkup:
             one_time_keyboard=one_time,
         )
 
-    @staticmethod
-    def remove(selective: bool = False) -> ReplyKeyboardRemove:
+    @classmethod
+    def remove(cls, selective: bool = False) -> ReplyKeyboardRemove:
         return ReplyKeyboardRemove(selective=selective)
 
-    @staticmethod
-    def force_reply(placeholder: str | None = None, selective: bool = False) -> ForceReply:
+    @classmethod
+    def force_reply(cls, placeholder: str | None = None, selective: bool = False) -> ForceReply:
         return ForceReply(selective=selective, input_field_placeholder=placeholder)

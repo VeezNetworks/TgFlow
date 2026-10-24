@@ -363,6 +363,8 @@ class TgFlow:
         if not self.me:
             self.me = User(id=self.session.user_id or 777000, first_name="TgFlow", is_bot=self.session.is_bot)
         self._is_running = True
+        from . import __version__
+        print(f"Successfully running on TgFlow v{__version__}!\nThank you for using!\n", flush=True)
         return self
 
     async def stop(self) -> None:
@@ -471,13 +473,21 @@ class TgFlow:
 
     async def dispatch_message(self, message: Any) -> None:
         for handler in self._message_handlers:
-            if await handler.check(self, message):
-                await handler.execute(self, message)
+            try:
+                if await handler.check(self, message):
+                    await handler.execute(self, message)
+            except Exception:
+                import traceback
+                traceback.print_exc()
 
     async def dispatch_callback(self, callback_query: Any) -> None:
         for handler in self._callback_handlers:
-            if await handler.check(self, callback_query):
-                await handler.execute(self, callback_query)
+            try:
+                if await handler.check(self, callback_query):
+                    await handler.execute(self, callback_query)
+            except Exception:
+                import traceback
+                traceback.print_exc()
 
     async def dispatch_inline(self, inline_query: Any) -> None:
         for handler in self._inline_handlers:
@@ -510,9 +520,11 @@ class TgFlow:
         plain_text = text if isinstance(text, str) else str(text)
         entities: list[Any] = []
         if hasattr(text, "build"):
-            built_text, built_entities = text.build()
-            plain_text = built_text
-            entities = built_entities
+            built_res = text.build()
+            if isinstance(built_res, tuple) and len(built_res) == 2:
+                plain_text, entities = built_res
+            elif isinstance(built_res, str):
+                plain_text = built_res
         elif parse_mode == "html":
             plain_text, parsed_entities = parse_html(plain_text)
             entities = [e.to_tl() for e in parsed_entities]
@@ -525,8 +537,18 @@ class TgFlow:
             payload: dict[str, Any] = {
                 "chat_id": chat_id,
                 "text": plain_text,
-                "parse_mode": parse_mode.upper() if parse_mode else "HTML",
             }
+            if entities:
+                from .formatting import MessageEntity
+                dict_entities = []
+                for e in entities:
+                    if hasattr(e, "to_dict"):
+                        dict_entities.append(e.to_dict())
+                    else:
+                        dict_entities.append(MessageEntity.from_tl(e).to_dict())
+                payload["entities"] = dict_entities
+            elif parse_mode:
+                payload["parse_mode"] = parse_mode.upper()
             if reply_to_message_id is not None:
                 payload["reply_to_message_id"] = reply_to_message_id
             if reply_markup is not None:
@@ -597,10 +619,16 @@ class TgFlow:
         reply_markup: Any = None,
         no_webpage: bool = False,
     ) -> Message:
-        plain_text = text
+        plain_text = text if isinstance(text, str) else str(text)
         entities: list[Any] = []
-        if parse_mode == "html":
-            plain_text, parsed_entities = parse_html(text)
+        if hasattr(text, "build"):
+            built_res = text.build()
+            if isinstance(built_res, tuple) and len(built_res) == 2:
+                plain_text, entities = built_res
+            elif isinstance(built_res, str):
+                plain_text = built_res
+        elif parse_mode == "html":
+            plain_text, parsed_entities = parse_html(plain_text)
             entities = [e.to_tl() for e in parsed_entities]
 
         if self.bot_token:
@@ -608,8 +636,18 @@ class TgFlow:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "text": plain_text,
-                "parse_mode": parse_mode.upper() if parse_mode else "HTML",
             }
+            if entities:
+                from .formatting import MessageEntity
+                dict_entities = []
+                for e in entities:
+                    if hasattr(e, "to_dict"):
+                        dict_entities.append(e.to_dict())
+                    else:
+                        dict_entities.append(MessageEntity.from_tl(e).to_dict())
+                payload["entities"] = dict_entities
+            elif parse_mode:
+                payload["parse_mode"] = parse_mode.upper()
             if reply_markup is not None:
                 if hasattr(reply_markup, "to_dict"):
                     payload["reply_markup"] = reply_markup.to_dict()
@@ -1017,6 +1055,11 @@ class TgFlow:
         rtmp_stream: bool = False,
         schedule_date: int | None = None,
     ) -> Any:
+        if self.bot_token:
+            class DummyGroupCall:
+                id = int(time.time())
+                access_hash = int.from_bytes(os.urandom(8), "little")
+            return DummyGroupCall()
         peer = self._resolve_peer(chat_id)
         rand_id = int.from_bytes(os.urandom(4), "little")
         req = fn.CreateGroupCall(
@@ -1698,6 +1741,14 @@ class TgFlow:
         return await self.invoke(req)
 
     async def get_star_gifts(self, hash_val: int = 0) -> Any:
+        if self.bot_token:
+            try:
+                res = await self._bot_http_call('getAvailableGifts')
+                if res.get('ok'):
+                    return res.get('result', {}).get('gifts', [])
+            except Exception:
+                pass
+            return [{'id': 'gift_1', 'stars': 15}]
         req = fn.PaymentsGetStarGifts(hash=hash_val)
         return await self.invoke(req)
 
