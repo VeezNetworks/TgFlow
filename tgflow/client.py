@@ -273,24 +273,41 @@ class TgFlow:
         parse_mode: str = "html",
         reply_to_message_id: int | None = None,
         quote: str | None = None,
+        quote_entities: list[Any] | None = None,
+        quote_offset: int | None = None,
         reply_markup: Any = None,
         no_webpage: bool = False,
         silent: bool = False,
+        effect: int | None = None,
+        invert_media: bool = False,
     ) -> Message:
         plain_text = text
         entities: list[Any] = []
         if parse_mode == "html":
             plain_text, parsed_entities = parse_html(text)
             entities = [e.to_tl() for e in parsed_entities]
-        if quote:
-            plain_text = f"> {quote}\n{plain_text}"
+        elif parse_mode in ("markdown", "md"):
+            from .formatting import parse_markdown
+            plain_text, parsed_entities = parse_markdown(text)
+            entities = [e.to_tl() for e in parsed_entities]
+
+        reply_to_obj = None
+        if reply_to_message_id is not None or quote is not None:
+            reply_to_obj = tl.InputReplyToMessage(
+                reply_to_msg_id=reply_to_message_id or 0,
+                quote_text=quote,
+                quote_entities=[e.to_tl() if hasattr(e, "to_tl") else e for e in quote_entities] if quote_entities else None,
+                quote_offset=quote_offset,
+            )
 
         req = fn.SendMessage(
             peer=self._resolve_peer(chat_id),
             message=plain_text,
             random_id=int.from_bytes(os.urandom(8), "little"),
+            reply_to=reply_to_obj,
             no_webpage=no_webpage,
             silent=silent,
+            invert_media=invert_media,
             entities=entities if entities else None,
         )
 
@@ -302,6 +319,7 @@ class TgFlow:
             chat=chat_obj,
             from_user=self.me,
             text=plain_text,
+            entities=entities,
             reply_to_message_id=reply_to_message_id,
             quote=quote,
             client=self,

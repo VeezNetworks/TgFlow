@@ -16192,3 +16192,409 @@ class DocumentAttributeHasStickers(TLObject):
     @classmethod
     def read(cls, reader: TLReader) -> 'DocumentAttributeHasStickers':
         return cls()
+
+
+@register_tl
+class MessageEntityUnknown(TLObject):
+    ID: int = 0xBB92BA95
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityUnknown":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityMention(TLObject):
+    ID: int = 0xFA04579D
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityMention":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityHashtag(TLObject):
+    ID: int = 0x6F12E79F
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityHashtag":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityBotCommand(TLObject):
+    ID: int = 0x6CEF8AC7
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityBotCommand":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityUrl(TLObject):
+    ID: int = 0x6ED02538
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityUrl":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityEmail(TLObject):
+    ID: int = 0x64E475C2
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityEmail":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityBold(TLObject):
+    ID: int = 0xBD610BC2
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityBold":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityItalic(TLObject):
+    ID: int = 0x826F8E60
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityItalic":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityCode(TLObject):
+    ID: int = 0x28B4E794
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityCode":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityPre(TLObject):
+    ID: int = 0x739260E3
+    def __init__(self, offset: int = 0, length: int = 0, language: str = "") -> None:
+        self.offset = offset
+        self.length = length
+        self.language = language
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+        writer.write_string(self.language or "")
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityPre":
+        return cls(offset=reader.read_int32(), length=reader.read_int32(), language=reader.read_string())
+
+
+@register_tl
+class MessageEntityTextUrl(TLObject):
+    ID: int = 0x76A6D327
+    def __init__(self, offset: int = 0, length: int = 0, url: str = "") -> None:
+        self.offset = offset
+        self.length = length
+        self.url = url
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+        writer.write_string(self.url or "")
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityTextUrl":
+        return cls(offset=reader.read_int32(), length=reader.read_int32(), url=reader.read_string())
+
+
+@register_tl
+class MessageEntityPhone(TLObject):
+    ID: int = 0x9B69E34B
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityPhone":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityCashtag(TLObject):
+    ID: int = 0x4C4E743F
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityCashtag":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityUnderline(TLObject):
+    ID: int = 0x9C792A29
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityUnderline":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityStrike(TLObject):
+    ID: int = 0xBF613066
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityStrike":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityBlockquote(TLObject):
+    ID: int = 0x20DF5D12
+    def __init__(self, offset: int = 0, length: int = 0, collapsed: bool = False) -> None:
+        self.offset = offset
+        self.length = length
+        self.collapsed = collapsed
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 1 if self.collapsed else 0
+        writer.write_uint32(flags)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityBlockquote":
+        flags = reader.read_uint32()
+        collapsed = bool(flags & 1)
+        offset = reader.read_int32()
+        length = reader.read_int32()
+        return cls(offset=offset, length=length, collapsed=collapsed)
+
+
+@register_tl
+class MessageEntityExpandableBlockquote(TLObject):
+    ID: int = 0x79069D51
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityExpandableBlockquote":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntitySpoiler(TLObject):
+    ID: int = 0x32CA960F
+    def __init__(self, offset: int = 0, length: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntitySpoiler":
+        return cls(offset=reader.read_int32(), length=reader.read_int32())
+
+
+@register_tl
+class MessageEntityCustomEmoji(TLObject):
+    ID: int = 0xC8CF05F8
+    def __init__(self, offset: int = 0, length: int = 0, document_id: int = 0) -> None:
+        self.offset = offset
+        self.length = length
+        self.document_id = document_id
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.length)
+        writer.write_int64(self.document_id)
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessageEntityCustomEmoji":
+        return cls(offset=reader.read_int32(), length=reader.read_int32(), document_id=reader.read_int64())
+
+
+@register_tl
+class InputReplyToMessage(TLObject):
+    ID: int = 0x22C0848D
+    def __init__(
+        self,
+        reply_to_msg_id: int = 0,
+        top_msg_id: int | None = None,
+        reply_to_peer_id: Any = None,
+        quote_text: str | None = None,
+        quote_entities: list[Any] | None = None,
+        quote_offset: int | None = None,
+    ) -> None:
+        self.reply_to_msg_id = reply_to_msg_id
+        self.top_msg_id = top_msg_id
+        self.reply_to_peer_id = reply_to_peer_id
+        self.quote_text = quote_text
+        self.quote_entities = quote_entities
+        self.quote_offset = quote_offset
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.top_msg_id is not None:
+            flags |= (1 << 0)
+        if self.reply_to_peer_id is not None:
+            flags |= (1 << 1)
+        if self.quote_text is not None:
+            flags |= (1 << 6)
+        if self.quote_entities is not None:
+            flags |= (1 << 7)
+        if self.quote_offset is not None:
+            flags |= (1 << 10)
+        writer.write_uint32(flags)
+        writer.write_int32(self.reply_to_msg_id)
+        if self.top_msg_id is not None:
+            writer.write_int32(self.top_msg_id)
+        if self.reply_to_peer_id is not None:
+            writer.write_object(self.reply_to_peer_id)
+        if self.quote_text is not None:
+            writer.write_string(self.quote_text)
+        if self.quote_entities is not None:
+            writer.write_vector(self.quote_entities, lambda w, x: w.write_object(x))
+        if self.quote_offset is not None:
+            writer.write_int32(self.quote_offset)
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputReplyToMessage":
+        flags = reader.read_uint32()
+        reply_to_msg_id = reader.read_int32()
+        top_msg_id = reader.read_int32() if (flags & (1 << 0)) else None
+        reply_to_peer_id = reader.read_object() if (flags & (1 << 1)) else None
+        quote_text = reader.read_string() if (flags & (1 << 6)) else None
+        quote_entities = reader.read_vector(lambda r: r.read_object()) if (flags & (1 << 7)) else None
+        quote_offset = reader.read_int32() if (flags & (1 << 10)) else None
+        return cls(
+            reply_to_msg_id=reply_to_msg_id,
+            top_msg_id=top_msg_id,
+            reply_to_peer_id=reply_to_peer_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
+            quote_offset=quote_offset,
+        )
+
+
+@register_tl
+class ReactionEmpty(TLObject):
+    ID: int = 0x79F5D419
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReactionEmpty":
+        return cls()
+
+
+@register_tl
+class ReactionEmoji(TLObject):
+    ID: int = 0x1B2286B8
+    def __init__(self, emoticon: str = "") -> None:
+        self.emoticon = emoticon
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.emoticon)
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReactionEmoji":
+        return cls(emoticon=reader.read_string())
+
+
+@register_tl
+class ReactionCustomEmoji(TLObject):
+    ID: int = 0x8935FC73
+    def __init__(self, document_id: int = 0) -> None:
+        self.document_id = document_id
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.document_id)
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReactionCustomEmoji":
+        return cls(document_id=reader.read_int64())
+
+
+@register_tl
+class ReactionPaid(TLObject):
+    ID: int = 0x523DA4EB
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReactionPaid":
+        return cls()
