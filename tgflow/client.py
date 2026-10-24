@@ -1,10 +1,11 @@
 import asyncio
+import inspect
 import os
 import signal
 import time
 from typing import Any, Callable, Coroutine, Sequence, Union
 from .errors import RPCError, ConnectionError
-from .filters import Filter, When
+from .filters import Filter, When, FlowCommand, CommandContext, Command
 from .formatting import parse_html, MessageEntity
 from .rpc.message_id import MessageIdGenerator
 from .rpc.packet import PacketCodec
@@ -31,6 +32,66 @@ class Handler:
         if self.filter is None:
             return True
         return bool(self.filter(client, update))
+
+    async def execute(self, client: "TgFlow", update: Any) -> Any:
+        sig = inspect.signature(self.callback)
+        params = list(sig.parameters.values())
+        if not params:
+            return await self.callback()
+
+        ctx = getattr(update, "command_context", None)
+        kwargs = dict(getattr(update, "command_kwargs", {}) or {})
+
+        if len(params) == 1:
+            p0_name = params[0].name.lower()
+            p0_type = getattr(params[0].annotation, "__name__", "").lower()
+            if ctx is not None and (p0_name in ("ctx", "context") or p0_type == "commandcontext"):
+                return await self.callback(ctx)
+            if p0_name in ("client", "cli", "bot"):
+                return await self.callback(client)
+            return await self.callback(update)
+
+        call_args: list[Any] = []
+        pos_params = [p for p in params if p.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)]
+        p0_name = pos_params[0].name.lower()
+
+        if p0_name in ("ctx", "context") and ctx is not None:
+            call_args.append(ctx)
+            pos_params = pos_params[1:]
+        elif p0_name in ("client", "cli", "bot"):
+            call_args.append(client)
+            pos_params = pos_params[1:]
+            if pos_params and pos_params[0].name.lower() in ("msg", "message", "update", "m"):
+                call_args.append(update)
+                pos_params = pos_params[1:]
+        elif p0_name in ("msg", "message", "update", "m"):
+            call_args.append(update)
+            pos_params = pos_params[1:]
+        else:
+            call_args.append(client)
+            pos_params = pos_params[1:]
+            if pos_params:
+                call_args.append(update)
+                pos_params = pos_params[1:]
+
+        for p in pos_params:
+            if p.name in kwargs:
+                val = kwargs.pop(p.name)
+                if val is None and p.default is not inspect.Parameter.empty:
+                    call_args.append(p.default)
+                else:
+                    call_args.append(val)
+            elif p.default is not inspect.Parameter.empty:
+                call_args.append(p.default)
+            else:
+                call_args.append(None)
+
+        call_kwargs: dict[str, Any] = {}
+        var_keyword = any(p.kind == inspect.Parameter.VAR_KEYWORD for p in params)
+        if var_keyword:
+            call_kwargs.update(kwargs)
+
+        return await self.callback(*call_args, **call_kwargs)
 
 
 class TgFlow:
@@ -76,13 +137,42 @@ class TgFlow:
 
         self.me: User | None = None
 
-    def command(self, commands: Union[str, Sequence[str]], prefixes: Union[str, Sequence[str]] = "/", when: Filter | None = None) -> Callable[..., Any]:
-        cmd_filter = When.command(commands, prefixes)
-        final_filter = (cmd_filter & when) if when else cmd_filter
-        def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
+    def command(
+        self,
+        commands: Union[Callable[..., Coroutine[Any, Any, Any]], str, Sequence[str], FlowCommand, None] = None,
+        prefixes: Union[str, Sequence[str]] = "/",
+        when: Filter | None = None,
+    ) -> Callable[..., Any]:
+        if callable(commands) and not isinstance(commands, Filter):
+            func = commands
+            cmd_name = func.__name__
+            cmd_filter = When.command(cmd_name, prefixes=prefixes)
+            final_filter = (cmd_filter & when) if when else cmd_filter
             self._message_handlers.append(Handler(func, final_filter))
             return func
+
+        if isinstance(commands, FlowCommand):
+            final_filter = commands.build_filter()
+            if when is not None:
+                final_filter = final_filter & when
+        elif commands is not None:
+            cmd_filter = When.command(commands, prefixes=prefixes)
+            final_filter = (cmd_filter & when) if when else cmd_filter
+        else:
+            final_filter = when
+
+        def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
+            nonlocal final_filter
+            if final_filter is None:
+                cmd_name = func.__name__
+                f = When.command(cmd_name, prefixes=prefixes)
+                final_filter = (f & when) if when else f
+            self._message_handlers.append(Handler(func, final_filter))
+            return func
+
         return decorator
+
+    cmd = command
 
     def message(self, when: Filter | None = None) -> Callable[..., Any]:
         def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
@@ -264,7 +354,30 @@ class TgFlow:
 
     async def _handle_raw_payload(self, payload: bytes) -> None:
         for handler in self._raw_handlers:
-            asyncio.create_task(handler.callback(self, payload))
+            asyncio.create_task(handler.execute(self, payload))
+
+    async def dispatch_message(self, message: Any) -> None:
+        for handler in self._message_handlers:
+            if await handler.check(self, message):
+                await handler.execute(self, message)
+
+    async def dispatch_callback(self, callback_query: Any) -> None:
+        for handler in self._callback_handlers:
+            if await handler.check(self, callback_query):
+                await handler.execute(self, callback_query)
+
+    async def dispatch_inline(self, inline_query: Any) -> None:
+        for handler in self._inline_handlers:
+            if await handler.check(self, inline_query):
+                await handler.execute(self, inline_query)
+
+    async def dispatch(self, update: Any) -> None:
+        if getattr(update, "data", None) is not None or hasattr(update, "message") and hasattr(update, "data"):
+            await self.dispatch_callback(update)
+        elif getattr(update, "query", None) is not None:
+            await self.dispatch_inline(update)
+        else:
+            await self.dispatch_message(update)
 
     async def send_message(
         self,

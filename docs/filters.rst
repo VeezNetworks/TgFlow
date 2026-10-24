@@ -1,24 +1,119 @@
-When Routing Engine
-===================
+When Routing Engine & Advanced Commands
+=========================================
 
-TgFlow features the **When** (or **F**) condition engine, replacing outdated verbose filter syntax with clean, natural routing.
+TgFlow features the modern **When** (or **F**) condition engine and an advanced **Command Routing** system, eliminating boilerplate and providing clean, ergonomic routing.
+
+Command Formatting
+------------------
+
+TgFlow supports multiple flexible command formats:
+
+1. Zero-Argument Auto-Inference
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Decorate your handler without parentheses. The command name is automatically inferred from the async function name:
+
+.. code-block:: python
+
+   @bot.command
+   async def ping(client, message):
+       await message.reply("pong")
+
+   @bot.command
+   async def start(client, message):
+       await message.reply("Welcome to TgFlow!")
+
+2. Parameterized & Typed Commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Specify typed arguments using angle brackets ``<param:type>`` for required arguments and square brackets ``[param:type]`` for optional arguments. Supported types include ``int``, ``float``, ``bool``, and ``str``:
+
+.. code-block:: python
+
+   @bot.command("ban <user_id:int> [reason:str]")
+   async def ban_user(client, message, user_id: int, reason: str = "Spam"):
+       await client.ban_chat_member(message.chat.id, user_id)
+       await message.reply(f"Banned user {user_id}. Reason: {reason}")
+
+TgFlow automatically parses incoming message arguments, casts them to the requested types, and injects them directly into the handler parameters.
+
+3. CommandContext (ctx) Handlers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Handlers can receive a single ``ctx: CommandContext`` object providing convenient shortcuts:
+
+.. code-block:: python
+
+   from tgflow import CommandContext
+
+   @bot.command("info")
+   async def bot_info(ctx: CommandContext):
+       await ctx.reply(f"Running command: /{ctx.command} in chat {ctx.chat.id}")
+
+   @bot.command("warn <user_id:int> [severity:int]")
+   async def warn(ctx: CommandContext, user_id: int, severity: int = 1):
+       await ctx.reply(f"Warned user {user_id} with severity level {severity}.")
+
+4. Fluent Command / FlowCommand DSL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Build complex commands using the fluent ``Command`` builder with chaining:
+
+.. code-block:: python
+
+   from tgflow import Command, When
+
+   kick_cmd = (
+       Command("kick <user_id:int>")
+       .desc("Kick a member from the group")
+       .prefix("!")
+       .alias("k")
+       .when(When.group)
+   )
+
+   @bot.command(kick_cmd)
+   async def handle_kick(client, message, user_id: int):
+       await client.ban_chat_member(message.chat.id, user_id)
+
+5. Command Aliases & Flexible Prefixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``@bot.cmd`` decorator is a direct alias for ``@bot.command``. Custom prefixes (e.g. ``!``, ``.``, or prefix-less ``""``) and automatic leading prefix stripping are fully supported:
+
+.. code-block:: python
+
+   # Accepts /status, .status, or !status
+   @bot.cmd("/status", prefixes=["/", ".", "!"])
+   async def check_status(client, message):
+       await message.reply("All systems operational.")
+
+Message Attributes
+~~~~~~~~~~~~~~~~~~
+
+When a command matches, the message object is enriched with:
+
+* ``message.command_name``: The matched command name (e.g. ``"ban"``).
+* ``message.command``: List containing ``[command_name, *args]``.
+* ``message.command_args``: Raw argument string following the command.
+* ``message.args``: Alias for ``command_args``.
+* ``message.command_kwargs``: Dictionary of parsed and typed parameters.
+* ``message.command_context``: The ``CommandContext`` instance.
 
 Routing Decorators
 ------------------
 
-Instead of wrapping everything in generic handlers, TgFlow provides direct decorators on the client:
+TgFlow provides expressive decorators for all Telegram event types:
 
-* ``@bot.command("start")``: Directly handles the ``/start`` command.
-* ``@bot.command(["start", "help"], when=When.private)``: Multi-command handling with optional chat conditions.
-* ``@bot.callback("confirm")``: Matches callback queries with data equal to ``confirm``.
-* ``@bot.message(When.text)``: Handles messages matching specific conditions.
-* ``@bot.inline()``: Handles inline queries.
+* ``@bot.command(...)`` / ``@bot.cmd(...)``: Command handler with auto-inference or pattern matching.
+* ``@bot.message(when=...)``: Handles incoming messages matching filter conditions.
+* ``@bot.callback(data=...)``: Matches callback queries by string or filter.
+* ``@bot.inline(when=...)``: Handles inline queries.
 * ``@bot.raw()``: Handles raw MTProto payload frames.
 
 When Conditions & Combinators
 -----------------------------
 
-Combine conditions naturally using Python's bitwise operators ``&`` (AND), ``|`` (OR), and ``~`` (NOT):
+Combine conditions naturally using bitwise operators ``&`` (AND), ``|`` (OR), and ``~`` (NOT):
 
 .. code-block:: python
 

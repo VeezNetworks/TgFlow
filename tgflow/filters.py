@@ -47,10 +47,7 @@ class CustomFilter(Filter):
         self.func = func
 
     def __call__(self, client: Any, update: Any) -> bool:
-        try:
-            return bool(self.func(client, update))
-        except TypeError:
-            return bool(self.func(update))
+        return bool(self.func(client, update))
 
 
 class AllFilter(Filter):
@@ -60,50 +57,41 @@ class AllFilter(Filter):
 
 class TextFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
-        text = getattr(update, "text", None) or getattr(update, "message", None)
-        return bool(text and isinstance(text, str) and len(text.strip()) > 0)
+        return bool(getattr(update, "text", None))
 
 
 class PrivateFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
         chat = getattr(update, "chat", None)
-        if not chat:
-            return False
-        return getattr(chat, "type", "") == "private"
+        return bool(chat and getattr(chat, "type", "") == "private")
 
 
 class GroupFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
         chat = getattr(update, "chat", None)
-        if not chat:
-            return False
-        return getattr(chat, "type", "") in ("group", "supergroup")
+        return bool(chat and getattr(chat, "type", "") in ("group", "supergroup"))
 
 
 class ChannelFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
         chat = getattr(update, "chat", None)
-        if not chat:
-            return False
-        return getattr(chat, "type", "") == "channel"
+        return bool(chat and getattr(chat, "type", "") == "channel")
 
 
 class BotFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
-        from_user = getattr(update, "from_user", None)
-        if not from_user:
-            return False
-        return bool(getattr(from_user, "is_bot", False))
+        user = getattr(update, "from_user", None)
+        return bool(user and getattr(user, "is_bot", False))
 
 
 class ReplyFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
-        return getattr(update, "reply_to_message", None) is not None or getattr(update, "reply_to_message_id", None) is not None
+        return bool(getattr(update, "reply_to_message_id", None) or getattr(update, "reply_to_message", None))
 
 
 class ForwardedFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
-        return getattr(update, "forward_from", None) is not None or getattr(update, "forward_date", None) is not None
+        return bool(getattr(update, "forward_from", None) or getattr(update, "forward_date", None))
 
 
 class PhotoFilter(Filter):
@@ -154,26 +142,158 @@ class MediaFilter(Filter):
         )
 
 
+class CommandContext:
+    def __init__(self, client: Any, message: Any, command: str, args: str, kwargs: dict[str, Any]) -> None:
+        self.client = client
+        self.message = message
+        self.command = command
+        self.args = args
+        self.kwargs = kwargs
+        self.chat = getattr(message, "chat", None)
+        self.from_user = getattr(message, "from_user", None)
+
+    async def reply(self, text: str, **kwargs: Any) -> Any:
+        return await self.message.reply(text, **kwargs)
+
+    async def reply_text(self, text: str, **kwargs: Any) -> Any:
+        return await self.message.reply(text, **kwargs)
+
+
+class FlowCommand:
+    def __init__(
+        self,
+        name: str,
+        description: str = "",
+        prefixes: Union[str, Sequence[str]] = "/",
+        when: Filter | None = None,
+        aliases: Sequence[str] | None = None,
+        case_sensitive: bool = False,
+    ) -> None:
+        self.name = name
+        self.description = description
+        self.prefixes = prefixes
+        self.when_filter = when
+        self.aliases = list(aliases) if aliases else []
+        self.case_sensitive = case_sensitive
+
+    def desc(self, description: str) -> "FlowCommand":
+        self.description = description
+        return self
+
+    def prefix(self, prefixes: Union[str, Sequence[str]]) -> "FlowCommand":
+        self.prefixes = prefixes
+        return self
+
+    def when(self, filter_obj: Filter) -> "FlowCommand":
+        self.when_filter = (self.when_filter & filter_obj) if self.when_filter else filter_obj
+        return self
+
+    def alias(self, *aliases: str) -> "FlowCommand":
+        self.aliases.extend(aliases)
+        return self
+
+    def build_filter(self) -> Filter:
+        cmds = [self.name] + self.aliases
+        f = CommandFilter(cmds, prefixes=self.prefixes, case_sensitive=self.case_sensitive)
+        if self.when_filter:
+            return f & self.when_filter
+        return f
+
+
+Command = FlowCommand
+
+
 class CommandFilter(Filter):
-    def __init__(self, commands: Union[str, Sequence[str]], prefixes: Union[str, Sequence[str]] = "/") -> None:
-        if isinstance(commands, str):
-            self.commands = [commands.lower()]
+    def __init__(
+        self,
+        commands: Union[str, Sequence[str], FlowCommand],
+        prefixes: Union[str, Sequence[str]] = "/",
+        case_sensitive: bool = False,
+    ) -> None:
+        self.case_sensitive = case_sensitive
+        prefix_list = [prefixes] if isinstance(prefixes, str) else list(prefixes)
+        self.prefixes = set(prefix_list)
+        self.arg_specs: list[tuple[str, type, bool]] = []
+
+        raw_candidates: list[str] = []
+        if isinstance(commands, FlowCommand):
+            raw_candidates = [commands.name] + commands.aliases
+        elif isinstance(commands, str):
+            raw_candidates = [commands]
         else:
-            self.commands = [c.lower() for c in commands]
-        self.prefixes = set(prefixes if not isinstance(prefixes, str) else [prefixes])
+            raw_candidates = list(commands)
+
+        raw_cmds: list[str] = []
+        for idx, item in enumerate(raw_candidates):
+            tokens = item.strip().split()
+            if tokens:
+                raw_cmds.append(tokens[0])
+                if idx == 0 and len(tokens) > 1 and not self.arg_specs:
+                    for tok in tokens[1:]:
+                        is_opt = tok.startswith("[") and tok.endswith("]")
+                        clean_tok = tok.strip("<>[]")
+                        typ = str
+                        name = clean_tok
+                        if ":" in clean_tok:
+                            name, t_name = clean_tok.split(":", 1)
+                            if t_name.lower() in ("int", "integer"):
+                                typ = int
+                            elif t_name.lower() in ("float", "double"):
+                                typ = float
+                            elif t_name.lower() in ("bool", "boolean"):
+                                typ = bool
+                        self.arg_specs.append((name, typ, is_opt))
+
+        self.commands: set[str] = set()
+        for c in raw_cmds:
+            clean_c = c
+            for p in self.prefixes:
+                if clean_c.startswith(p):
+                    clean_c = clean_c[len(p):]
+                    break
+            if not self.case_sensitive:
+                clean_c = clean_c.lower()
+            self.commands.add(clean_c)
 
     def __call__(self, client: Any, update: Any) -> bool:
         text = getattr(update, "text", "") or ""
         if not text:
             return False
         for prefix in self.prefixes:
-            if text.startswith(prefix):
-                parts = text[len(prefix):].split()
+            if prefix == "" or text.startswith(prefix):
+                rem = text[len(prefix):] if prefix else text
+                parts = rem.split()
                 if not parts:
                     continue
-                cmd = parts[0].split("@")[0].lower()
+                raw_token = parts[0].split("@")[0]
+                cmd = raw_token if self.case_sensitive else raw_token.lower()
                 if cmd in self.commands:
-                    update.command = [cmd] + parts[1:]
+                    args_list = parts[1:]
+                    args_str = rem[len(parts[0]):].strip()
+                    update.command = [cmd] + args_list
+                    update.command_name = cmd
+                    update.command_args = args_str
+                    update.command_args_list = args_list
+                    update.args = args_str
+
+                    parsed_kwargs = {}
+                    for idx, spec in enumerate(self.arg_specs):
+                        name, typ, is_opt = spec
+                        if idx < len(args_list):
+                            val = args_list[idx]
+                            try:
+                                if typ is bool:
+                                    parsed_kwargs[name] = val.lower() in ("1", "true", "yes", "on")
+                                else:
+                                    parsed_kwargs[name] = typ(val)
+                            except (ValueError, TypeError):
+                                parsed_kwargs[name] = val
+                        elif not is_opt:
+                            parsed_kwargs[name] = None
+                        else:
+                            parsed_kwargs[name] = None
+                    update.command_kwargs = parsed_kwargs
+                    update.command_context = CommandContext(client, update, cmd, args_str, parsed_kwargs)
                     return True
         return False
 
@@ -198,11 +318,11 @@ class UserFilter(Filter):
         self.usernames = {u.lower().lstrip("@") for u in user_list if isinstance(u, str)}
 
     def __call__(self, client: Any, update: Any) -> bool:
-        from_user = getattr(update, "from_user", None)
-        if not from_user:
+        user = getattr(update, "from_user", None)
+        if not user:
             return False
-        uid = getattr(from_user, "id", None)
-        uname = (getattr(from_user, "username", "") or "").lower().lstrip("@")
+        uid = getattr(user, "id", None)
+        uname = (getattr(user, "username", "") or "").lower().lstrip("@")
         return uid in self.user_ids or uname in self.usernames
 
 
@@ -250,8 +370,12 @@ class WhenRegistry:
     poll = PollFilter()
 
     @staticmethod
-    def command(commands: Union[str, Sequence[str]], prefixes: Union[str, Sequence[str]] = "/") -> CommandFilter:
-        return CommandFilter(commands, prefixes)
+    def command(
+        commands: Union[str, Sequence[str], FlowCommand],
+        prefixes: Union[str, Sequence[str]] = "/",
+        case_sensitive: bool = False,
+    ) -> CommandFilter:
+        return CommandFilter(commands, prefixes, case_sensitive=case_sensitive)
 
     @staticmethod
     def regex(pattern: Union[str, re.Pattern]) -> RegexFilter:

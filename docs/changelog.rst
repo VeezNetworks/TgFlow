@@ -3,6 +3,21 @@ Changelog & Release Notes
 
 All notable changes and architectural milestones of **TgFlow** are documented here.
 
+Version 1.8.0 (2026-10-24)
+--------------------------
+
+**Advanced Command Formatting, Typed Arguments & FlowCommand DSL**
+
+* **Zero-Argument Command Decorator**: Support decorating handlers directly with ``@bot.command`` without parentheses. The command name is automatically inferred from the handler function name (e.g. ``async def start(cli, msg)`` routes ``/start``).
+* **Parameterized & Typed Commands**: Declarative command argument parsing via syntax like ``@bot.command("ban <user_id:int> [reason:str]")``. Supports ``int``, ``float``, ``bool``, and ``str`` casting with automatic injection into handler parameter signatures.
+* **Automatic Argument Injection**: Handler functions receive typed arguments directly as named parameters (e.g. ``async def ban(client, message, user_id, reason="Spam")``).
+* **CommandContext (ctx) Handlers**: Handlers can accept a single ``ctx: CommandContext`` parameter providing ``ctx.reply()``, ``ctx.command``, ``ctx.args``, ``ctx.kwargs``, ``ctx.chat``, and ``ctx.from_user``.
+* **Fluent Command / FlowCommand DSL**: Chainable builder ``Command("kick <user_id:int>").desc("...").prefix("!").alias("k").when(...)``.
+* **Direct Command Aliases**: Added ``@bot.cmd(...)`` decorator alias for ``@bot.command(...)``.
+* **Flexible Prefixes**: Full support for custom prefixes (``/``, ``!``, ``.``), prefix-less commands (``""``), and automatic prefix stripping.
+* **Update Enrichment**: Every command update is enriched with ``message.command_name``, ``message.command_args``, ``message.args``, ``message.command_kwargs``, and ``message.command_context``.
+* **Automated Unit Tests**: Added comprehensive test suite in ``tests/test_command_formats.py`` verifying all command patterns (67 total tests passing).
+
 Version 1.7.0 (2026-10-24)
 --------------------------
 

@@ -15,12 +15,12 @@ Install TgFlow from PyPI:
 Modern Bot Example
 ------------------
 
-TgFlow eliminates the verbose ``filters.command(...)`` syntax, providing direct decorators and expressive ``When`` conditions:
+TgFlow eliminates verbose boilerplate, providing direct decorators, typed command formatting, and expressive ``When`` conditions:
 
 .. code-block:: python
 
    import asyncio
-   from tgflow import TgFlow, When
+   from tgflow import TgFlow, When, CommandContext
    from tgflow.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
    bot = TgFlow(
@@ -28,14 +28,25 @@ TgFlow eliminates the verbose ``filters.command(...)`` syntax, providing direct 
        bot_token="YOUR_BOT_TOKEN_HERE",
    )
 
-   # Direct command routing
+   # Zero-argument command decorator (inferred from function name)
+   @bot.command
+   async def ping(client: TgFlow, message: Message):
+       await message.reply("pong!")
+
+   # Typed parameterized command with automatic argument injection
+   @bot.command("ban <user_id:int> [reason:str]")
+   async def ban_user(client: TgFlow, message: Message, user_id: int, reason: str = "Spam"):
+       await client.ban_chat_member(message.chat.id, user_id)
+       await message.reply(f"Banned user {user_id}. Reason: {reason}")
+
+   # CommandContext shortcut
    @bot.command("start", when=When.private)
-   async def handle_start(client: TgFlow, message: Message):
+   async def handle_start(ctx: CommandContext):
        keyboard = InlineKeyboardMarkup([
            [InlineKeyboardButton(text="Docs", url="https://tgflow.veez.dev")],
            [InlineKeyboardButton(text="Click Me", callback_data="btn_click")]
        ])
-       await message.reply("Welcome to TgFlow! Choose an option:", reply_markup=keyboard)
+       await ctx.reply("Welcome to TgFlow! Choose an option:", reply_markup=keyboard)
 
    # Direct callback query routing
    @bot.callback("btn_click")

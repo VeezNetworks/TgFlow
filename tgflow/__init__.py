@@ -55,7 +55,7 @@ from .errors import (
     RpcCallFail,
     InterDcCallError,
 )
-from .filters import Filter, When, F
+from .filters import Filter, When, F, Command, FlowCommand, CommandContext
 from .types import (
     User,
     Chat,
@@ -112,6 +112,9 @@ __all__ = [
     "Filter",
     "When",
     "F",
+    "Command",
+    "FlowCommand",
+    "CommandContext",
     "User",
     "Chat",
     "Message",
