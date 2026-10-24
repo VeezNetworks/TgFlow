@@ -43,7 +43,7 @@ class InvertFilter(Filter):
 
 
 class CustomFilter(Filter):
-    def __init__(self, func: Callable[[Any, Any], bool]) -> None:
+    def __init__(self, func: Callable[..., bool]) -> None:
         self.func = func
 
     def __call__(self, client: Any, update: Any) -> bool:
@@ -51,10 +51,6 @@ class CustomFilter(Filter):
             return bool(self.func(client, update))
         except TypeError:
             return bool(self.func(update))
-
-
-def create(func: Callable[..., bool]) -> Filter:
-    return CustomFilter(func)
 
 
 class AllFilter(Filter):
@@ -110,22 +106,52 @@ class ForwardedFilter(Filter):
         return getattr(update, "forward_from", None) is not None or getattr(update, "forward_date", None) is not None
 
 
+class PhotoFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "photo", None) is not None
+
+
+class VideoFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "video", None) is not None
+
+
+class AudioFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "audio", None) is not None
+
+
+class DocumentFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "document", None) is not None
+
+
+class VoiceFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "voice", None) is not None
+
+
+class AnimationFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "animation", None) is not None
+
+
+class StickerFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "sticker", None) is not None
+
+
+class PollFilter(Filter):
+    def __call__(self, client: Any, update: Any) -> bool:
+        return getattr(update, "poll", None) is not None
+
+
 class MediaFilter(Filter):
     def __call__(self, client: Any, update: Any) -> bool:
         return any(
             getattr(update, attr, None) is not None
             for attr in ("photo", "video", "document", "audio", "voice", "animation", "sticker")
         )
-
-
-class PhotoFilter(Filter):
-    def __call__(self, client: Any, update: Any) -> bool:
-        return getattr(update, "photo", None) is not None
-
-
-class DocumentFilter(Filter):
-    def __call__(self, client: Any, update: Any) -> bool:
-        return getattr(update, "document", None) is not None
 
 
 class CommandFilter(Filter):
@@ -195,18 +221,83 @@ class ChatFilter(Filter):
         return cid in self.chat_ids or cname in self.usernames
 
 
-all = AllFilter()
-text = TextFilter()
-private = PrivateFilter()
-group = GroupFilter()
-channel = ChannelFilter()
-bot = BotFilter()
-reply = ReplyFilter()
-forwarded = ForwardedFilter()
-media = MediaFilter()
-photo = PhotoFilter()
-document = DocumentFilter()
-command = CommandFilter
-regex = RegexFilter
-user = UserFilter
-chat = ChatFilter
+class DataFilter(Filter):
+    def __init__(self, data: Union[str, Sequence[str]]) -> None:
+        self.allowed = {data} if isinstance(data, str) else set(data)
+
+    def __call__(self, client: Any, update: Any) -> bool:
+        val = getattr(update, "data", None)
+        return val in self.allowed
+
+
+class WhenRegistry:
+    all = AllFilter()
+    text = TextFilter()
+    private = PrivateFilter()
+    group = GroupFilter()
+    channel = ChannelFilter()
+    bot = BotFilter()
+    reply = ReplyFilter()
+    forwarded = ForwardedFilter()
+    media = MediaFilter()
+    photo = PhotoFilter()
+    video = VideoFilter()
+    audio = AudioFilter()
+    document = DocumentFilter()
+    voice = VoiceFilter()
+    animation = AnimationFilter()
+    sticker = StickerFilter()
+    poll = PollFilter()
+
+    @staticmethod
+    def command(commands: Union[str, Sequence[str]], prefixes: Union[str, Sequence[str]] = "/") -> CommandFilter:
+        return CommandFilter(commands, prefixes)
+
+    @staticmethod
+    def regex(pattern: Union[str, re.Pattern]) -> RegexFilter:
+        return RegexFilter(pattern)
+
+    @staticmethod
+    def user(users: Union[int, str, Sequence[Union[int, str]]]) -> UserFilter:
+        return UserFilter(users)
+
+    @staticmethod
+    def chat(chats: Union[int, str, Sequence[Union[int, str]]]) -> ChatFilter:
+        return ChatFilter(chats)
+
+    @staticmethod
+    def data(data: Union[str, Sequence[str]]) -> DataFilter:
+        return DataFilter(data)
+
+    @staticmethod
+    def custom(func: Callable[..., bool]) -> CustomFilter:
+        return CustomFilter(func)
+
+
+When = WhenRegistry
+F = WhenRegistry
+
+all = When.all
+text = When.text
+private = When.private
+group = When.group
+channel = When.channel
+bot = When.bot
+reply = When.reply
+forwarded = When.forwarded
+media = When.media
+photo = When.photo
+video = When.video
+audio = When.audio
+document = When.document
+voice = When.voice
+animation = When.animation
+sticker = When.sticker
+poll = When.poll
+command = When.command
+regex = When.regex
+user = When.user
+chat = When.chat
+data = When.data
+custom = When.custom
+create = When.custom

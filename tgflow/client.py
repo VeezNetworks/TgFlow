@@ -4,7 +4,7 @@ import signal
 import time
 from typing import Any, Callable, Coroutine, Sequence, Union
 from .errors import RPCError, ConnectionError
-from .filters import Filter
+from .filters import Filter, When
 from .formatting import parse_html, MessageEntity
 from .rpc.message_id import MessageIdGenerator
 from .rpc.packet import PacketCodec
@@ -17,6 +17,9 @@ from .types.chat import Chat
 from .types.message import Message
 from .types.updates import CallbackQuery, InlineQuery
 from .types.user import User
+from .types.media import Photo, Video, Audio, Document, Voice, Animation, Sticker, Location, Venue, Contact, Dice
+from .types.polls import Poll, PollOption
+from .types.chat_member import ChatMember, ChatPermissions, ChatInviteLink
 
 
 class Handler:
@@ -73,29 +76,55 @@ class TgFlow:
 
         self.me: User | None = None
 
-    def on_message(self, filter: Filter | None = None) -> Callable[..., Any]:
+    def command(self, commands: Union[str, Sequence[str]], prefixes: Union[str, Sequence[str]] = "/", when: Filter | None = None) -> Callable[..., Any]:
+        cmd_filter = When.command(commands, prefixes)
+        final_filter = (cmd_filter & when) if when else cmd_filter
         def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
-            self._message_handlers.append(Handler(func, filter))
+            self._message_handlers.append(Handler(func, final_filter))
             return func
         return decorator
 
-    def on_callback_query(self, filter: Filter | None = None) -> Callable[..., Any]:
+    def message(self, when: Filter | None = None) -> Callable[..., Any]:
         def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
-            self._callback_handlers.append(Handler(func, filter))
+            self._message_handlers.append(Handler(func, when))
             return func
         return decorator
 
-    def on_inline_query(self, filter: Filter | None = None) -> Callable[..., Any]:
+    def callback(self, data: Union[str, Sequence[str], Filter, None] = None) -> Callable[..., Any]:
+        if isinstance(data, (str, list, tuple, set)):
+            cb_filter: Filter | None = When.data(data)
+        elif isinstance(data, Filter):
+            cb_filter = data
+        else:
+            cb_filter = None
         def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
-            self._inline_handlers.append(Handler(func, filter))
+            self._callback_handlers.append(Handler(func, cb_filter))
             return func
         return decorator
 
-    def on_raw_update(self) -> Callable[..., Any]:
+    def inline(self, when: Filter | None = None) -> Callable[..., Any]:
+        def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
+            self._inline_handlers.append(Handler(func, when))
+            return func
+        return decorator
+
+    def raw(self) -> Callable[..., Any]:
         def decorator(func: Callable[..., Coroutine[Any, Any, Any]]) -> Callable[..., Coroutine[Any, Any, Any]]:
             self._raw_handlers.append(Handler(func, None))
             return func
         return decorator
+
+    def on_message(self, filter: Filter | None = None) -> Callable[..., Any]:
+        return self.message(when=filter)
+
+    def on_callback_query(self, filter: Filter | None = None) -> Callable[..., Any]:
+        return self.callback(data=filter)
+
+    def on_inline_query(self, filter: Filter | None = None) -> Callable[..., Any]:
+        return self.inline(when=filter)
+
+    def on_raw_update(self) -> Callable[..., Any]:
+        return self.raw()
 
     def add_handler(self, handler_type: str, callback: Callable[..., Coroutine[Any, Any, Any]], filter: Filter | None = None) -> None:
         handler = Handler(callback, filter)
@@ -254,8 +283,7 @@ class TgFlow:
             plain_text, parsed_entities = parse_html(text)
             entities = [e.to_tl() for e in parsed_entities]
         if quote:
-            quote_text = f"> {quote}\n{plain_text}"
-            plain_text = quote_text
+            plain_text = f"> {quote}\n{plain_text}"
 
         req = fn.SendMessage(
             peer=self._resolve_peer(chat_id),
@@ -312,26 +340,218 @@ class TgFlow:
             client=self,
         )
 
+    async def edit_message_caption(
+        self,
+        chat_id: int | str,
+        message_id: int,
+        caption: str,
+        parse_mode: str = "html",
+        reply_markup: Any = None,
+    ) -> Message:
+        return await self.edit_message_text(chat_id=chat_id, message_id=message_id, text=caption, parse_mode=parse_mode, reply_markup=reply_markup)
+
+    async def edit_message_reply_markup(self, chat_id: int | str, message_id: int, reply_markup: Any = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=message_id, date=int(time.time()), chat=chat_obj, client=self)
+
     async def delete_messages(self, chat_id: int | str, message_ids: Sequence[int], revoke: bool = True) -> bool:
         req = fn.DeleteMessages(id=list(message_ids), revoke=revoke)
         return True
 
-    async def send_reaction(self, chat_id: int | str, message_id: int, emoji: str = "👍") -> bool:
-        return True
+    async def send_photo(
+        self,
+        chat_id: int | str,
+        photo: Any,
+        caption: str | None = None,
+        parse_mode: str = "html",
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(
+            id=int(time.time()),
+            date=int(time.time()),
+            chat=chat_obj,
+            from_user=self.me,
+            caption=caption,
+            text=caption or "",
+            client=self,
+        )
 
-    async def answer_callback_query(self, callback_query_id: str, text: str = "", show_alert: bool = False, cache_time: int = 0) -> bool:
-        return True
+    async def send_video(
+        self,
+        chat_id: int | str,
+        video: Any,
+        caption: str | None = None,
+        parse_mode: str = "html",
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, caption=caption, text=caption or "", client=self)
 
-    async def answer_inline_query(self, inline_query_id: str, results: list[Any], cache_time: int = 300, is_personal: bool = False) -> bool:
+    async def send_audio(
+        self,
+        chat_id: int | str,
+        audio: Any,
+        caption: str | None = None,
+        performer: str | None = None,
+        title: str | None = None,
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, caption=caption, text=caption or "", client=self)
+
+    async def send_document(
+        self,
+        chat_id: int | str,
+        document: Any,
+        caption: str | None = None,
+        parse_mode: str = "html",
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, caption=caption, text=caption or "", client=self)
+
+    async def send_voice(
+        self,
+        chat_id: int | str,
+        voice: Any,
+        caption: str | None = None,
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, caption=caption, text=caption or "", client=self)
+
+    async def send_animation(
+        self,
+        chat_id: int | str,
+        animation: Any,
+        caption: str | None = None,
+        reply_to_message_id: int | None = None,
+        reply_markup: Any = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, caption=caption, text=caption or "", client=self)
+
+    async def send_sticker(self, chat_id: int | str, sticker: Any, reply_to_message_id: int | None = None, reply_markup: Any = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, client=self)
+
+    async def send_location(self, chat_id: int | str, latitude: float, longitude: float, reply_to_message_id: int | None = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, client=self)
+
+    async def send_venue(self, chat_id: int | str, latitude: float, longitude: float, title: str, address: str, reply_to_message_id: int | None = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, client=self)
+
+    async def send_contact(self, chat_id: int | str, phone_number: str, first_name: str, last_name: str | None = None, reply_to_message_id: int | None = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, client=self)
+
+    async def send_poll(
+        self,
+        chat_id: int | str,
+        question: str,
+        options: list[str],
+        is_anonymous: bool = True,
+        type: str = "regular",
+        allows_multiple_answers: bool = False,
+        reply_to_message_id: int | None = None,
+    ) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        poll_opts = [PollOption(text=opt, voter_count=0) for opt in options]
+        poll_obj = Poll(id=str(int(time.time())), question=question, options=poll_opts, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, media=poll_obj, client=self)
+
+    async def send_dice(self, chat_id: int | str, emoji: str = "🎲", reply_to_message_id: int | None = None) -> Message:
+        chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
+        return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, media=Dice(emoji=emoji, value=6), client=self)
+
+    async def send_chat_action(self, chat_id: int | str, action: str = "typing") -> bool:
         return True
 
     async def forward_messages(self, chat_id: int | str, from_chat_id: int | str, message_ids: Sequence[int]) -> Message:
         return Message(id=int(time.time()), date=int(time.time()), chat=Chat(id=int(chat_id) if isinstance(chat_id, int) else 0), client=self)
 
+    async def copy_message(self, chat_id: int | str, from_chat_id: int | str, message_id: int, caption: str | None = None, **kwargs: Any) -> Message:
+        return Message(id=int(time.time()), date=int(time.time()), chat=Chat(id=int(chat_id) if isinstance(chat_id, int) else 0), text=caption or "", client=self)
+
+    async def pin_chat_message(self, chat_id: int | str, message_id: int, disable_notification: bool = False) -> bool:
+        return True
+
+    async def unpin_chat_message(self, chat_id: int | str, message_id: int | None = None) -> bool:
+        return True
+
+    async def unpin_all_chat_messages(self, chat_id: int | str) -> bool:
+        return True
+
+    async def ban_chat_member(self, chat_id: int | str, user_id: int, until_date: int = 0, revoke_messages: bool = True) -> bool:
+        return True
+
+    async def unban_chat_member(self, chat_id: int | str, user_id: int, only_if_banned: bool = True) -> bool:
+        return True
+
+    async def restrict_chat_member(self, chat_id: int | str, user_id: int, permissions: ChatPermissions, until_date: int = 0) -> bool:
+        return True
+
+    async def promote_chat_member(self, chat_id: int | str, user_id: int, is_anonymous: bool = False, can_manage_chat: bool = True, can_delete_messages: bool = True) -> bool:
+        return True
+
+    async def set_chat_title(self, chat_id: int | str, title: str) -> bool:
+        return True
+
+    async def set_chat_description(self, chat_id: int | str, description: str) -> bool:
+        return True
+
+    async def set_chat_photo(self, chat_id: int | str, photo: Any) -> bool:
+        return True
+
+    async def delete_chat_photo(self, chat_id: int | str) -> bool:
+        return True
+
+    async def leave_chat(self, chat_id: int | str) -> bool:
+        return True
+
+    async def export_chat_invite_link(self, chat_id: int | str) -> str:
+        return f"https://t.me/+join_{int(time.time())}"
+
+    async def create_chat_invite_link(self, chat_id: int | str, name: str | None = None, expire_date: int | None = None, member_limit: int | None = None) -> ChatInviteLink:
+        return ChatInviteLink(invite_link=f"https://t.me/+custom_{int(time.time())}", creator=self.me or User(id=0), name=name, expire_date=expire_date, member_limit=member_limit)
+
     async def get_me(self) -> User:
         if not self.me:
             self.me = User(id=self.session.user_id or 777000, first_name="TgFlow", is_bot=self.session.is_bot)
         return self.me
+
+    async def get_chat(self, chat_id: int | str) -> Chat:
+        return Chat(id=int(chat_id) if isinstance(chat_id, int) else 0, title="TgFlow Chat")
+
+    async def get_chat_administrators(self, chat_id: int | str) -> list[ChatMember]:
+        return [ChatMember(status="administrator", user=self.me or User(id=0), can_manage_chat=True)]
+
+    async def get_chat_member(self, chat_id: int | str, user_id: int) -> ChatMember:
+        return ChatMember(status="member", user=User(id=user_id))
+
+    async def get_chat_members_count(self, chat_id: int | str) -> int:
+        return 1
+
+    async def get_history(self, chat_id: int | str, limit: int = 100, offset_id: int = 0) -> list[Message]:
+        req = fn.GetHistory(peer=self._resolve_peer(chat_id), limit=limit, offset_id=offset_id)
+        return []
+
+    async def send_reaction(self, chat_id: int | str, message_id: int, emoji: str = "👍") -> bool:
+        return True
+
+    async def answer_callback_query(self, callback_query_id: str, text: str = "", show_alert: bool = False, url: str | None = None, cache_time: int = 0) -> bool:
+        return True
+
+    async def answer_inline_query(self, inline_query_id: str, results: list[Any], cache_time: int = 300, is_personal: bool = False, next_offset: str = "") -> bool:
+        return True
 
     def export_session_string(self) -> str:
         return self.session.export_string()

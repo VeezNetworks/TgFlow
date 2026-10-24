@@ -1,58 +1,62 @@
-Filters and Event Routing
-==========================
+When Routing Engine
+===================
 
-TgFlow provides a composable routing system inspired by Pyrogram and Telethon.
+TgFlow features the **When** (or **F**) condition engine, replacing outdated verbose filter syntax with clean, natural routing.
 
-Filter Operators
-----------------
+Routing Decorators
+------------------
 
-You can combine filters using standard Python logical operators:
+Instead of wrapping everything in generic handlers, TgFlow provides direct decorators on the client:
 
-* ``&``: Logical AND (both conditions must match)
-* ``|``: Logical OR (either condition matches)
-* ``~``: Logical NOT (inverts the filter condition)
+* ``@bot.command("start")``: Directly handles the ``/start`` command.
+* ``@bot.command(["start", "help"], when=When.private)``: Multi-command handling with optional chat conditions.
+* ``@bot.callback("confirm")``: Matches callback queries with data equal to ``confirm``.
+* ``@bot.message(When.text)``: Handles messages matching specific conditions.
+* ``@bot.inline()``: Handles inline queries.
+* ``@bot.raw()``: Handles raw MTProto payload frames.
 
-.. code-block:: python
+When Conditions & Combinators
+-----------------------------
 
-   from tgflow import filters
-
-   # Command ping in private chats only
-   my_filter = filters.command("ping") & filters.private
-
-   # Text messages or photo messages
-   media_or_text = filters.text | filters.photo
-
-   # All messages except those from bots
-   human_only = ~filters.bot
-
-Built-in Filters
-----------------
-
-* ``filters.all``: Matches every update.
-* ``filters.text``: Matches messages containing non-empty text.
-* ``filters.command(commands, prefixes="/")``: Parses command names and arguments into ``message.command``.
-* ``filters.regex(pattern)``: Matches text against regular expressions, populating ``message.matches``.
-* ``filters.private``: Matches one-on-one direct messages.
-* ``filters.group``: Matches group and supergroup chats.
-* ``filters.channel``: Matches broadcast channel posts.
-* ``filters.bot``: Matches messages sent by bot accounts.
-* ``filters.reply``: Matches messages that are replies.
-* ``filters.forwarded``: Matches forwarded messages.
-* ``filters.media``: Matches messages with attachments.
-* ``filters.photo``: Matches photos.
-* ``filters.document``: Matches document files.
-
-Custom Filters
---------------
-
-Create custom filters using ``filters.create``:
+Combine conditions naturally using Python's bitwise operators ``&`` (AND), ``|`` (OR), and ``~`` (NOT):
 
 .. code-block:: python
 
-   from tgflow import filters
+   from tgflow import When
 
-   is_admin = filters.create(lambda client, msg: msg.from_user and msg.from_user.id in [1234567, 7654321])
+   # Command in private chats only
+   @bot.command("profile", when=When.private)
+   async def handle_profile(client, msg):
+       ...
 
-   @bot.on_message(filters.command("ban") & is_admin)
-   async def handle_ban(client, message):
-       await message.reply("Admin command executed.")
+   # Messages with photos or videos from non-bots
+   @bot.message((When.photo | When.video) & ~When.bot)
+   async def handle_media(client, msg):
+       ...
+
+Available Conditions
+--------------------
+
+* ``When.all``: Matches any update.
+* ``When.text``: Non-empty text messages.
+* ``When.command(cmds, prefixes="/")``: Custom command filter.
+* ``When.regex(pattern)``: Matches text against regular expressions.
+* ``When.private``: Direct 1-on-1 messages.
+* ``When.group``: Group or supergroup messages.
+* ``When.channel``: Channel broadcast posts.
+* ``When.bot``: Messages from bot users.
+* ``When.reply``: Messages replying to another message.
+* ``When.forwarded``: Forwarded messages.
+* ``When.media``: Messages with any media attachment.
+* ``When.photo``: Photo messages.
+* ``When.video``: Video messages.
+* ``When.audio``: Audio files.
+* ``When.document``: Document files.
+* ``When.voice``: Voice audio messages.
+* ``When.animation``: GIF/Animations.
+* ``When.sticker``: Stickers.
+* ``When.poll``: Polls.
+* ``When.user(ids_or_usernames)``: Filter by specific users.
+* ``When.chat(ids_or_usernames)``: Filter by specific chats.
+* ``When.data(callback_data)``: Filter callback queries by exact payload.
+* ``When.custom(func)``: Custom user-defined evaluation function.

@@ -2,14 +2,24 @@ import asyncio
 import os
 import sys
 import time
-from tgflow import TgFlow, filters, formatting
+from typing import Any
+from tgflow import TgFlow, When, F, formatting
 from tgflow.tl import functions as fn, types as tl
 from tgflow.tl.core import TLReader
 from tgflow.rpc.message_id import MessageIdGenerator
 from tgflow.rpc.packet import PacketCodec
 from tgflow.session import Session
 from tgflow.transport.tcp import TCPTransport
-from tgflow.types import Message, Chat, User
+from tgflow.types import (
+    Message,
+    Chat,
+    User,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    Photo,
+    ChatPermissions,
+    Poll,
+)
 
 
 async def run_live_telegram_handshake() -> bool:
@@ -48,17 +58,29 @@ def run_tl_validation() -> None:
     print("      -> TL constructors and 4-byte aligned binary packing verified.")
 
 
-def run_filter_and_formatting_demo() -> None:
-    print("[4/5] Testing routing filters and rich formatting...")
-    start_filter = filters.command("start") & filters.private
-    test_msg = Message(id=101, text="/start deep_link", chat=Chat(id=555, type="private"))
-    assert start_filter(None, test_msg)
-    print(f"      -> Filter matched: command={test_msg.command}")
+def run_advanced_typography_and_methods() -> None:
+    print("[4/5] Testing unique command typography & client methods...")
+    bot = TgFlow(session="demo_bot")
+
+    @bot.command("start", when=When.private)
+    async def on_start(client: TgFlow, message: Message) -> None:
+        pass
+
+    @bot.callback("confirm")
+    async def on_callback(client: TgFlow, query: Any) -> None:
+        pass
+
+    assert len(bot._message_handlers) == 1
+    assert len(bot._callback_handlers) == 1
+
+    test_msg = Message(id=101, text="/start bot_arg", chat=Chat(id=555, type="private"))
+    assert bot._message_handlers[0].filter(bot, test_msg)
+    print(f"      -> Direct @bot.command matched: command={test_msg.command}")
 
     styled_html = (
         formatting.bold("TgFlow v1.0.0") + "\n" +
-        formatting.expandable_blockquote("Line-by-line MTProto 2.0 implementation without comments.") + "\n" +
-        formatting.spoiler("Protected MTProto credentials.")
+        formatting.expandable_blockquote("Modern, intuitive routing without verbose filters syntax.") + "\n" +
+        formatting.spoiler("Clean architecture.")
     )
     plain, entities = formatting.parse_html(styled_html)
     print(f"      -> Rich formatting parsed: {len(entities)} entities (bold, expandable blockquote, spoiler).")
@@ -77,12 +99,12 @@ def run_session_integrity_check() -> None:
 
 async def main() -> None:
     print("=" * 65)
-    print(" TgFlow - MTProto 2.0 Telegram Framework Verification")
+    print(" TgFlow - Advanced MTProto 2.0 Telegram Framework")
     print("=" * 65)
     t0 = time.time()
     await run_live_telegram_handshake()
     run_tl_validation()
-    run_filter_and_formatting_demo()
+    run_advanced_typography_and_methods()
     run_session_integrity_check()
     elapsed = time.time() - t0
     print("=" * 65)

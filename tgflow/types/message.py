@@ -2,6 +2,7 @@ import asyncio
 from typing import Any, Optional
 from .user import User
 from .chat import Chat
+from .media import Photo, Video, Audio, Document, Voice, Animation, Sticker
 
 
 class Message:
@@ -15,8 +16,16 @@ class Message:
         entities: list[Any] | None = None,
         reply_to_message: Optional["Message"] = None,
         reply_to_message_id: int | None = None,
-        media: Any = None,
         quote: str | None = None,
+        photo: Optional[Photo] = None,
+        video: Optional[Video] = None,
+        audio: Optional[Audio] = None,
+        document: Optional[Document] = None,
+        voice: Optional[Voice] = None,
+        animation: Optional[Animation] = None,
+        sticker: Optional[Sticker] = None,
+        caption: str | None = None,
+        media: Any = None,
         client: Any = None,
     ) -> None:
         self.id = id
@@ -27,8 +36,16 @@ class Message:
         self.entities = entities or []
         self.reply_to_message = reply_to_message
         self.reply_to_message_id = reply_to_message_id
-        self.media = media
         self.quote = quote
+        self.photo = photo
+        self.video = video
+        self.audio = audio
+        self.document = document
+        self.voice = voice
+        self.animation = animation
+        self.sticker = sticker
+        self.caption = caption
+        self.media = media
         self._client = client
         self.command: list[str] | None = None
         self.matches: list[Any] | None = None
@@ -74,6 +91,28 @@ class Message:
         asyncio.create_task(_auto_delete())
         return sent
 
+    async def reply_photo(self, photo: Any, caption: str | None = None, **kwargs: Any) -> "Message":
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.send_photo(
+            chat_id=self.chat.id,
+            photo=photo,
+            caption=caption,
+            reply_to_message_id=self.id,
+            **kwargs,
+        )
+
+    async def reply_document(self, document: Any, caption: str | None = None, **kwargs: Any) -> "Message":
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.send_document(
+            chat_id=self.chat.id,
+            document=document,
+            caption=caption,
+            reply_to_message_id=self.id,
+            **kwargs,
+        )
+
     async def edit(self, text: str, **kwargs: Any) -> "Message":
         if not self._client:
             raise RuntimeError("Client instance not bound to message")
@@ -81,6 +120,16 @@ class Message:
             chat_id=self.chat.id,
             message_id=self.id,
             text=text,
+            **kwargs,
+        )
+
+    async def edit_caption(self, caption: str, **kwargs: Any) -> "Message":
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.edit_message_caption(
+            chat_id=self.chat.id,
+            message_id=self.id,
+            caption=caption,
             **kwargs,
         )
 
@@ -109,4 +158,32 @@ class Message:
             chat_id=chat_id,
             from_chat_id=self.chat.id,
             message_ids=[self.id],
+        )
+
+    async def copy(self, chat_id: int | str, caption: str | None = None, **kwargs: Any) -> "Message":
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.copy_message(
+            chat_id=chat_id,
+            from_chat_id=self.chat.id,
+            message_id=self.id,
+            caption=caption,
+            **kwargs,
+        )
+
+    async def pin(self, disable_notification: bool = False) -> bool:
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.pin_chat_message(
+            chat_id=self.chat.id,
+            message_id=self.id,
+            disable_notification=disable_notification,
+        )
+
+    async def unpin(self) -> bool:
+        if not self._client:
+            raise RuntimeError("Client instance not bound to message")
+        return await self._client.unpin_chat_message(
+            chat_id=self.chat.id,
+            message_id=self.id,
         )

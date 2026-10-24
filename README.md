@@ -2,21 +2,24 @@
   <img src="assets/logo.png" alt="TgFlow Logo" width="180"/>
   <h1>TgFlow</h1>
   <p><b>Pure Python MTProto 2.0 Telegram Framework</b></p>
-  <p>Line-by-line compliance with official Telegram MTProto rules, modern clean architecture inspired by Pyrogram and Telethon, zero bloated dependencies.</p>
+  <p>Engineered for speed, intuitive routing typography, full Telegram types and methods, and zero comment clutter.</p>
 </div>
 
 ---
 
 ## Highlights
 
-- **Pure MTProto 2.0 Engine**: Built from scratch adhering to official Telegram MTProto specifications.
-- **Obfuscated2 TCP Framing**: Resilient TCP transport with 64-byte random payload handshakes avoiding traffic filtering.
-- **AES-256 IGE & Diffie-Hellman Handshake**: Cryptographic primitives including Pollard's rho prime factorization, SHA-256 key derivation, and hardware-accelerated AES.
-- **Full Layer TL Schema**: Comprehensive catalog of 547 official Telegram constructors and methods with 4-byte aligned binary TL serialization.
-- **Composable Filter Architecture**: Expressive routing using `&`, `|`, and `~` combinators (`filters.command("start") & filters.private`).
+- **Pure MTProto 2.0 Engine**: Built from scratch adhering strictly to official Telegram MTProto specifications.
+- **Obfuscated2 TCP Framing**: Live-verified transport connection to Telegram DC2 with 64-byte random payload handshakes.
+- **Advanced Routing Typography**: Replaces cumbersome filter syntax with concise, direct decorators:
+  - `@bot.command("start")`
+  - `@bot.callback("confirm")`
+  - `@bot.message(When.photo)`
+  - `@bot.inline()`
+- **Expressive When Condition Engine**: Intuitive condition combinators via `When` (or `F`): `When.photo | When.video`, `When.private & ~When.bot`.
+- **Comprehensive Telegram Types & Methods**: 40+ client methods covering media sending, polls, chat management, permissions, and reactions.
 - **Rich Telegram Formatting**: Full support for expandable blockquotes, spoilers, custom emoji, clickable links, and copy-text buttons.
-- **Tamper-Evident Sessions**: Base64 session format with CRC32 integrity validation.
-- **Zero Comments In Core Code**: Pure, self-explanatory idiomatic Python.
+- **Zero Comments In Core Code**: Self-explanatory, line-by-line clean idiomatic Python.
 
 ---
 
@@ -26,44 +29,44 @@
 pip install tgflow
 ```
 
-Or install with documentation dependencies:
-
-```bash
-pip install tgflow[docs]
-```
-
 ---
 
 ## Quickstart
 
-### Building a Modern Telegram Bot
-
 ```python
 import asyncio
-from tgflow import TgFlow, filters
-from tgflow.types import Message
+from tgflow import TgFlow, When
+from tgflow.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 bot = TgFlow(
     session="my_bot",
-    bot_token="123456789:ABCDefghIJKLmnOPQRstuvWXYZ",
+    bot_token="YOUR_BOT_TOKEN_HERE",
 )
 
-@bot.on_message(filters.command("start") & filters.private)
+@bot.command("start", when=When.private)
 async def handle_start(client: TgFlow, message: Message):
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton(text="GitHub", url="https://github.com/VeezNetworks/TgFlow")],
+        [InlineKeyboardButton(text="Verify", callback_data="verify_user")]
+    ])
     await message.reply(
-        "<b>Welcome to TgFlow!</b>\n\n"
-        "Experience modern Telegram MTProto 2.0 bots in pure Python.",
+        "<b>Welcome to TgFlow!</b>\n\nExperience clean, modern MTProto 2.0 in Python.",
         parse_mode="html",
+        reply_markup=keyboard,
     )
 
-@bot.on_message(filters.command("quote"))
+@bot.callback("verify_user")
+async def handle_callback(client: TgFlow, query):
+    await query.answer("Account verified!", show_alert=True)
+
+@bot.command("quote")
 async def handle_quote(client: TgFlow, message: Message):
     await message.reply_quote(
-        text="Here is a quoted reply using native MTProto quote semantics.",
+        text="Native MTProto quote reply.",
         quote=message.text,
     )
 
-@bot.on_message(filters.command("secret"))
+@bot.command("secret")
 async def handle_secret(client: TgFlow, message: Message):
     await message.reply_ephemeral(
         text="This message will self-destruct in 10 seconds.",
@@ -75,23 +78,23 @@ asyncio.run(bot.run())
 
 ---
 
-## Architecture Overview
+## Comprehensive Architecture
 
-| Component | Module | Responsibility |
+| Domain | Module | Highlights |
 |---|---|---|
-| **Crypto** | `tgflow.crypto` | AES-IGE, Pollard's rho PQ factorization, Obfuscated2 framing, DH exchange |
-| **Transport** | `tgflow.transport` | Non-blocking async TCP stream framing |
-| **RPC** | `tgflow.rpc` | Monotonic `msg_id` generator, sequence numbers, packet packing/unpacking |
-| **TL Schema** | `tgflow.tl` | Binary `TLReader`/`TLWriter`, 547 constructors and functions |
-| **Filters** | `tgflow.filters` | Composable event routing with `&`, `|`, and `~` |
-| **Types** | `tgflow.types` | High-level `Message`, `User`, `Chat`, `CallbackQuery` |
-| **Session** | `tgflow.session` | Unique session format with CRC32 checksum |
+| **Client & Methods** | `tgflow.client` | 40+ methods: send media, edit, delete, pin, polls, reactions, members |
+| **Typography & Routing** | `tgflow.filters` | Direct decorators `@bot.command`, `@bot.callback`, `When` & `F` engine |
+| **Rich Types** | `tgflow.types` | `Message`, `User`, `Chat`, `Photo`, `Poll`, `InlineKeyboardMarkup`, `ChatMember` |
+| **MTProto Transport** | `tgflow.transport` | Obfuscated2 framing, intermediate protocol (`0xeeeeeeee`) |
+| **Crypto & Handshake** | `tgflow.crypto` | AES-256 IGE, Pollard's rho PQ factorization, DH key exchange |
+| **Binary TL Schema** | `tgflow.tl` | `TLReader`/`TLWriter`, 547 constructors, 4-byte aligned serialization |
+| **Sessions** | `tgflow.session` | Portable string sessions with CRC32 integrity verification |
 
 ---
 
-## Building Documentation
+## Documentation
 
-TgFlow uses Sphinx with the modern Furo UI theme:
+Interactive documentation is built using Sphinx with the Furo UI:
 
 ```bash
 sphinx-build -b html docs docs/_build/html
