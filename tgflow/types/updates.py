@@ -57,6 +57,9 @@ class CallbackQuery:
             raise RuntimeError("Callback query has no associated message")
         return await self.message.edit(text, **kwargs)
 
+    edit = edit_message_text
+    edit_text = edit_message_text
+
 
 class InlineQuery:
     def __init__(

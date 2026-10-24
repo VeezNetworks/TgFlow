@@ -54,17 +54,20 @@ class Handler:
         call_args: list[Any] = []
         pos_params = [p for p in params if p.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)]
         p0_name = pos_params[0].name.lower()
+        p0_type = getattr(pos_params[0].annotation, "__name__", "").lower()
 
-        if p0_name in ("ctx", "context") and ctx is not None:
+        if (p0_name in ("ctx", "context") or p0_type == "commandcontext") and ctx is not None:
             call_args.append(ctx)
             pos_params = pos_params[1:]
         elif p0_name in ("client", "cli", "bot"):
             call_args.append(client)
             pos_params = pos_params[1:]
-            if pos_params and pos_params[0].name.lower() in ("msg", "message", "update", "m"):
-                call_args.append(update)
-                pos_params = pos_params[1:]
-        elif p0_name in ("msg", "message", "update", "m"):
+            if pos_params:
+                p1_name = pos_params[0].name.lower()
+                if p1_name in ("msg", "message", "update", "m", "query", "callback_query", "cb", "q", "event") or pos_params[0].name not in kwargs:
+                    call_args.append(update)
+                    pos_params = pos_params[1:]
+        elif p0_name in ("msg", "message", "update", "m", "query", "callback_query", "cb", "q", "event"):
             call_args.append(update)
             pos_params = pos_params[1:]
         else:
