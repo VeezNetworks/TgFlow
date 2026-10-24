@@ -1512,3 +1512,518 @@ class UpdateStatus(TLRequest):
     @classmethod
     def read(cls, reader: TLReader) -> "UpdateStatus":
         return cls(offline=reader.read_bool())
+
+
+@register_tl
+class GetParticipants(TLRequest):
+    ID: int = 0x77CED9D0
+
+    def __init__(self, channel: Any = None, filter: Any = None, offset: int = 0, limit: int = 100, hash: int = 0) -> None:
+        self.channel = channel
+        self.filter = filter
+        self.offset = offset
+        self.limit = limit
+        self.hash = hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+        writer.write_object(self.filter)
+        writer.write_int32(self.offset)
+        writer.write_int32(self.limit)
+        writer.write_int64(self.hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetParticipants":
+        channel = reader.read_object()
+        filter_obj = reader.read_object()
+        offset = reader.read_int32()
+        limit = reader.read_int32()
+        hash_val = reader.read_int64()
+        return cls(channel=channel, filter=filter_obj, offset=offset, limit=limit, hash=hash_val)
+
+
+@register_tl
+class EditAdmin(TLRequest):
+    ID: int = 0xD33C8902
+
+    def __init__(self, channel: Any = None, user_id: Any = None, admin_rights: Any = None, rank: str = "") -> None:
+        self.channel = channel
+        self.user_id = user_id
+        self.admin_rights = admin_rights
+        self.rank = rank
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+        writer.write_object(self.user_id)
+        writer.write_object(self.admin_rights)
+        writer.write_string(self.rank)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditAdmin":
+        channel = reader.read_object()
+        user_id = reader.read_object()
+        admin_rights = reader.read_object()
+        rank = reader.read_string()
+        return cls(channel=channel, user_id=user_id, admin_rights=admin_rights, rank=rank)
+
+
+@register_tl
+class EditBanned(TLRequest):
+    ID: int = 0x96E6CEDA
+
+    def __init__(self, channel: Any = None, participant: Any = None, banned_rights: Any = None) -> None:
+        self.channel = channel
+        self.participant = participant
+        self.banned_rights = banned_rights
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+        writer.write_object(self.participant)
+        writer.write_object(self.banned_rights)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditBanned":
+        channel = reader.read_object()
+        participant = reader.read_object()
+        banned_rights = reader.read_object()
+        return cls(channel=channel, participant=participant, banned_rights=banned_rights)
+
+
+@register_tl
+class GetChats(TLRequest):
+    ID: int = 0x49E95D02
+
+    def __init__(self, id: list[int] | None = None) -> None:
+        self.id = id or []
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.id, lambda w, i: w.write_int64(i))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetChats":
+        return cls(id=reader.read_vector(lambda r: r.read_int64()))
+
+
+@register_tl
+class GetFullChat(TLRequest):
+    ID: int = 0xAEB00B34
+
+    def __init__(self, chat_id: int = 0) -> None:
+        self.chat_id = chat_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.chat_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetFullChat":
+        return cls(chat_id=reader.read_int64())
+
+
+@register_tl
+class GetMessages(TLRequest):
+    ID: int = 0x63C66506
+
+    def __init__(self, id: list[Any] | None = None) -> None:
+        self.id = id or []
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.id, lambda w, i: w.write_object(i))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetMessages":
+        return cls(id=reader.read_vector(lambda r: r.read_object()))
+
+
+@register_tl
+class SearchMessages(TLRequest):
+    ID: int = 0x29EE047C
+
+    def __init__(
+        self,
+        peer: Any = None,
+        q: str = "",
+        filter: Any = None,
+        min_date: int = 0,
+        max_date: int = 0,
+        offset_id: int = 0,
+        add_offset: int = 0,
+        limit: int = 100,
+        max_id: int = 0,
+        min_id: int = 0,
+        hash: int = 0,
+    ) -> None:
+        self.peer = peer
+        self.q = q
+        self.filter = filter
+        self.min_date = min_date
+        self.max_date = max_date
+        self.offset_id = offset_id
+        self.add_offset = add_offset
+        self.limit = limit
+        self.max_id = max_id
+        self.min_id = min_id
+        self.hash = hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_string(self.q)
+        writer.write_object(self.filter)
+        writer.write_int32(self.min_date)
+        writer.write_int32(self.max_date)
+        writer.write_int32(self.offset_id)
+        writer.write_int32(self.add_offset)
+        writer.write_int32(self.limit)
+        writer.write_int32(self.max_id)
+        writer.write_int32(self.min_id)
+        writer.write_int64(self.hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SearchMessages":
+        flags = reader.read_uint32()
+        peer = reader.read_object()
+        q = reader.read_string()
+        filter_obj = reader.read_object()
+        min_date = reader.read_int32()
+        max_date = reader.read_int32()
+        offset_id = reader.read_int32()
+        add_offset = reader.read_int32()
+        limit = reader.read_int32()
+        max_id = reader.read_int32()
+        min_id = reader.read_int32()
+        hash_val = reader.read_int64()
+        return cls(
+            peer=peer,
+            q=q,
+            filter=filter_obj,
+            min_date=min_date,
+            max_date=max_date,
+            offset_id=offset_id,
+            add_offset=add_offset,
+            limit=limit,
+            max_id=max_id,
+            min_id=min_id,
+            hash=hash_val,
+        )
+
+
+@register_tl
+class GetDialogs(TLRequest):
+    ID: int = 0xA0F4CB4F
+
+    def __init__(
+        self,
+        offset_date: int = 0,
+        offset_id: int = 0,
+        offset_peer: Any = None,
+        limit: int = 100,
+        hash: int = 0,
+        exclude_pinned: bool = False,
+        folder_id: int | None = None,
+    ) -> None:
+        self.offset_date = offset_date
+        self.offset_id = offset_id
+        self.offset_peer = offset_peer
+        self.limit = limit
+        self.hash = hash
+        self.exclude_pinned = exclude_pinned
+        self.folder_id = folder_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.exclude_pinned:
+            flags |= (1 << 0)
+        if self.folder_id is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        if self.folder_id is not None:
+            writer.write_int32(self.folder_id)
+        writer.write_int32(self.offset_date)
+        writer.write_int32(self.offset_id)
+        writer.write_object(self.offset_peer)
+        writer.write_int32(self.limit)
+        writer.write_int64(self.hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetDialogs":
+        flags = reader.read_uint32()
+        exclude_pinned = bool(flags & (1 << 0))
+        folder_id = reader.read_int32() if (flags & (1 << 1)) else None
+        offset_date = reader.read_int32()
+        offset_id = reader.read_int32()
+        offset_peer = reader.read_object()
+        limit = reader.read_int32()
+        hash_val = reader.read_int64()
+        return cls(
+            offset_date=offset_date,
+            offset_id=offset_id,
+            offset_peer=offset_peer,
+            limit=limit,
+            hash=hash_val,
+            exclude_pinned=exclude_pinned,
+            folder_id=folder_id,
+        )
+
+
+@register_tl
+class PinChatMessage(TLRequest):
+    ID: int = 0x3252A303
+
+    def __init__(self, peer: Any = None, id: int = 0, silent: bool = False, both_sides: bool = False) -> None:
+        self.peer = peer
+        self.id = id
+        self.silent = silent
+        self.both_sides = both_sides
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.silent:
+            flags |= (1 << 0)
+        if self.both_sides:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_int32(self.id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "PinChatMessage":
+        flags = reader.read_uint32()
+        silent = bool(flags & (1 << 0))
+        both_sides = bool(flags & (1 << 2))
+        peer = reader.read_object()
+        msg_id = reader.read_int32()
+        return cls(peer=peer, id=msg_id, silent=silent, both_sides=both_sides)
+
+
+@register_tl
+class UnpinAllMessages(TLRequest):
+    ID: int = 0xF025BC8B
+
+    def __init__(self, peer: Any = None) -> None:
+        self.peer = peer
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "UnpinAllMessages":
+        return cls(peer=reader.read_object())
+
+
+@register_tl
+class EditChatTitle(TLRequest):
+    ID: int = 0x73783FFD
+
+    def __init__(self, chat_id: int = 0, title: str = "") -> None:
+        self.chat_id = chat_id
+        self.title = title
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.chat_id)
+        writer.write_string(self.title)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditChatTitle":
+        return cls(chat_id=reader.read_int64(), title=reader.read_string())
+
+
+@register_tl
+class EditChatAbout(TLRequest):
+    ID: int = 0xDEF60797
+
+    def __init__(self, peer: Any = None, about: str = "") -> None:
+        self.peer = peer
+        self.about = about
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_string(self.about)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditChatAbout":
+        return cls(peer=reader.read_object(), about=reader.read_string())
+
+
+@register_tl
+class ToggleForum(TLRequest):
+    ID: int = 0x58D6B470
+
+    def __init__(self, channel: Any = None, enabled: bool = True) -> None:
+        self.channel = channel
+        self.enabled = enabled
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+        writer.write_bool(self.enabled)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ToggleForum":
+        return cls(channel=reader.read_object(), enabled=reader.read_bool())
+
+
+@register_tl
+class CreateForumTopic(TLRequest):
+    ID: int = 0xF40C0224
+
+    def __init__(self, channel: Any = None, title: str = "", icon_color: int | None = None, icon_emoji_id: int | None = None) -> None:
+        self.channel = channel
+        self.title = title
+        self.icon_color = icon_color
+        self.icon_emoji_id = icon_emoji_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.icon_color is not None:
+            flags |= (1 << 0)
+        if self.icon_emoji_id is not None:
+            flags |= (1 << 3)
+        writer.write_uint32(flags)
+        writer.write_object(self.channel)
+        writer.write_string(self.title)
+        if self.icon_color is not None:
+            writer.write_int32(self.icon_color)
+        if self.icon_emoji_id is not None:
+            writer.write_int64(self.icon_emoji_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "CreateForumTopic":
+        flags = reader.read_uint32()
+        channel = reader.read_object()
+        title = reader.read_string()
+        icon_color = reader.read_int32() if (flags & (1 << 0)) else None
+        icon_emoji_id = reader.read_int64() if (flags & (1 << 3)) else None
+        return cls(channel=channel, title=title, icon_color=icon_color, icon_emoji_id=icon_emoji_id)
+
+
+@register_tl
+class EditForumTopic(TLRequest):
+    ID: int = 0xF23C49E9
+
+    def __init__(
+        self,
+        channel: Any = None,
+        topic_id: int = 0,
+        title: str | None = None,
+        icon_emoji_id: int | None = None,
+        closed: bool | None = None,
+        hidden: bool | None = None,
+    ) -> None:
+        self.channel = channel
+        self.topic_id = topic_id
+        self.title = title
+        self.icon_emoji_id = icon_emoji_id
+        self.closed = closed
+        self.hidden = hidden
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.title is not None:
+            flags |= (1 << 0)
+        if self.icon_emoji_id is not None:
+            flags |= (1 << 1)
+        if self.closed is not None:
+            flags |= (1 << 2)
+        if self.hidden is not None:
+            flags |= (1 << 3)
+        writer.write_uint32(flags)
+        writer.write_object(self.channel)
+        writer.write_int32(self.topic_id)
+        if self.title is not None:
+            writer.write_string(self.title)
+        if self.icon_emoji_id is not None:
+            writer.write_int64(self.icon_emoji_id)
+        if self.closed is not None:
+            writer.write_bool(self.closed)
+        if self.hidden is not None:
+            writer.write_bool(self.hidden)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditForumTopic":
+        flags = reader.read_uint32()
+        channel = reader.read_object()
+        topic_id = reader.read_int32()
+        title = reader.read_string() if (flags & (1 << 0)) else None
+        icon_emoji_id = reader.read_int64() if (flags & (1 << 1)) else None
+        closed = reader.read_bool() if (flags & (1 << 2)) else None
+        hidden = reader.read_bool() if (flags & (1 << 3)) else None
+        return cls(
+            channel=channel,
+            topic_id=topic_id,
+            title=title,
+            icon_emoji_id=icon_emoji_id,
+            closed=closed,
+            hidden=hidden,
+        )
+
+
+@register_tl
+class SetBotCallbackAnswer(TLRequest):
+    ID: int = 0xD58F130A
+
+    def __init__(self, query_id: int = 0, message: str | None = None, alert: bool = False, url: str | None = None, cache_time: int = 0) -> None:
+        self.query_id = query_id
+        self.message = message
+        self.alert = alert
+        self.url = url
+        self.cache_time = cache_time
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.message is not None:
+            flags |= (1 << 0)
+        if self.alert:
+            flags |= (1 << 1)
+        if self.url is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_int64(self.query_id)
+        if self.message is not None:
+            writer.write_string(self.message)
+        if self.url is not None:
+            writer.write_string(self.url)
+        writer.write_int32(self.cache_time)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SetBotCallbackAnswer":
+        flags = reader.read_uint32()
+        alert = bool(flags & (1 << 1))
+        query_id = reader.read_int64()
+        message = reader.read_string() if (flags & (1 << 0)) else None
+        url = reader.read_string() if (flags & (1 << 2)) else None
+        cache_time = reader.read_int32()
+        return cls(query_id=query_id, message=message, alert=alert, url=url, cache_time=cache_time)
+
+
+@register_tl
+class DeleteTopicHistory(TLRequest):
+    ID: int = 0xE0B64E9A
+
+    def __init__(self, channel: Any = None, topic_id: int = 0) -> None:
+        self.channel = channel
+        self.topic_id = topic_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+        writer.write_int32(self.topic_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "DeleteTopicHistory":
+        return cls(channel=reader.read_object(), topic_id=reader.read_int32())

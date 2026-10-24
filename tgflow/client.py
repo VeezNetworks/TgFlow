@@ -1006,6 +1006,171 @@ class TgFlow:
         req = fn.UpdateStatus(offline=offline)
         return await self.invoke(req)
 
+    async def get_chat_history(self, chat_id: int | str, limit: int = 100, offset_id: int = 0) -> Any:
+        return await self.get_history(chat_id=chat_id, limit=limit, offset_id=offset_id)
+
+    async def get_chat_administrators(self, chat_id: int | str) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        req = fn.GetParticipants(
+            channel=chan,
+            filter=tl.ChannelParticipantsAdmins(),
+            offset=0,
+            limit=100,
+            hash=0,
+        )
+        return await self.invoke(req)
+
+    async def get_chat_members(
+        self,
+        chat_id: int | str,
+        filter: Any = None,
+        query: str = "",
+        offset: int = 0,
+        limit: int = 100,
+    ) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        flt = filter
+        if flt is None:
+            flt = tl.ChannelParticipantsSearch(q=query) if query else tl.ChannelParticipantsRecent()
+        req = fn.GetParticipants(
+            channel=chan,
+            filter=flt,
+            offset=offset,
+            limit=limit,
+            hash=0,
+        )
+        return await self.invoke(req)
+
+    async def get_chat_member(self, chat_id: int | str, user_id: int | str) -> Any:
+        return await self.get_chat_members(chat_id=chat_id, query=str(user_id), limit=1)
+
+    async def get_dialogs(
+        self,
+        limit: int = 100,
+        offset_date: int = 0,
+        offset_id: int = 0,
+        folder_id: int | None = None,
+    ) -> Any:
+        req = fn.GetDialogs(
+            offset_date=offset_date,
+            offset_id=offset_id,
+            offset_peer=tl.InputPeerEmpty(),
+            limit=limit,
+            hash=0,
+            folder_id=folder_id,
+        )
+        return await self.invoke(req)
+
+    async def search_messages(
+        self,
+        chat_id: int | str,
+        query: str = "",
+        filter: Any = None,
+        limit: int = 100,
+        offset_id: int = 0,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.SearchMessages(
+            peer=peer,
+            q=query,
+            filter=filter or tl.InputMessagesFilterEmpty(),
+            min_date=0,
+            max_date=0,
+            offset_id=offset_id,
+            add_offset=0,
+            limit=limit,
+            max_id=0,
+            min_id=0,
+            hash=0,
+        )
+        return await self.invoke(req)
+
+    async def pin_chat_message(
+        self,
+        chat_id: int | str,
+        message_id: int,
+        both_sides: bool = True,
+        silent: bool = False,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.PinChatMessage(peer=peer, id=message_id, silent=silent, both_sides=both_sides)
+        return await self.invoke(req)
+
+    async def unpin_chat_message(self, chat_id: int | str, message_id: int | None = None) -> Any:
+        peer = self._resolve_peer(chat_id)
+        if message_id is None:
+            req = fn.UnpinAllMessages(peer=peer)
+        else:
+            req = fn.PinChatMessage(peer=peer, id=message_id, silent=True, both_sides=False)
+        return await self.invoke(req)
+
+    async def unpin_all_chat_messages(self, chat_id: int | str) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.UnpinAllMessages(peer=peer)
+        return await self.invoke(req)
+
+    async def set_chat_title(self, chat_id: int | str, title: str) -> Any:
+        c_id = int(chat_id) if isinstance(chat_id, int) else 0
+        req = fn.EditChatTitle(chat_id=c_id, title=title)
+        return await self.invoke(req)
+
+    async def set_chat_description(self, chat_id: int | str, description: str) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.EditChatAbout(peer=peer, about=description)
+        return await self.invoke(req)
+
+    async def toggle_forum(self, chat_id: int | str, enabled: bool = True) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        req = fn.ToggleForum(channel=chan, enabled=enabled)
+        return await self.invoke(req)
+
+    async def create_forum_topic(
+        self,
+        chat_id: int | str,
+        title: str,
+        icon_color: int | None = None,
+        icon_emoji_id: int | None = None,
+    ) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        req = fn.CreateForumTopic(
+            channel=chan,
+            title=title,
+            icon_color=icon_color,
+            icon_emoji_id=icon_emoji_id,
+        )
+        return await self.invoke(req)
+
+    async def edit_forum_topic(
+        self,
+        chat_id: int | str,
+        topic_id: int,
+        title: str | None = None,
+        icon_emoji_id: int | None = None,
+        closed: bool | None = None,
+        hidden: bool | None = None,
+    ) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        req = fn.EditForumTopic(
+            channel=chan,
+            topic_id=topic_id,
+            title=title,
+            icon_emoji_id=icon_emoji_id,
+            closed=closed,
+            hidden=hidden,
+        )
+        return await self.invoke(req)
+
+    async def close_forum_topic(self, chat_id: int | str, topic_id: int) -> Any:
+        return await self.edit_forum_topic(chat_id=chat_id, topic_id=topic_id, closed=True)
+
+    async def reopen_forum_topic(self, chat_id: int | str, topic_id: int) -> Any:
+        return await self.edit_forum_topic(chat_id=chat_id, topic_id=topic_id, closed=False)
+
+    async def delete_forum_topic(self, chat_id: int | str, topic_id: int) -> Any:
+        chan = self._resolve_input_channel(chat_id)
+        req = fn.DeleteTopicHistory(channel=chan, topic_id=topic_id)
+        return await self.invoke(req)
+
     def export_session_string(self) -> str:
         return self.session.export_string()
 

@@ -3,6 +3,13 @@ from ...tl.functions import (
     JoinChannel,
     LeaveChannel,
     CreateChannel,
+    GetParticipants,
+    EditAdmin,
+    EditBanned,
+    ToggleForum,
+    CreateForumTopic,
+    EditForumTopic,
+    DeleteTopicHistory,
 )
 
 __all__ = [
@@ -10,4 +17,11 @@ __all__ = [
     "JoinChannel",
     "LeaveChannel",
     "CreateChannel",
+    "GetParticipants",
+    "EditAdmin",
+    "EditBanned",
+    "ToggleForum",
+    "CreateForumTopic",
+    "EditForumTopic",
+    "DeleteTopicHistory",
 ]

@@ -7,6 +7,16 @@ from ...tl.functions import (
     SendReaction,
     SetTyping,
     GetHistory,
+    GetChats,
+    GetFullChat,
+    GetMessages,
+    SearchMessages,
+    GetDialogs,
+    PinChatMessage,
+    UnpinAllMessages,
+    EditChatTitle,
+    EditChatAbout,
+    SetBotCallbackAnswer,
 )
 
 __all__ = [
@@ -18,4 +28,14 @@ __all__ = [
     "SendReaction",
     "SetTyping",
     "GetHistory",
+    "GetChats",
+    "GetFullChat",
+    "GetMessages",
+    "SearchMessages",
+    "GetDialogs",
+    "PinChatMessage",
+    "UnpinAllMessages",
+    "EditChatTitle",
+    "EditChatAbout",
+    "SetBotCallbackAnswer",
 ]

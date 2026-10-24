@@ -25,6 +25,7 @@ Table of Contents
    quickstart
    auth
    methods
+   keyboards
    calls
    mtproto
    filters
