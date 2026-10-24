@@ -906,3 +906,609 @@ class ToggleGroupCallRecord(TLRequest):
         title = reader.read_string() if (flags & (1 << 1)) else None
         video_portrait = reader.read_bool() if video and (flags & (1 << 2)) else None
         return cls(call=call, start=start, video=video, title=title, video_portrait=video_portrait)
+
+
+@register_tl
+class SendCode(TLRequest):
+    ID: int = 0xA677244F
+
+    def __init__(
+        self,
+        phone_number: str = "",
+        api_id: int = 0,
+        api_hash: str = "",
+        settings: Any = None,
+    ) -> None:
+        self.phone_number = phone_number
+        self.api_id = api_id
+        self.api_hash = api_hash
+        self.settings = settings
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        writer.write_uint32(flags)
+        writer.write_string(self.phone_number)
+        writer.write_int32(self.api_id)
+        writer.write_string(self.api_hash)
+        writer.write_object(self.settings)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SendCode":
+        flags = reader.read_uint32()
+        phone_number = reader.read_string()
+        api_id = reader.read_int32()
+        api_hash = reader.read_string()
+        settings = reader.read_object()
+        return cls(phone_number=phone_number, api_id=api_id, api_hash=api_hash, settings=settings)
+
+
+@register_tl
+class SignIn(TLRequest):
+    ID: int = 0x8D52A951
+
+    def __init__(
+        self,
+        phone_number: str = "",
+        phone_code_hash: str = "",
+        phone_code: str | None = None,
+    ) -> None:
+        self.phone_number = phone_number
+        self.phone_code_hash = phone_code_hash
+        self.phone_code = phone_code
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.phone_code is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_string(self.phone_number)
+        writer.write_string(self.phone_code_hash)
+        if self.phone_code is not None:
+            writer.write_string(self.phone_code)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SignIn":
+        flags = reader.read_uint32()
+        phone_number = reader.read_string()
+        phone_code_hash = reader.read_string()
+        phone_code = reader.read_string() if (flags & (1 << 0)) else None
+        return cls(phone_number=phone_number, phone_code_hash=phone_code_hash, phone_code=phone_code)
+
+
+@register_tl
+class SignUp(TLRequest):
+    ID: int = 0x80EEE427
+
+    def __init__(
+        self,
+        phone_number: str = "",
+        phone_code_hash: str = "",
+        first_name: str = "",
+        last_name: str = "",
+    ) -> None:
+        self.phone_number = phone_number
+        self.phone_code_hash = phone_code_hash
+        self.first_name = first_name
+        self.last_name = last_name
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.phone_number)
+        writer.write_string(self.phone_code_hash)
+        writer.write_string(self.first_name)
+        writer.write_string(self.last_name)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SignUp":
+        phone_number = reader.read_string()
+        phone_code_hash = reader.read_string()
+        first_name = reader.read_string()
+        last_name = reader.read_string()
+        return cls(
+            phone_number=phone_number,
+            phone_code_hash=phone_code_hash,
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+
+@register_tl
+class LogOut(TLRequest):
+    ID: int = 0x3E72BA19
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "LogOut":
+        return cls()
+
+
+@register_tl
+class CheckPassword(TLRequest):
+    ID: int = 0xD18B4D16
+
+    def __init__(self, password: Any = None) -> None:
+        self.password = password
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.password)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "CheckPassword":
+        password = reader.read_object()
+        return cls(password=password)
+
+
+@register_tl
+class ResendCode(TLRequest):
+    ID: int = 0x3EF1A9BF
+
+    def __init__(self, phone_number: str = "", phone_code_hash: str = "", reason: str | None = None) -> None:
+        self.phone_number = phone_number
+        self.phone_code_hash = phone_code_hash
+        self.reason = reason
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reason is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_string(self.phone_number)
+        writer.write_string(self.phone_code_hash)
+        if self.reason is not None:
+            writer.write_string(self.reason)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ResendCode":
+        flags = reader.read_uint32()
+        phone_number = reader.read_string()
+        phone_code_hash = reader.read_string()
+        reason = reader.read_string() if (flags & (1 << 0)) else None
+        return cls(phone_number=phone_number, phone_code_hash=phone_code_hash, reason=reason)
+
+
+@register_tl
+class CancelCode(TLRequest):
+    ID: int = 0x1F04045B
+
+    def __init__(self, phone_number: str = "", phone_code_hash: str = "") -> None:
+        self.phone_number = phone_number
+        self.phone_code_hash = phone_code_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.phone_number)
+        writer.write_string(self.phone_code_hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "CancelCode":
+        phone_number = reader.read_string()
+        phone_code_hash = reader.read_string()
+        return cls(phone_number=phone_number, phone_code_hash=phone_code_hash)
+
+
+@register_tl
+class ExportAuthorization(TLRequest):
+    ID: int = 0xE5B96423
+
+    def __init__(self, dc_id: int = 0) -> None:
+        self.dc_id = dc_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.dc_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ExportAuthorization":
+        return cls(dc_id=reader.read_int32())
+
+
+@register_tl
+class ImportAuthorization(TLRequest):
+    ID: int = 0xA5757399
+
+    def __init__(self, id: int = 0, bytes_data: bytes = b"") -> None:
+        self.id = id
+        self.bytes_data = bytes_data
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id)
+        writer.write_bytes(self.bytes_data)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ImportAuthorization":
+        return cls(id=reader.read_int64(), bytes_data=reader.read_bytes())
+
+
+@register_tl
+class ResolveUsername(TLRequest):
+    ID: int = 0xF93CCBA3
+
+    def __init__(self, username: str = "") -> None:
+        self.username = username
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.username)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ResolveUsername":
+        return cls(username=reader.read_string())
+
+
+@register_tl
+class GetContacts(TLRequest):
+    ID: int = 0x5DD69E12
+
+    def __init__(self, hash: int = 0) -> None:
+        self.hash = hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetContacts":
+        return cls(hash=reader.read_int64())
+
+
+@register_tl
+class SearchContacts(TLRequest):
+    ID: int = 0x11F812D8
+
+    def __init__(self, q: str = "", limit: int = 10) -> None:
+        self.q = q
+        self.limit = limit
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.q)
+        writer.write_int32(self.limit)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SearchContacts":
+        return cls(q=reader.read_string(), limit=reader.read_int32())
+
+
+@register_tl
+class GetUsers(TLRequest):
+    ID: int = 0x0D91A548
+
+    def __init__(self, id: list[Any] | None = None) -> None:
+        self.id = id or []
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_vector(self.id, lambda w, u: w.write_object(u))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetUsers":
+        return cls(id=reader.read_vector(lambda r: r.read_object()))
+
+
+@register_tl
+class GetFullUser(TLRequest):
+    ID: int = 0xB60ED36F
+
+    def __init__(self, id: Any = None) -> None:
+        self.id = id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetFullUser":
+        return cls(id=reader.read_object())
+
+
+@register_tl
+class GetFullChannel(TLRequest):
+    ID: int = 0x08736A09
+
+    def __init__(self, channel: Any = None) -> None:
+        self.channel = channel
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetFullChannel":
+        return cls(channel=reader.read_object())
+
+
+@register_tl
+class JoinChannel(TLRequest):
+    ID: int = 0x24B52477
+
+    def __init__(self, channel: Any = None) -> None:
+        self.channel = channel
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "JoinChannel":
+        return cls(channel=reader.read_object())
+
+
+@register_tl
+class LeaveChannel(TLRequest):
+    ID: int = 0xF836AA95
+
+    def __init__(self, channel: Any = None) -> None:
+        self.channel = channel
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.channel)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "LeaveChannel":
+        return cls(channel=reader.read_object())
+
+
+@register_tl
+class CreateChannel(TLRequest):
+    ID: int = 0x3D793857
+
+    def __init__(
+        self,
+        title: str = "",
+        about: str = "",
+        broadcast: bool = False,
+        megagroup: bool = False,
+    ) -> None:
+        self.title = title
+        self.about = about
+        self.broadcast = broadcast
+        self.megagroup = megagroup
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.broadcast:
+            flags |= (1 << 0)
+        if self.megagroup:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_string(self.title)
+        writer.write_string(self.about)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "CreateChannel":
+        flags = reader.read_uint32()
+        broadcast = bool(flags & (1 << 0))
+        megagroup = bool(flags & (1 << 1))
+        title = reader.read_string()
+        about = reader.read_string()
+        return cls(title=title, about=about, broadcast=broadcast, megagroup=megagroup)
+
+
+
+
+
+@register_tl
+class DeleteMessages(TLRequest):
+    ID: int = 0xE58E95D2
+
+    def __init__(self, id: list[int] | None = None, revoke: bool = True) -> None:
+        self.id = id or []
+        self.revoke = revoke
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.revoke:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_vector(self.id, lambda w, i: w.write_int32(i))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "DeleteMessages":
+        flags = reader.read_uint32()
+        revoke = bool(flags & (1 << 0))
+        ids = reader.read_vector(lambda r: r.read_int32())
+        return cls(id=ids, revoke=revoke)
+
+
+@register_tl
+class ReadHistory(TLRequest):
+    ID: int = 0x0E306D3A
+
+    def __init__(self, peer: Any = None, max_id: int = 0) -> None:
+        self.peer = peer
+        self.max_id = max_id
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_int32(self.max_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReadHistory":
+        return cls(peer=reader.read_object(), max_id=reader.read_int32())
+
+
+@register_tl
+class ForwardMessages(TLRequest):
+    ID: int = 0xCCB03657
+
+    def __init__(
+        self,
+        from_peer: Any = None,
+        to_peer: Any = None,
+        id: list[int] | None = None,
+        random_id: list[int] | None = None,
+        silent: bool = False,
+        background: bool = False,
+        drop_author: bool = False,
+    ) -> None:
+        self.from_peer = from_peer
+        self.to_peer = to_peer
+        self.id = id or []
+        self.random_id = random_id or []
+        self.silent = silent
+        self.background = background
+        self.drop_author = drop_author
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.silent:
+            flags |= (1 << 5)
+        if self.background:
+            flags |= (1 << 6)
+        if self.drop_author:
+            flags |= (1 << 11)
+        writer.write_uint32(flags)
+        writer.write_object(self.from_peer)
+        writer.write_vector(self.id, lambda w, i: w.write_int32(i))
+        writer.write_vector(self.random_id, lambda w, r: w.write_int64(r))
+        writer.write_object(self.to_peer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ForwardMessages":
+        flags = reader.read_uint32()
+        silent = bool(flags & (1 << 5))
+        background = bool(flags & (1 << 6))
+        drop_author = bool(flags & (1 << 11))
+        from_peer = reader.read_object()
+        ids = reader.read_vector(lambda r: r.read_int32())
+        rand_ids = reader.read_vector(lambda r: r.read_int64())
+        to_peer = reader.read_object()
+        return cls(
+            from_peer=from_peer,
+            to_peer=to_peer,
+            id=ids,
+            random_id=rand_ids,
+            silent=silent,
+            background=background,
+            drop_author=drop_author,
+        )
+
+
+@register_tl
+class SendReaction(TLRequest):
+    ID: int = 0xD30D78D4
+
+    def __init__(
+        self,
+        peer: Any = None,
+        msg_id: int = 0,
+        reaction: list[Any] | None = None,
+        big: bool = False,
+    ) -> None:
+        self.peer = peer
+        self.msg_id = msg_id
+        self.reaction = reaction
+        self.big = big
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.reaction is not None:
+            flags |= (1 << 0)
+        if self.big:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_int32(self.msg_id)
+        if self.reaction is not None:
+            writer.write_vector(self.reaction, lambda w, r: w.write_object(r))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SendReaction":
+        flags = reader.read_uint32()
+        big = bool(flags & (1 << 1))
+        peer = reader.read_object()
+        msg_id = reader.read_int32()
+        reaction = reader.read_vector(lambda r: r.read_object()) if (flags & (1 << 0)) else None
+        return cls(peer=peer, msg_id=msg_id, reaction=reaction, big=big)
+
+
+@register_tl
+class SetTyping(TLRequest):
+    ID: int = 0x58944461
+
+    def __init__(self, peer: Any = None, action: Any = None) -> None:
+        self.peer = peer
+        self.action = action
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_object(self.action)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SetTyping":
+        flags = reader.read_uint32()
+        peer = reader.read_object()
+        action = reader.read_object()
+        return cls(peer=peer, action=action)
+
+
+@register_tl
+class UpdateProfile(TLRequest):
+    ID: int = 0x78515775
+
+    def __init__(
+        self,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        about: str | None = None,
+    ) -> None:
+        self.first_name = first_name
+        self.last_name = last_name
+        self.about = about
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.first_name is not None:
+            flags |= (1 << 0)
+        if self.last_name is not None:
+            flags |= (1 << 1)
+        if self.about is not None:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        if self.first_name is not None:
+            writer.write_string(self.first_name)
+        if self.last_name is not None:
+            writer.write_string(self.last_name)
+        if self.about is not None:
+            writer.write_string(self.about)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "UpdateProfile":
+        flags = reader.read_uint32()
+        first_name = reader.read_string() if (flags & (1 << 0)) else None
+        last_name = reader.read_string() if (flags & (1 << 1)) else None
+        about = reader.read_string() if (flags & (1 << 2)) else None
+        return cls(first_name=first_name, last_name=last_name, about=about)
+
+
+@register_tl
+class UpdateStatus(TLRequest):
+    ID: int = 0x6628F585
+
+    def __init__(self, offline: bool = False) -> None:
+        self.offline = offline
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_bool(self.offline)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "UpdateStatus":
+        return cls(offline=reader.read_bool())

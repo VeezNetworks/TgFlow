@@ -23,8 +23,10 @@ Table of Contents
    :caption: User Guide
 
    quickstart
-   mtproto
+   auth
+   methods
    calls
+   mtproto
    filters
    formatting
    sessions

@@ -843,6 +843,169 @@ class TgFlow:
         req = fn.SaveCallDebug(peer=call_obj, debug=debug_data)
         return await self.invoke(req)
 
+    def _resolve_input_channel(self, channel: Any) -> Any:
+        if isinstance(channel, tl.InputChannel):
+            return channel
+        if hasattr(channel, "id") and hasattr(channel, "access_hash"):
+            return tl.InputChannel(channel_id=channel.id, access_hash=channel.access_hash)
+        if isinstance(channel, (list, tuple)) and len(channel) == 2:
+            return tl.InputChannel(channel_id=channel[0], access_hash=channel[1])
+        if isinstance(channel, int):
+            c_id = channel if channel > 0 else -channel
+            if str(c_id).startswith("100"):
+                c_id = int(str(c_id)[3:])
+            return tl.InputChannel(channel_id=c_id, access_hash=0)
+        return tl.InputChannelEmpty()
+
+    async def send_code(self, phone_number: str) -> Any:
+        settings = tl.CodeSettings(
+            allow_flashcall=False,
+            current_number=True,
+            allow_app_hash=True,
+            allow_missed_call=True,
+            allow_firebase=True,
+        )
+        req = fn.SendCode(
+            phone_number=phone_number,
+            api_id=self.api_id,
+            api_hash=self.api_hash,
+            settings=settings,
+        )
+        return await self.invoke(req)
+
+    async def sign_in(self, phone_number: str, phone_code_hash: str, phone_code: str) -> Any:
+        req = fn.SignIn(
+            phone_number=phone_number,
+            phone_code_hash=phone_code_hash,
+            phone_code=phone_code,
+        )
+        res = await self.invoke(req)
+        if hasattr(res, "user"):
+            self.me = User._from_tl(res.user)
+        return res
+
+    async def sign_up(self, phone_number: str, phone_code_hash: str, first_name: str, last_name: str = "") -> Any:
+        req = fn.SignUp(
+            phone_number=phone_number,
+            phone_code_hash=phone_code_hash,
+            first_name=first_name,
+            last_name=last_name,
+        )
+        res = await self.invoke(req)
+        if hasattr(res, "user"):
+            self.me = User._from_tl(res.user)
+        return res
+
+    async def check_password(self, password: str, srp_id: int = 0, a: bytes = b"", m1: bytes = b"") -> Any:
+        req = fn.CheckPassword(password=tl.InputCheckPasswordSRP(srp_id=srp_id, A=a, M1=m1))
+        res = await self.invoke(req)
+        if hasattr(res, "user"):
+            self.me = User._from_tl(res.user)
+        return res
+
+    async def resend_code(self, phone_number: str, phone_code_hash: str, reason: str | None = None) -> Any:
+        req = fn.ResendCode(phone_number=phone_number, phone_code_hash=phone_code_hash, reason=reason)
+        return await self.invoke(req)
+
+    async def cancel_code(self, phone_number: str, phone_code_hash: str) -> Any:
+        req = fn.CancelCode(phone_number=phone_number, phone_code_hash=phone_code_hash)
+        return await self.invoke(req)
+
+    async def log_out(self) -> Any:
+        req = fn.LogOut()
+        return await self.invoke(req)
+
+    async def export_authorization(self, dc_id: int) -> Any:
+        req = fn.ExportAuthorization(dc_id=dc_id)
+        return await self.invoke(req)
+
+    async def import_authorization(self, id: int, bytes_data: bytes) -> Any:
+        req = fn.ImportAuthorization(id=id, bytes_data=bytes_data)
+        return await self.invoke(req)
+
+    async def resolve_username(self, username: str) -> Any:
+        req = fn.ResolveUsername(username=username.lstrip("@"))
+        return await self.invoke(req)
+
+    async def get_users(self, user_ids: list[Any]) -> list[Any]:
+        inputs = [self._resolve_input_user(u) for u in user_ids]
+        req = fn.GetUsers(id=inputs)
+        return await self.invoke(req)
+
+    async def get_full_user(self, user_id: Any) -> Any:
+        peer = self._resolve_input_user(user_id)
+        req = fn.GetFullUser(id=peer)
+        return await self.invoke(req)
+
+    async def join_channel(self, channel: Any) -> Any:
+        chan_obj = self._resolve_input_channel(channel)
+        req = fn.JoinChannel(channel=chan_obj)
+        return await self.invoke(req)
+
+    async def leave_channel(self, channel: Any) -> Any:
+        chan_obj = self._resolve_input_channel(channel)
+        req = fn.LeaveChannel(channel=chan_obj)
+        return await self.invoke(req)
+
+    async def create_channel(self, title: str, about: str = "", broadcast: bool = False, megagroup: bool = True) -> Any:
+        req = fn.CreateChannel(title=title, about=about, broadcast=broadcast, megagroup=megagroup)
+        return await self.invoke(req)
+
+    async def delete_messages(self, chat_id: int | str, message_ids: list[int], revoke: bool = True) -> Any:
+        req = fn.DeleteMessages(id=message_ids, revoke=revoke)
+        return await self.invoke(req)
+
+    async def read_history(self, chat_id: int | str, max_id: int = 0) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.ReadHistory(peer=peer, max_id=max_id)
+        return await self.invoke(req)
+
+    async def forward_messages(
+        self,
+        from_chat_id: int | str,
+        to_chat_id: int | str,
+        message_ids: list[int],
+        silent: bool = False,
+        drop_author: bool = False,
+    ) -> Any:
+        from_peer = self._resolve_peer(from_chat_id)
+        to_peer = self._resolve_peer(to_chat_id)
+        rand_ids = [int.from_bytes(os.urandom(8), "little", signed=True) for _ in message_ids]
+        req = fn.ForwardMessages(
+            from_peer=from_peer,
+            to_peer=to_peer,
+            id=message_ids,
+            random_id=rand_ids,
+            silent=silent,
+            drop_author=drop_author,
+        )
+        return await self.invoke(req)
+
+    async def send_reaction(self, chat_id: int | str, message_id: int, emoji: str | None = None, big: bool = False) -> Any:
+        peer = self._resolve_peer(chat_id)
+        reactions = [tl.ReactionEmoji(emoticon=emoji)] if emoji else []
+        req = fn.SendReaction(peer=peer, msg_id=message_id, reaction=reactions, big=big)
+        return await self.invoke(req)
+
+    async def set_typing(self, chat_id: int | str, action: Any = None) -> Any:
+        peer = self._resolve_peer(chat_id)
+        act = action or tl.SendMessageTypingAction()
+        req = fn.SetTyping(peer=peer, action=act)
+        return await self.invoke(req)
+
+    async def update_profile(
+        self,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        about: str | None = None,
+    ) -> Any:
+        req = fn.UpdateProfile(first_name=first_name, last_name=last_name, about=about)
+        return await self.invoke(req)
+
+    async def update_status(self, offline: bool = False) -> Any:
+        req = fn.UpdateStatus(offline=offline)
+        return await self.invoke(req)
+
     def export_session_string(self) -> str:
         return self.session.export_string()
 

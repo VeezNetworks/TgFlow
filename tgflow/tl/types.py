@@ -17477,3 +17477,181 @@ class PhonePhoneCall(TLObject):
         phone_call = reader.read_object()
         users = reader.read_vector(lambda r: r.read_object())
         return cls(phone_call=phone_call, users=users)
+
+
+@register_tl
+class InputChannel(TLObject):
+    ID: int = 0xF35AEC28
+
+    def __init__(self, channel_id: int = 0, access_hash: int = 0) -> None:
+        self.channel_id = channel_id
+        self.access_hash = access_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.channel_id)
+        writer.write_int64(self.access_hash)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputChannel":
+        return cls(channel_id=reader.read_int64(), access_hash=reader.read_int64())
+
+
+@register_tl
+class InputChannelEmpty(TLObject):
+    ID: int = 0xEE8C1E86
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputChannelEmpty":
+        return cls()
+
+
+@register_tl
+class CodeSettings(TLObject):
+    ID: int = 0xAD253D78
+
+    def __init__(
+        self,
+        allow_flashcall: bool = False,
+        current_number: bool = False,
+        allow_app_hash: bool = False,
+        allow_missed_call: bool = False,
+        allow_firebase: bool = False,
+        unknown_number: bool = False,
+    ) -> None:
+        self.allow_flashcall = allow_flashcall
+        self.current_number = current_number
+        self.allow_app_hash = allow_app_hash
+        self.allow_missed_call = allow_missed_call
+        self.allow_firebase = allow_firebase
+        self.unknown_number = unknown_number
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.allow_flashcall:
+            flags |= (1 << 0)
+        if self.current_number:
+            flags |= (1 << 1)
+        if self.allow_app_hash:
+            flags |= (1 << 4)
+        if self.allow_missed_call:
+            flags |= (1 << 5)
+        if self.allow_firebase:
+            flags |= (1 << 7)
+        if self.unknown_number:
+            flags |= (1 << 9)
+        writer.write_uint32(flags)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "CodeSettings":
+        flags = reader.read_uint32()
+        return cls(
+            allow_flashcall=bool(flags & (1 << 0)),
+            current_number=bool(flags & (1 << 1)),
+            allow_app_hash=bool(flags & (1 << 4)),
+            allow_missed_call=bool(flags & (1 << 5)),
+            allow_firebase=bool(flags & (1 << 7)),
+            unknown_number=bool(flags & (1 << 9)),
+        )
+
+
+@register_tl
+class ContactsResolvedPeer(TLObject):
+    ID: int = 0x7F077AD9
+
+    def __init__(self, peer: Any = None, chats: list[Any] | None = None, users: list[Any] | None = None) -> None:
+        self.peer = peer
+        self.chats = chats or []
+        self.users = users or []
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_vector(self.chats, lambda w, c: w.write_object(c))
+        writer.write_vector(self.users, lambda w, u: w.write_object(u))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ContactsResolvedPeer":
+        peer = reader.read_object()
+        chats = reader.read_vector(lambda r: r.read_object())
+        users = reader.read_vector(lambda r: r.read_object())
+        return cls(peer=peer, chats=chats, users=users)
+
+
+@register_tl
+class MessagesAffectedMessages(TLObject):
+    ID: int = 0x84D0CAA0
+
+    def __init__(self, pts: int = 0, pts_count: int = 0) -> None:
+        self.pts = pts
+        self.pts_count = pts_count
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.pts)
+        writer.write_int32(self.pts_count)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "MessagesAffectedMessages":
+        pts = reader.read_int32()
+        pts_count = reader.read_int32()
+        return cls(pts=pts, pts_count=pts_count)
+
+
+@register_tl
+class AuthLoggedOut(TLObject):
+    ID: int = 0xC3A2835F
+
+    def __init__(self, future_auth_token: bytes | None = None) -> None:
+        self.future_auth_token = future_auth_token
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.future_auth_token is not None:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        if self.future_auth_token is not None:
+            writer.write_bytes(self.future_auth_token)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "AuthLoggedOut":
+        flags = reader.read_uint32()
+        future_auth_token = reader.read_bytes() if (flags & (1 << 0)) else None
+        return cls(future_auth_token=future_auth_token)
+
+
+@register_tl
+class InputCheckPasswordEmpty(TLObject):
+    ID: int = 0x9880F658
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputCheckPasswordEmpty":
+        return cls()
+
+
+@register_tl
+class InputCheckPasswordSRP(TLObject):
+    ID: int = 0xD27FF082
+
+    def __init__(self, srp_id: int = 0, A: bytes = b"", M1: bytes = b"") -> None:
+        self.srp_id = srp_id
+        self.A = A
+        self.M1 = M1
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.srp_id)
+        writer.write_bytes(self.A)
+        writer.write_bytes(self.M1)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputCheckPasswordSRP":
+        return cls(srp_id=reader.read_int64(), A=reader.read_bytes(), M1=reader.read_bytes())
