@@ -67,17 +67,109 @@ Media & Interactive Content
    * - Method
      - Description
    * - ``send_photo(chat_id, photo, caption, ...)``
-     - Uploads and sends compressed or spoiler-masked photos.
+     - Sends compressed photo image files.
+   * - ``send_video(chat_id, video, caption, ...)``
+     - Sends MP4/MKV video files with streaming attributes.
+   * - ``send_audio(chat_id, audio, performer, title, ...)``
+     - Sends music tracks with ID3 tags.
+   * - ``send_voice(chat_id, voice, duration, waveform, ...)``
+     - Sends voice notes encoded in OGG Opus format.
    * - ``send_document(chat_id, document, caption, ...)``
-     - Sends arbitrary files, archives, and uncompressed media.
-   * - ``send_poll(chat_id, question, options, ...)``
-     - Creates public or anonymous polls and quizzes.
+     - Sends arbitrary file attachments.
+   * - ``send_animation(chat_id, animation, caption, ...)``
+     - Sends soundless MP4 animations and GIFs.
    * - ``send_dice(chat_id, emoji)``
-     - Sends animated dice, dart, basketball, or slot machine emojis.
-   * - ``send_location(chat_id, latitude, longitude)``
-     - Shares geographic coordinates.
-   * - ``send_contact(chat_id, phone_number, first_name, ...)``
-     - Shares vCard contact cards.
+     - Rolls animated dice, dartboard, basketball, football, bowling, or slot machine (``🎰``).
+   * - ``send_ephemeral(chat_id, text, ttl_seconds, ...)``
+     - Sends auto-deleting ephemeral messages with self-destruct timers.
+
+Stories & Highlights
+--------------------
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``send_story(chat_id, media, caption, period, ...)``
+     - Posts a new story with custom privacy rules and expiration duration.
+   * - ``edit_story(chat_id, story_id, media, caption, ...)``
+     - Updates media or caption on an active story.
+   * - ``delete_stories(chat_id, story_ids)``
+     - Deletes stories by ID.
+   * - ``get_stories(chat_id, story_ids)``
+     - Retrieves full story objects.
+   * - ``get_peer_stories(chat_id)``
+     - Fetches active stories posted by a peer.
+   * - ``get_story_views(chat_id, story_id)``
+     - Fetches view list and reactions for a story.
+
+Stars, Gifts & Collectibles
+---------------------------
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``get_stars_status(peer)``
+     - Checks Telegram Stars balance and status.
+   * - ``get_stars_transactions(peer, offset, limit)``
+     - Retrieves history of Stars purchases and gifts.
+   * - ``get_star_gifts(hash)``
+     - Lists all currently available collectible and standard gifts.
+   * - ``send_star_gift(peer, gift_id, hide_name, message)``
+     - Sends a Telegram Star gift to a peer.
+   * - ``get_collectible_info(type, query)``
+     - Queries Fragment collectible numbers or usernames.
+
+Bots & Mini Apps
+----------------
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``set_bot_commands(commands, scope, language_code)``
+     - Registers command suggestions in the bot command menu.
+   * - ``get_bot_commands(scope, language_code)``
+     - Fetches active bot command list.
+   * - ``delete_bot_commands(scope, language_code)``
+     - Resets bot commands to default.
+   * - ``set_bot_menu_button(user_id, menu_button)``
+     - Sets custom web app or default menu button for users.
+   * - ``get_bot_menu_button(user_id)``
+     - Retrieves active menu button for a chat.
+   * - ``set_bot_info(bot, lang_code, name, about, description)``
+     - Updates bot descriptive text, about, and display name.
+   * - ``get_bot_info(bot, lang_code)``
+     - Fetches bot profile description.
+   * - ``answer_web_app_query(web_app_query_id, result)``
+     - Delivers result of Mini App query to chat.
+
+Stickers, Reactions & Effects
+-----------------------------
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``get_available_effects(hash)``
+     - Fetches full-screen animated message effects.
+   * - ``get_available_reactions(hash)``
+     - Retrieves available standard, premium, and custom emoji reactions.
+   * - ``set_default_reaction(reaction)``
+     - Configures default quick-reaction emoji.
+   * - ``get_sticker_set(stickerset, hash)``
+     - Retrieves sticker pack details and items.
+   * - ``get_custom_emoji_stickers(document_ids)``
+     - Fetches custom emoji sticker objects.
 
 Channels & Administration
 -------------------------
@@ -136,3 +228,43 @@ Voice & Video Calls
      - Mutes, unmutes, or adjusts volume of participants.
    * - ``invite_to_group_call(call, users)``
      - Invites peers to join voice chat.
+
+Privacy, Folders & Gateway Jobs
+-------------------------------
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``get_privacy_rules(key)``
+     - Retrieves privacy rules for phone, last seen, forwards, etc.
+   * - ``set_privacy_rules(key, rules)``
+     - Updates privacy rules with allow/disallow lists.
+   * - ``get_dialog_filters()``
+     - Fetches user folder tabs.
+   * - ``update_dialog_filter(filter_id, filter_obj)``
+     - Updates custom chat folder filter.
+   * - ``check_chatlist_invite(slug)``
+     - Validates shared chat folder invite link.
+   * - ``join_chatlist_invite(slug, peers)``
+     - Joins shared folder and selected chats.
+   * - ``leave_chatlist(chatlist, peers)``
+     - Leaves shared folder.
+   * - ``is_sms_job_eligible()``
+     - Checks eligibility for Telegram SMS gateway relay.
+   * - ``get_sms_job()``
+     - Retrieves pending SMS verification job.
+   * - ``finish_sms_job(job_id, error)``
+     - Confirms delivery of SMS gateway message.
+
+Raw Namespaces Reference
+------------------------
+
+In addition to client methods, all 783 API functions and 1,573 types are accessible via ``tgflow.raw``:
+
+* **Functions**: ``raw.functions.messages.*``, ``raw.functions.channels.*``, ``raw.functions.auth.*``, ``raw.functions.phone.*``, ``raw.functions.payments.*``, ``raw.functions.stories.*``, ``raw.functions.aicompose.*``, ``raw.functions.chatlists.*``, ``raw.functions.smsjobs.*``, etc.
+* **Types**: ``raw.types.messages.*``, ``raw.types.channels.*``, ``raw.types.phone.*``, ``raw.types.auth.*``, etc.
+* **MTProto Core**: ``tl.types.mtproto.*`` and ``tl.functions.mtproto.*`` (``ReqPqMulti``, ``ReqDHParams``, ``SetClientDHParams``, ``Ping``, ``DestroySession``, ``RpcDropAnswer``, ``GetFutureSalts``).
+* **Secret Chats**: ``tl.types.end_to_end.*`` (``DecryptedMessage``, ``DecryptedMessageService``, etc.).

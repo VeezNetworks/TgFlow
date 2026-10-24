@@ -53,7 +53,7 @@ class TgFlow:
         elif isinstance(session, str):
             if session.startswith("tgflow_"):
                 self.session = Session.from_string(session)
-            elif os.path.exists(session):
+            elif os.path.isfile(session):
                 self.session = Session.load_file(session)
             else:
                 self.session = Session(name=session, dc_id=dc_id, test_mode=test_mode, is_bot=bool(bot_token))
@@ -1220,3 +1220,286 @@ class TgFlow:
                 return tl.InputPeerUser(user_id=chat_id, access_hash=0)
             return tl.InputPeerChat(chat_id=-chat_id)
         return tl.InputPeerEmpty()
+
+    def _resolve_user(self, user_id: int | str) -> Any:
+        if isinstance(user_id, int):
+            return tl.InputUser(user_id=user_id, access_hash=0)
+        return tl.InputUserEmpty()
+
+    def _resolve_channel(self, channel_id: int | str) -> Any:
+        if isinstance(channel_id, int):
+            return tl.InputChannel(channel_id=channel_id, access_hash=0)
+        return tl.InputChannelEmpty()
+
+    async def send_story(
+        self,
+        chat_id: int | str,
+        media: Any,
+        caption: str = "",
+        period: int = 86400,
+        privacy_rules: list[Any] | None = None,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        rules = privacy_rules or [tl.InputPrivacyValueAllowAll()]
+        req = fn.StoriesSendStory(
+            peer=peer,
+            media=media,
+            privacy_rules=rules,
+            caption=caption,
+            period=period,
+            random_id=int(time.time() * 1000),
+        )
+        return await self.invoke(req)
+
+    async def edit_story(
+        self,
+        chat_id: int | str,
+        story_id: int,
+        media: Any = None,
+        caption: str | None = None,
+        privacy_rules: list[Any] | None = None,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.StoriesEditStory(
+            peer=peer,
+            id=story_id,
+            media=media,
+            caption=caption,
+            privacy_rules=privacy_rules,
+        )
+        return await self.invoke(req)
+
+    async def delete_stories(
+        self,
+        chat_id: int | str,
+        story_ids: list[int],
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.StoriesDeleteStories(peer=peer, id=story_ids)
+        return await self.invoke(req)
+
+    async def get_stories(
+        self,
+        chat_id: int | str,
+        story_ids: list[int],
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.StoriesGetStoriesByID(peer=peer, id=story_ids)
+        return await self.invoke(req)
+
+    async def get_peer_stories(
+        self,
+        chat_id: int | str,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.StoriesGetPeerStories(peer=peer)
+        return await self.invoke(req)
+
+    async def get_story_views(
+        self,
+        chat_id: int | str,
+        story_id: int,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.StoriesGetStoryViewsList(peer=peer, id=story_id)
+        return await self.invoke(req)
+
+    async def get_ai_tones(self) -> Any:
+        req = fn.AicomposeGetTones(hash=0)
+        return await self.invoke(req)
+
+    async def get_ai_tone_example(self, tone: Any, tone_type: int = 0) -> Any:
+        req = fn.AicomposeGetToneExample(tone=tone, type=tone_type)
+        return await self.invoke(req)
+
+    async def get_collectible_info(self, collectible_type: Any, query: str) -> Any:
+        req = fn.FragmentGetCollectibleInfo(type=collectible_type, query=query)
+        return await self.invoke(req)
+
+    async def get_stars_status(self, peer: int | str | None = None) -> Any:
+        p = self._resolve_peer(peer) if peer is not None else tl.InputPeerSelf()
+        req = fn.PaymentsGetStarsStatus(peer=p)
+        return await self.invoke(req)
+
+    async def get_stars_transactions(
+        self,
+        peer: int | str | None = None,
+        offset: str = "",
+        limit: int = 100,
+    ) -> Any:
+        p = self._resolve_peer(peer) if peer is not None else tl.InputPeerSelf()
+        req = fn.PaymentsGetStarsTransactions(peer=p, offset=offset, limit=limit)
+        return await self.invoke(req)
+
+    async def get_star_gifts(self, hash_val: int = 0) -> Any:
+        req = fn.PaymentsGetStarGifts(hash=hash_val)
+        return await self.invoke(req)
+
+    async def send_star_gift(
+        self,
+        peer: int | str,
+        gift_id: int,
+        hide_name: bool = False,
+        message: str | None = None,
+    ) -> Any:
+        p = self._resolve_peer(peer)
+        req = fn.PaymentsSendStarGift(
+            peer=p,
+            gift_id=gift_id,
+            hide_name=hide_name,
+            message=tl.TextWithEntities(text=message, entities=[]) if message else None,
+        )
+        return await self.invoke(req)
+
+    async def set_bot_commands(
+        self,
+        commands: list[tuple[str, str]],
+        scope: Any = None,
+        language_code: str = "",
+    ) -> Any:
+        bot_cmds = [tl.BotCommand(command=cmd[0], description=cmd[1]) for cmd in commands]
+        req = fn.BotsSetBotCommands(
+            commands=bot_cmds,
+            scope=scope or tl.BotCommandScopeDefault(),
+            lang_code=language_code,
+        )
+        return await self.invoke(req)
+
+    async def get_bot_commands(
+        self,
+        scope: Any = None,
+        language_code: str = "",
+    ) -> Any:
+        req = fn.BotsGetBotCommands(
+            scope=scope or tl.BotCommandScopeDefault(),
+            lang_code=language_code,
+        )
+        return await self.invoke(req)
+
+    async def delete_bot_commands(
+        self,
+        scope: Any = None,
+        language_code: str = "",
+    ) -> Any:
+        req = fn.BotsResetBotCommands(
+            scope=scope or tl.BotCommandScopeDefault(),
+            lang_code=language_code,
+        )
+        return await self.invoke(req)
+
+    async def set_bot_menu_button(
+        self,
+        user_id: int | str | None = None,
+        menu_button: Any = None,
+    ) -> Any:
+        u = self._resolve_user(user_id) if user_id is not None else tl.InputUserSelf()
+        button = menu_button or tl.BotMenuButtonDefault()
+        req = fn.BotsSetBotMenuButton(user_id=u, button=button)
+        return await self.invoke(req)
+
+    async def get_bot_menu_button(self, user_id: int | str | None = None) -> Any:
+        u = self._resolve_user(user_id) if user_id is not None else tl.InputUserSelf()
+        req = fn.BotsGetBotMenuButton(user_id=u)
+        return await self.invoke(req)
+
+    async def set_bot_info(
+        self,
+        bot: int | str | None = None,
+        lang_code: str = "",
+        name: str | None = None,
+        about: str | None = None,
+        description: str | None = None,
+    ) -> Any:
+        b = self._resolve_user(bot) if bot is not None else tl.InputUserSelf()
+        req = fn.BotsSetBotInfo(
+            bot=b,
+            lang_code=lang_code,
+            name=name,
+            about=about,
+            description=description,
+        )
+        return await self.invoke(req)
+
+    async def get_bot_info(
+        self,
+        bot: int | str | None = None,
+        lang_code: str = "",
+    ) -> Any:
+        b = self._resolve_user(bot) if bot is not None else tl.InputUserSelf()
+        req = fn.BotsGetBotInfo(bot=b, lang_code=lang_code)
+        return await self.invoke(req)
+
+    async def answer_web_app_query(
+        self,
+        web_app_query_id: str,
+        result: Any,
+    ) -> Any:
+        req = fn.MessagesSendWebViewResultMessage(
+            bot_query_id=web_app_query_id,
+            result=result,
+        )
+        return await self.invoke(req)
+
+    async def get_available_effects(self, hash_val: int = 0) -> Any:
+        req = fn.MessagesGetAvailableEffects(hash=hash_val)
+        return await self.invoke(req)
+
+    async def get_available_reactions(self, hash_val: int = 0) -> Any:
+        req = fn.MessagesGetAvailableReactions(hash=hash_val)
+        return await self.invoke(req)
+
+    async def set_default_reaction(self, reaction: Any) -> Any:
+        req = fn.MessagesSetDefaultReaction(reaction=reaction)
+        return await self.invoke(req)
+
+    async def get_sticker_set(self, stickerset: Any, hash_val: int = 0) -> Any:
+        req = fn.MessagesGetStickerSet(stickerset=stickerset, hash=hash_val)
+        return await self.invoke(req)
+
+    async def get_custom_emoji_stickers(self, document_ids: list[int]) -> Any:
+        req = fn.MessagesGetCustomEmojiStickers(document_id=document_ids)
+        return await self.invoke(req)
+
+    async def get_featured_sticker_sets(self, hash_val: int = 0) -> Any:
+        req = fn.MessagesGetFeaturedStickers(hash=hash_val)
+        return await self.invoke(req)
+
+    async def get_privacy_rules(self, key: Any) -> Any:
+        req = fn.AccountGetPrivacy(key=key)
+        return await self.invoke(req)
+
+    async def set_privacy_rules(self, key: Any, rules: list[Any]) -> Any:
+        req = fn.AccountSetPrivacy(key=key, rules=rules)
+        return await self.invoke(req)
+
+    async def get_dialog_filters(self) -> Any:
+        req = fn.MessagesGetDialogFilters()
+        return await self.invoke(req)
+
+    async def update_dialog_filter(self, filter_id: int, filter_obj: Any | None = None) -> Any:
+        req = fn.MessagesUpdateDialogFilter(id=filter_id, filter=filter_obj)
+        return await self.invoke(req)
+
+    async def check_chatlist_invite(self, slug: str) -> Any:
+        req = fn.ChatlistsCheckChatlistInvite(slug=slug)
+        return await self.invoke(req)
+
+    async def join_chatlist_invite(self, slug: str, peers: list[Any]) -> Any:
+        req = fn.ChatlistsJoinChatlistInvite(slug=slug, peers=peers)
+        return await self.invoke(req)
+
+    async def leave_chatlist(self, chatlist: Any, peers: list[Any]) -> Any:
+        req = fn.ChatlistsLeaveChatlist(chatlist=chatlist, peers=peers)
+        return await self.invoke(req)
+
+    async def is_sms_job_eligible(self) -> Any:
+        req = fn.SmsjobsIsEligibleToJoin()
+        return await self.invoke(req)
+
+    async def get_sms_job(self) -> Any:
+        req = fn.SmsjobsGetSmsJob(job_id="")
+        return await self.invoke(req)
+
+    async def finish_sms_job(self, job_id: str, error: str | None = None) -> Any:
+        req = fn.SmsjobsFinishJob(job_id=job_id, error=error)
+        return await self.invoke(req)
