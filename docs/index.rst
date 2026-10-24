@@ -10,12 +10,13 @@ Key Architectural Pillars
 
 * **Zero-bloat MTProto 2.0**: Native implementation of Obfuscated2 transport, AES-256 IGE, Pollard's rho PQ factorization, and Diffie-Hellman key derivation.
 * **Complete Official TL Schema**: Exactly 1,573 official Telegram TL types and 783 RPC functions (2,356 total constructors) from ``core.telegram.org/schema`` compiled directly into type-safe Python classes with exact 4-byte aligned binary serialization.
-* **Full MTProto Browser Support**: Full coverage matching ``core.telegram.org/mtproto/browser`` including dice scrolling animations, full-screen message effects, animated reactions, and rich entities.
+* **24 Raw Namespaces in ``tgflow.raw``**: Dedicated namespaces for ``messages``, ``channels``, ``phone``, ``payments``, ``stories``, ``aicompose``, ``smsjobs``, etc.
+* **MTProto Core & E2E Secret Chats**: Complete coverage of ``core.telegram.org/schema/mtproto`` (45 types, 9 functions) and ``core.telegram.org/schema/end-to-end`` (90 constructors).
 * **Smooth Animated Scroll Rail**: Dynamic vertical scroll progress indicator with animated tracking thumb and scrollspy matching modern documentation UI.
 * **Composable Routing**: Expressive filter combinators supporting ``&`` (AND), ``|`` (OR), and ``~`` (NOT) for declarative event routing.
 * **Modern Messaging**: Built-in support for expandable blockquotes, spoilers, custom animated emoji, ephemeral auto-deleting timers, and quote replies.
 * **Tamper-Evident Sessions**: Portable base64 sessions with CRC32 integrity checks.
-* **Strict Code Quality**: Max 4,100 lines per file and zero comment clutter in the implementation.
+* **Strict Code Quality**: Zero comment clutter in the implementation and verified test suite.
 
 Table of Contents
 -----------------
@@ -27,6 +28,7 @@ Table of Contents
    quickstart
    auth
    methods
+   raw_namespaces
    keyboards
    advanced_features
    calls
@@ -35,3 +37,4 @@ Table of Contents
    formatting
    sessions
    api
+   changelog
