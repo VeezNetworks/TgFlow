@@ -67,6 +67,19 @@ class TestClient(unittest.TestCase):
 
         asyncio.run(run_methods())
 
+    def test_context_manager_and_cleanup(self) -> None:
+        client = TgFlow(session="test_session")
+
+        async def run_context() -> None:
+            async with client:
+                self.assertTrue(client._is_running)
+                dummy_task = asyncio.create_task(asyncio.sleep(10))
+                client._background_tasks.add(dummy_task)
+            self.assertFalse(client._is_running)
+            self.assertEqual(len(client._background_tasks), 0)
+
+        asyncio.run(run_context())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -129,6 +129,7 @@ class TgFlow:
         self._recv_task: asyncio.Task[None] | None = None
         self._ping_task: asyncio.Task[None] | None = None
         self._pending_rpc: dict[int, asyncio.Future[Any]] = {}
+        self._background_tasks: set[asyncio.Task[Any]] = set()
 
         self._message_handlers: list[Handler] = []
         self._callback_handlers: list[Handler] = []
@@ -242,15 +243,36 @@ class TgFlow:
         self._is_connected = False
         if self._ping_task:
             self._ping_task.cancel()
+            try:
+                await self._ping_task
+            except (asyncio.CancelledError, Exception):
+                pass
             self._ping_task = None
         if self._recv_task:
             self._recv_task.cancel()
+            try:
+                await self._recv_task
+            except (asyncio.CancelledError, Exception):
+                pass
             self._recv_task = None
+        for task in list(self._background_tasks):
+            if not task.done():
+                task.cancel()
+        if self._background_tasks:
+            await asyncio.gather(*self._background_tasks, return_exceptions=True)
+        self._background_tasks.clear()
         await self.transport.close()
         for fut in self._pending_rpc.values():
             if not fut.done():
                 fut.cancel()
         self._pending_rpc.clear()
+
+    async def __aenter__(self) -> "TgFlow":
+        await self.start()
+        return self
+
+    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+        await self.stop()
 
     async def start(self) -> "TgFlow":
         await self.connect()
@@ -336,9 +358,15 @@ class TgFlow:
                         if not fut.done():
                             fut.set_result(payload)
                     await self._handle_raw_payload(payload)
+            except (asyncio.IncompleteReadError, ConnectionError):
+                if not self._is_connected:
+                    break
+                await asyncio.sleep(1.0)
             except asyncio.CancelledError:
                 break
             except Exception:
+                if not self._is_connected:
+                    break
                 await asyncio.sleep(0.5)
 
     async def _ping_loop(self) -> None:
@@ -354,7 +382,9 @@ class TgFlow:
 
     async def _handle_raw_payload(self, payload: bytes) -> None:
         for handler in self._raw_handlers:
-            asyncio.create_task(handler.execute(self, payload))
+            task = asyncio.create_task(handler.execute(self, payload))
+            self._background_tasks.add(task)
+            task.add_done_callback(self._background_tasks.discard)
 
     async def dispatch_message(self, message: Any) -> None:
         for handler in self._message_handlers:
