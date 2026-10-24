@@ -230,13 +230,94 @@ class TgFlow:
         else:
             raise ValueError(f"Unknown handler type: {handler_type}")
 
+    async def _bot_http_call(self, method: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+        import urllib.request
+        import json
+        url = f"https://api.telegram.org/bot{self.bot_token}/{method}"
+        def _request() -> dict[str, Any]:
+            data = None
+            headers = {"User-Agent": "TgFlow/1.8.0"}
+            if params is not None:
+                data = json.dumps(params).encode("utf-8")
+                headers["Content-Type"] = "application/json"
+            req = urllib.request.Request(url, data=data, headers=headers)
+            with urllib.request.urlopen(req, timeout=35.0) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        return await asyncio.to_thread(_request)
+
+    async def _bot_polling_loop(self) -> None:
+        offset = 0
+        while self._is_connected:
+            try:
+                res = await self._bot_http_call("getUpdates", {"offset": offset, "timeout": 20, "allowed_updates": ["message", "callback_query", "inline_query"]})
+                if not res.get("ok"):
+                    await asyncio.sleep(1.0)
+                    continue
+                updates = res.get("result", [])
+                for u in updates:
+                    offset = max(offset, u["update_id"] + 1)
+                    if "message" in u:
+                        m = u["message"]
+                        chat_d = m.get("chat", {})
+                        chat = Chat(id=chat_d.get("id", 0), type=chat_d.get("type", "private"), title=chat_d.get("title"), username=chat_d.get("username"))
+                        from_d = m.get("from")
+                        from_user = User(id=from_d["id"], is_bot=from_d.get("is_bot", False), first_name=from_d.get("first_name", ""), last_name=from_d.get("last_name"), username=from_d.get("username")) if from_d else None
+                        msg = Message(
+                            id=m.get("message_id", 0),
+                            date=m.get("date", int(time.time())),
+                            chat=chat,
+                            from_user=from_user,
+                            text=m.get("text", "") or m.get("caption", ""),
+                            reply_to_message_id=m.get("reply_to_message", {}).get("message_id"),
+                            client=self,
+                        )
+                        task = asyncio.create_task(self.dispatch_message(msg))
+                        self._background_tasks.add(task)
+                        task.add_done_callback(self._background_tasks.discard)
+                    elif "callback_query" in u:
+                        cb = u["callback_query"]
+                        from_d = cb.get("from")
+                        from_user = User(id=from_d["id"], is_bot=from_d.get("is_bot", False), first_name=from_d.get("first_name", ""), last_name=from_d.get("last_name"), username=from_d.get("username")) if from_d else None
+                        msg_d = cb.get("message")
+                        msg = None
+                        if msg_d:
+                            chat_d = msg_d.get("chat", {})
+                            chat = Chat(id=chat_d.get("id", 0), type=chat_d.get("type", "private"))
+                            msg = Message(id=msg_d.get("message_id", 0), date=msg_d.get("date", int(time.time())), chat=chat, from_user=self.me, text=msg_d.get("text", ""), client=self)
+                        cb_obj = CallbackQuery(
+                            id=str(cb.get("id", "")),
+                            from_user=from_user,
+                            message=msg,
+                            data=cb.get("data", ""),
+                            chat_instance=cb.get("chat_instance", ""),
+                            client=self,
+                        )
+                        task = asyncio.create_task(self.dispatch_callback(cb_obj))
+                        self._background_tasks.add(task)
+                        task.add_done_callback(self._background_tasks.discard)
+            except asyncio.CancelledError:
+                break
+            except Exception:
+                await asyncio.sleep(1.0)
+
     async def connect(self) -> None:
         if self._is_connected:
             return
-        await self.transport.connect()
         self._is_connected = True
-        self._recv_task = asyncio.create_task(self._receive_loop())
-        self._ping_task = asyncio.create_task(self._ping_loop())
+        if self.bot_token:
+            try:
+                await self._bot_http_call("deleteWebhook")
+                me_res = await self._bot_http_call("getMe")
+                if me_res.get("ok"):
+                    r = me_res["result"]
+                    self.me = User(id=r["id"], is_bot=True, first_name=r.get("first_name", "Bot"), username=r.get("username"))
+            except Exception:
+                pass
+            self._recv_task = asyncio.create_task(self._bot_polling_loop())
+        else:
+            await self.transport.connect()
+            self._recv_task = asyncio.create_task(self._receive_loop())
+            self._ping_task = asyncio.create_task(self._ping_loop())
 
     async def disconnect(self) -> None:
         self._is_running = False
@@ -261,7 +342,8 @@ class TgFlow:
         if self._background_tasks:
             await asyncio.gather(*self._background_tasks, return_exceptions=True)
         self._background_tasks.clear()
-        await self.transport.close()
+        if not self.bot_token:
+            await self.transport.close()
         for fut in self._pending_rpc.values():
             if not fut.done():
                 fut.cancel()
@@ -278,7 +360,8 @@ class TgFlow:
         await self.connect()
         if self.bot_token:
             self.session.is_bot = True
-        self.me = User(id=self.session.user_id or 777000, first_name="TgFlow", is_bot=self.session.is_bot)
+        if not self.me:
+            self.me = User(id=self.session.user_id or 777000, first_name="TgFlow", is_bot=self.session.is_bot)
         self._is_running = True
         return self
 
@@ -438,6 +521,39 @@ class TgFlow:
             plain_text, parsed_entities = parse_markdown(plain_text)
             entities = [e.to_tl() for e in parsed_entities]
 
+        if self.bot_token:
+            payload: dict[str, Any] = {
+                "chat_id": chat_id,
+                "text": plain_text,
+                "parse_mode": parse_mode.upper() if parse_mode else "HTML",
+            }
+            if reply_to_message_id is not None:
+                payload["reply_to_message_id"] = reply_to_message_id
+            if reply_markup is not None:
+                if hasattr(reply_markup, "to_dict"):
+                    payload["reply_markup"] = reply_markup.to_dict()
+                elif hasattr(reply_markup, "build"):
+                    payload["reply_markup"] = reply_markup.build().to_dict()
+                elif isinstance(reply_markup, dict):
+                    payload["reply_markup"] = reply_markup
+            if silent:
+                payload["disable_notification"] = True
+            try:
+                res = await self._bot_http_call("sendMessage", payload)
+                if res.get("ok"):
+                    r = res["result"]
+                    chat_obj = Chat(id=r["chat"]["id"], type=r["chat"].get("type", "private"))
+                    return Message(
+                        id=r["message_id"],
+                        date=r.get("date", int(time.time())),
+                        chat=chat_obj,
+                        from_user=self.me,
+                        text=r.get("text", plain_text),
+                        client=self,
+                    )
+            except Exception:
+                pass
+
         reply_to_obj = None
         if reply_to_message_id is not None or quote is not None:
             reply_to_obj = tl.InputReplyToMessage(
@@ -487,6 +603,29 @@ class TgFlow:
             plain_text, parsed_entities = parse_html(text)
             entities = [e.to_tl() for e in parsed_entities]
 
+        if self.bot_token:
+            payload = {
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "text": plain_text,
+                "parse_mode": parse_mode.upper() if parse_mode else "HTML",
+            }
+            if reply_markup is not None:
+                if hasattr(reply_markup, "to_dict"):
+                    payload["reply_markup"] = reply_markup.to_dict()
+                elif hasattr(reply_markup, "build"):
+                    payload["reply_markup"] = reply_markup.build().to_dict()
+                elif isinstance(reply_markup, dict):
+                    payload["reply_markup"] = reply_markup
+            try:
+                res = await self._bot_http_call("editMessageText", payload)
+                if res.get("ok"):
+                    r = res["result"]
+                    chat_obj = Chat(id=r["chat"]["id"], type=r["chat"].get("type", "private"))
+                    return Message(id=r["message_id"], date=r.get("date", int(time.time())), chat=chat_obj, from_user=self.me, text=r.get("text", plain_text), client=self)
+            except Exception:
+                pass
+
         req = fn.EditMessage(
             peer=self._resolve_peer(chat_id),
             id=message_id,
@@ -520,6 +659,14 @@ class TgFlow:
         return Message(id=message_id, date=int(time.time()), chat=chat_obj, client=self)
 
     async def delete_messages(self, chat_id: int | str, message_ids: Sequence[int], revoke: bool = True) -> bool:
+        if self.bot_token:
+            ids = [message_ids] if isinstance(message_ids, int) else list(message_ids)
+            for mid in ids:
+                try:
+                    await self._bot_http_call("deleteMessage", {"chat_id": chat_id, "message_id": mid})
+                except Exception:
+                    pass
+            return True
         req = fn.DeleteMessages(id=list(message_ids), revoke=revoke)
         return True
 
@@ -628,12 +775,39 @@ class TgFlow:
         allows_multiple_answers: bool = False,
         reply_to_message_id: int | None = None,
     ) -> Message:
+        if self.bot_token:
+            payload = {
+                "chat_id": chat_id,
+                "question": question,
+                "options": [{"text": opt} for opt in options] if isinstance(options, list) and options and isinstance(options[0], str) else options,
+                "is_anonymous": is_anonymous,
+            }
+            try:
+                res = await self._bot_http_call("sendPoll", payload)
+                if res.get("ok"):
+                    r = res["result"]
+                    chat_obj = Chat(id=r["chat"]["id"], type=r["chat"].get("type", "private"))
+                    return Message(id=r["message_id"], date=r.get("date", int(time.time())), chat=chat_obj, from_user=self.me, client=self)
+            except Exception:
+                pass
         chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
         poll_opts = [PollOption(text=opt, voter_count=0) for opt in options]
         poll_obj = Poll(id=str(int(time.time())), question=question, options=poll_opts, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers)
         return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, media=poll_obj, client=self)
 
     async def send_dice(self, chat_id: int | str, emoji: str = "🎲", reply_to_message_id: int | None = None) -> Message:
+        if self.bot_token:
+            payload = {"chat_id": chat_id, "emoji": emoji}
+            if reply_to_message_id is not None:
+                payload["reply_to_message_id"] = reply_to_message_id
+            try:
+                res = await self._bot_http_call("sendDice", payload)
+                if res.get("ok"):
+                    r = res["result"]
+                    chat_obj = Chat(id=r["chat"]["id"], type=r["chat"].get("type", "private"))
+                    return Message(id=r["message_id"], date=r.get("date", int(time.time())), chat=chat_obj, from_user=self.me, client=self)
+            except Exception:
+                pass
         chat_obj = Chat(id=int(chat_id) if isinstance(chat_id, int) else 0)
         return Message(id=int(time.time()), date=int(time.time()), chat=chat_obj, from_user=self.me, media=Dice(emoji=emoji, value=6), client=self)
 
@@ -656,12 +830,48 @@ class TgFlow:
         return True
 
     async def ban_chat_member(self, chat_id: int | str, user_id: int, until_date: int = 0, revoke_messages: bool = True) -> bool:
+        if self.bot_token:
+            payload = {"chat_id": chat_id, "user_id": user_id, "revoke_messages": revoke_messages}
+            if until_date:
+                payload["until_date"] = until_date
+            try:
+                res = await self._bot_http_call("banChatMember", payload)
+                return bool(res.get("ok"))
+            except Exception:
+                return False
         return True
 
     async def unban_chat_member(self, chat_id: int | str, user_id: int, only_if_banned: bool = True) -> bool:
+        if self.bot_token:
+            payload = {"chat_id": chat_id, "user_id": user_id, "only_if_banned": only_if_banned}
+            try:
+                res = await self._bot_http_call("unbanChatMember", payload)
+                return bool(res.get("ok"))
+            except Exception:
+                return False
         return True
 
     async def restrict_chat_member(self, chat_id: int | str, user_id: int, permissions: ChatPermissions, until_date: int = 0) -> bool:
+        if self.bot_token:
+            p_dict = {}
+            if permissions:
+                p_dict = {
+                    "can_send_messages": getattr(permissions, "can_send_messages", False),
+                    "can_send_other_messages": getattr(permissions, "can_send_messages", False),
+                    "can_send_polls": getattr(permissions, "can_send_polls", False),
+                }
+            payload = {
+                "chat_id": chat_id,
+                "user_id": user_id,
+                "permissions": p_dict,
+            }
+            if until_date:
+                payload["until_date"] = until_date
+            try:
+                res = await self._bot_http_call("restrictChatMember", payload)
+                return bool(res.get("ok"))
+            except Exception:
+                return False
         return True
 
     async def promote_chat_member(self, chat_id: int | str, user_id: int, is_anonymous: bool = False, can_manage_chat: bool = True, can_delete_messages: bool = True) -> bool:
@@ -713,6 +923,19 @@ class TgFlow:
         return True
 
     async def answer_callback_query(self, callback_query_id: str, text: str = "", show_alert: bool = False, url: str | None = None, cache_time: int = 0) -> bool:
+        if self.bot_token:
+            payload: dict[str, Any] = {"callback_query_id": callback_query_id, "show_alert": show_alert}
+            if text:
+                payload["text"] = text
+            if url:
+                payload["url"] = url
+            if cache_time:
+                payload["cache_time"] = cache_time
+            try:
+                res = await self._bot_http_call("answerCallbackQuery", payload)
+                return bool(res.get("ok"))
+            except Exception:
+                return False
         return True
 
     async def answer_inline_query(self, inline_query_id: str, results: list[Any], cache_time: int = 300, is_personal: bool = False, next_offset: str = "") -> bool:
