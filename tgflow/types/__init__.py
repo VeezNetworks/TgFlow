@@ -34,6 +34,7 @@ from .media import (
 from .polls import Poll, PollOption, PollAnswer
 from .chat_member import ChatMember, ChatPermissions, ChatInviteLink
 from .features import LinkPreviewOptions, ForumTopic, StoryItem, PaidMedia, Gift
+from .group_call import GroupCall, GroupCallParticipant
 
 __all__ = [
     "User",
@@ -74,4 +75,6 @@ __all__ = [
     "StoryItem",
     "PaidMedia",
     "Gift",
+    "GroupCall",
+    "GroupCallParticipant",
 ]

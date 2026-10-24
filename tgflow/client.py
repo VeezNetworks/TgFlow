@@ -571,6 +571,107 @@ class TgFlow:
     async def answer_inline_query(self, inline_query_id: str, results: list[Any], cache_time: int = 300, is_personal: bool = False, next_offset: str = "") -> bool:
         return True
 
+    async def join_group_call(
+        self,
+        call: Any,
+        join_as: Any = None,
+        invite_hash: str | None = None,
+        muted: bool = False,
+        video_stopped: bool = False,
+        params: str = "{}",
+    ) -> Any:
+        call_obj = self._resolve_group_call(call)
+        join_peer = join_as or self._resolve_peer(self.me.id if self.me else 0)
+        data_json = tl.DataJSON(data=params if isinstance(params, str) else "{}")
+        req = fn.JoinGroupCall(
+            call=call_obj,
+            join_as=join_peer,
+            invite_hash=invite_hash,
+            params=data_json,
+            muted=muted,
+            video_stopped=video_stopped,
+        )
+        return await self.invoke(req)
+
+    async def leave_group_call(self, call: Any, source: int = 0) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.LeaveGroupCall(call=call_obj, source=source)
+        return await self.invoke(req)
+
+    async def get_group_call(self, call: Any, limit: int = 100) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.GetGroupCall(call=call_obj, limit=limit)
+        return await self.invoke(req)
+
+    async def get_group_call_participants(
+        self,
+        call: Any,
+        ids: list[Any] | None = None,
+        sources: list[int] | None = None,
+        offset: str = "",
+        limit: int = 100,
+    ) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.GetGroupParticipants(
+            call=call_obj,
+            ids=ids,
+            sources=sources,
+            offset=offset,
+            limit=limit,
+        )
+        return await self.invoke(req)
+
+    async def edit_group_call_participant(
+        self,
+        call: Any,
+        participant: Any,
+        volume: int | None = None,
+        raise_hand: bool | None = None,
+        presentation_paused: bool | None = None,
+    ) -> Any:
+        call_obj = self._resolve_group_call(call)
+        part_peer = self._resolve_peer(participant) if isinstance(participant, (int, str)) else participant
+        req = fn.EditGroupCallParticipant(
+            call=call_obj,
+            participant=part_peer,
+            volume=volume,
+            raise_hand=raise_hand,
+            presentation_paused=presentation_paused,
+        )
+        return await self.invoke(req)
+
+    async def create_group_call(
+        self,
+        chat_id: int | str,
+        title: str | None = None,
+        rtmp_stream: bool = False,
+        schedule_date: int | None = None,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id)
+        rand_id = int.from_bytes(os.urandom(4), "little")
+        req = fn.CreateGroupCall(
+            peer=peer,
+            random_id=rand_id,
+            title=title,
+            rtmp_stream=rtmp_stream,
+            schedule_date=schedule_date,
+        )
+        return await self.invoke(req)
+
+    async def discard_group_call(self, call: Any) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.DiscardGroupCall(call=call_obj)
+        return await self.invoke(req)
+
+    def _resolve_group_call(self, call: Any) -> Any:
+        if isinstance(call, tl.InputGroupCall):
+            return call
+        if hasattr(call, "id") and hasattr(call, "access_hash"):
+            return tl.InputGroupCall(id=call.id, access_hash=call.access_hash)
+        if isinstance(call, (list, tuple)) and len(call) == 2:
+            return tl.InputGroupCall(id=call[0], access_hash=call[1])
+        return tl.InputGroupCall(id=int(call) if isinstance(call, int) else 0, access_hash=0)
+
     def export_session_string(self) -> str:
         return self.session.export_string()
 

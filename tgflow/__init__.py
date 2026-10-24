@@ -56,6 +56,7 @@ from . import filters
 from . import formatting
 from . import tl
 from . import types
+from . import raw
 
 __version__ = "1.0.0"
 
@@ -103,10 +104,13 @@ __all__ = [
     "StoryItem",
     "PaidMedia",
     "Gift",
+    "GroupCall",
+    "GroupCallParticipant",
     "filters",
     "formatting",
     "tl",
     "types",
+    "raw",
     "RPCError",
     "BadRequest",
     "Unauthorized",

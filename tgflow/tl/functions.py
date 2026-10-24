@@ -371,3 +371,230 @@ class GetHistory(TLRequest):
             min_id=min_id,
             hash=hash,
         )
+
+
+@register_tl
+class GetGroupCall(TLRequest):
+    ID: int = 0x4124C316
+    def __init__(self, call: Any = None, limit: int = 100) -> None:
+        self.call = call
+        self.limit = limit
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+        writer.write_int32(self.limit)
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetGroupCall":
+        call = reader.read_object()
+        limit = reader.read_int32()
+        return cls(call=call, limit=limit)
+
+
+@register_tl
+class GetGroupParticipants(TLRequest):
+    ID: int = 0xC555C878
+    def __init__(
+        self,
+        call: Any = None,
+        ids: list[Any] | None = None,
+        sources: list[int] | None = None,
+        offset: str = "",
+        limit: int = 100,
+    ) -> None:
+        self.call = call
+        self.ids = ids or []
+        self.sources = sources or []
+        self.offset = offset
+        self.limit = limit
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+        writer.write_vector(self.ids, lambda w, x: w.write_object(x))
+        writer.write_vector(self.sources, lambda w, x: w.write_int32(x))
+        writer.write_string(self.offset)
+        writer.write_int32(self.limit)
+    @classmethod
+    def read(cls, reader: TLReader) -> "GetGroupParticipants":
+        call = reader.read_object()
+        ids = reader.read_vector(lambda r: r.read_object())
+        sources = reader.read_vector(lambda r: r.read_int32())
+        offset = reader.read_string()
+        limit = reader.read_int32()
+        return cls(call=call, ids=ids, sources=sources, offset=offset, limit=limit)
+
+
+@register_tl
+class JoinGroupCall(TLRequest):
+    ID: int = 0xB132FF7B
+    def __init__(
+        self,
+        call: Any = None,
+        join_as: Any = None,
+        params: Any = None,
+        invite_hash: str | None = None,
+        muted: bool = False,
+        video_stopped: bool = False,
+    ) -> None:
+        self.call = call
+        self.join_as = join_as
+        self.params = params
+        self.invite_hash = invite_hash
+        self.muted = muted
+        self.video_stopped = video_stopped
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.muted:
+            flags |= (1 << 0)
+        if self.video_stopped:
+            flags |= (1 << 2)
+        if self.invite_hash is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_object(self.call)
+        writer.write_object(self.join_as)
+        if self.invite_hash is not None:
+            writer.write_string(self.invite_hash)
+        writer.write_object(self.params)
+    @classmethod
+    def read(cls, reader: TLReader) -> "JoinGroupCall":
+        flags = reader.read_uint32()
+        muted = bool(flags & (1 << 0))
+        video_stopped = bool(flags & (1 << 2))
+        call = reader.read_object()
+        join_as = reader.read_object()
+        invite_hash = reader.read_string() if (flags & (1 << 1)) else None
+        params = reader.read_object()
+        return cls(
+            call=call,
+            join_as=join_as,
+            invite_hash=invite_hash,
+            params=params,
+            muted=muted,
+            video_stopped=video_stopped,
+        )
+
+
+@register_tl
+class LeaveGroupCall(TLRequest):
+    ID: int = 0x500377F9
+    def __init__(self, call: Any = None, source: int = 0) -> None:
+        self.call = call
+        self.source = source
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+        writer.write_int32(self.source)
+    @classmethod
+    def read(cls, reader: TLReader) -> "LeaveGroupCall":
+        call = reader.read_object()
+        source = reader.read_int32()
+        return cls(call=call, source=source)
+
+
+@register_tl
+class EditGroupCallParticipant(TLRequest):
+    ID: int = 0xA5273ABF
+    def __init__(
+        self,
+        call: Any = None,
+        participant: Any = None,
+        volume: int | None = None,
+        raise_hand: bool | None = None,
+        presentation_paused: bool | None = None,
+    ) -> None:
+        self.call = call
+        self.participant = participant
+        self.volume = volume
+        self.raise_hand = raise_hand
+        self.presentation_paused = presentation_paused
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.volume is not None:
+            flags |= (1 << 1)
+        if self.raise_hand is not None:
+            flags |= (1 << 2)
+        if self.presentation_paused is not None:
+            flags |= (1 << 3)
+        writer.write_uint32(flags)
+        writer.write_object(self.call)
+        writer.write_object(self.participant)
+        if self.volume is not None:
+            writer.write_int32(self.volume)
+        if self.raise_hand is not None:
+            writer.write_bool(self.raise_hand)
+        if self.presentation_paused is not None:
+            writer.write_bool(self.presentation_paused)
+    @classmethod
+    def read(cls, reader: TLReader) -> "EditGroupCallParticipant":
+        flags = reader.read_uint32()
+        call = reader.read_object()
+        participant = reader.read_object()
+        volume = reader.read_int32() if (flags & (1 << 1)) else None
+        raise_hand = reader.read_bool() if (flags & (1 << 2)) else None
+        presentation_paused = reader.read_bool() if (flags & (1 << 3)) else None
+        return cls(
+            call=call,
+            participant=participant,
+            volume=volume,
+            raise_hand=raise_hand,
+            presentation_paused=presentation_paused,
+        )
+
+
+@register_tl
+class CreateGroupCall(TLRequest):
+    ID: int = 0x48CDC6D8
+    def __init__(
+        self,
+        peer: Any = None,
+        random_id: int = 0,
+        title: str | None = None,
+        schedule_date: int | None = None,
+        rtmp_stream: bool = False,
+    ) -> None:
+        self.peer = peer
+        self.random_id = random_id
+        self.title = title
+        self.schedule_date = schedule_date
+        self.rtmp_stream = rtmp_stream
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.rtmp_stream:
+            flags |= (1 << 2)
+        if self.title is not None:
+            flags |= (1 << 0)
+        if self.schedule_date is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_int32(self.random_id)
+        if self.title is not None:
+            writer.write_string(self.title)
+        if self.schedule_date is not None:
+            writer.write_int32(self.schedule_date)
+    @classmethod
+    def read(cls, reader: TLReader) -> "CreateGroupCall":
+        flags = reader.read_uint32()
+        rtmp_stream = bool(flags & (1 << 2))
+        peer = reader.read_object()
+        random_id = reader.read_int32()
+        title = reader.read_string() if (flags & (1 << 0)) else None
+        schedule_date = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(peer=peer, random_id=random_id, title=title, schedule_date=schedule_date, rtmp_stream=rtmp_stream)
+
+
+@register_tl
+class DiscardGroupCall(TLRequest):
+    ID: int = 0x7A777135
+    def __init__(self, call: Any = None) -> None:
+        self.call = call
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+    @classmethod
+    def read(cls, reader: TLReader) -> "DiscardGroupCall":
+        call = reader.read_object()
+        return cls(call=call)

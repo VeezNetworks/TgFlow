@@ -16598,3 +16598,361 @@ class ReactionPaid(TLObject):
     @classmethod
     def read(cls, reader: TLReader) -> "ReactionPaid":
         return cls()
+
+
+@register_tl
+class DataJSON(TLObject):
+    ID: int = 0x7D748D04
+    def __init__(self, data: str = "{}") -> None:
+        self.data = data
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_string(self.data)
+    @classmethod
+    def read(cls, reader: TLReader) -> "DataJSON":
+        return cls(data=reader.read_string())
+
+
+@register_tl
+class InputGroupCall(TLObject):
+    ID: int = 0xD8AA840F
+    def __init__(self, id: int = 0, access_hash: int = 0) -> None:
+        self.id = id
+        self.access_hash = access_hash
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputGroupCall":
+        return cls(id=reader.read_int64(), access_hash=reader.read_int64())
+
+
+@register_tl
+class GroupCallDiscarded(TLObject):
+    ID: int = 0x7780BCB4
+    def __init__(self, id: int = 0, access_hash: int = 0, duration: int = 0) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.duration = duration
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.duration)
+    @classmethod
+    def read(cls, reader: TLReader) -> "GroupCallDiscarded":
+        return cls(id=reader.read_int64(), access_hash=reader.read_int64(), duration=reader.read_int32())
+
+
+@register_tl
+class GroupCall(TLObject):
+    ID: int = 0xDCB1183C
+    def __init__(
+        self,
+        id: int = 0,
+        access_hash: int = 0,
+        participants_count: int = 0,
+        unmuted_video_limit: int = 0,
+        version: int = 0,
+        can_change_join_muted: bool = False,
+        join_muted: bool = False,
+        can_start_video: bool = False,
+        record_video_active: bool = False,
+        rtmp_stream: bool = False,
+        listeners_hidden: bool = False,
+        title: str | None = None,
+        stream_dc_id: int | None = None,
+        record_start_date: int | None = None,
+        schedule_date: int | None = None,
+        unmuted_video_count: int | None = None,
+    ) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.participants_count = participants_count
+        self.unmuted_video_limit = unmuted_video_limit
+        self.version = version
+        self.can_change_join_muted = can_change_join_muted
+        self.join_muted = join_muted
+        self.can_start_video = can_start_video
+        self.record_video_active = record_video_active
+        self.rtmp_stream = rtmp_stream
+        self.listeners_hidden = listeners_hidden
+        self.title = title
+        self.stream_dc_id = stream_dc_id
+        self.record_start_date = record_start_date
+        self.schedule_date = schedule_date
+        self.unmuted_video_count = unmuted_video_count
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.can_change_join_muted:
+            flags |= (1 << 1)
+        if self.join_muted:
+            flags |= (1 << 2)
+        if self.can_start_video:
+            flags |= (1 << 9)
+        if self.record_video_active:
+            flags |= (1 << 11)
+        if self.rtmp_stream:
+            flags |= (1 << 12)
+        if self.listeners_hidden:
+            flags |= (1 << 13)
+        if self.title is not None:
+            flags |= (1 << 3)
+        if self.stream_dc_id is not None:
+            flags |= (1 << 4)
+        if self.record_start_date is not None:
+            flags |= (1 << 5)
+        if self.schedule_date is not None:
+            flags |= (1 << 7)
+        if self.unmuted_video_count is not None:
+            flags |= (1 << 10)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.participants_count)
+        if self.title is not None:
+            writer.write_string(self.title)
+        if self.stream_dc_id is not None:
+            writer.write_int32(self.stream_dc_id)
+        if self.record_start_date is not None:
+            writer.write_int32(self.record_start_date)
+        if self.schedule_date is not None:
+            writer.write_int32(self.schedule_date)
+        if self.unmuted_video_count is not None:
+            writer.write_int32(self.unmuted_video_count)
+        writer.write_int32(self.unmuted_video_limit)
+        writer.write_int32(self.version)
+    @classmethod
+    def read(cls, reader: TLReader) -> "GroupCall":
+        flags = reader.read_uint32()
+        can_change_join_muted = bool(flags & (1 << 1))
+        join_muted = bool(flags & (1 << 2))
+        can_start_video = bool(flags & (1 << 9))
+        record_video_active = bool(flags & (1 << 11))
+        rtmp_stream = bool(flags & (1 << 12))
+        listeners_hidden = bool(flags & (1 << 13))
+        call_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        participants_count = reader.read_int32()
+        title = reader.read_string() if (flags & (1 << 3)) else None
+        stream_dc_id = reader.read_int32() if (flags & (1 << 4)) else None
+        record_start_date = reader.read_int32() if (flags & (1 << 5)) else None
+        schedule_date = reader.read_int32() if (flags & (1 << 7)) else None
+        unmuted_video_count = reader.read_int32() if (flags & (1 << 10)) else None
+        unmuted_video_limit = reader.read_int32()
+        version = reader.read_int32()
+        return cls(
+            id=call_id,
+            access_hash=access_hash,
+            participants_count=participants_count,
+            unmuted_video_limit=unmuted_video_limit,
+            version=version,
+            can_change_join_muted=can_change_join_muted,
+            join_muted=join_muted,
+            can_start_video=can_start_video,
+            record_video_active=record_video_active,
+            rtmp_stream=rtmp_stream,
+            listeners_hidden=listeners_hidden,
+            title=title,
+            stream_dc_id=stream_dc_id,
+            record_start_date=record_start_date,
+            schedule_date=schedule_date,
+            unmuted_video_count=unmuted_video_count,
+        )
+
+
+@register_tl
+class GroupCallParticipant(TLObject):
+    ID: int = 0xEBA636FE
+    def __init__(
+        self,
+        peer: Any = None,
+        date: int = 0,
+        source: int = 0,
+        muted: bool = False,
+        left: bool = False,
+        can_self_unmute: bool = False,
+        just_joined: bool = False,
+        versioned: bool = False,
+        min: bool = False,
+        muted_by_you: bool = False,
+        volume_by_admin: bool = False,
+        is_self: bool = False,
+        video_joined: bool = False,
+        active_date: int | None = None,
+        volume: int | None = None,
+        about: str | None = None,
+        raise_hand_rating: int | None = None,
+    ) -> None:
+        self.peer = peer
+        self.date = date
+        self.source = source
+        self.muted = muted
+        self.left = left
+        self.can_self_unmute = can_self_unmute
+        self.just_joined = just_joined
+        self.versioned = versioned
+        self.min = min
+        self.muted_by_you = muted_by_you
+        self.volume_by_admin = volume_by_admin
+        self.is_self = is_self
+        self.video_joined = video_joined
+        self.active_date = active_date
+        self.volume = volume
+        self.about = about
+        self.raise_hand_rating = raise_hand_rating
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.muted:
+            flags |= (1 << 0)
+        if self.left:
+            flags |= (1 << 1)
+        if self.can_self_unmute:
+            flags |= (1 << 2)
+        if self.just_joined:
+            flags |= (1 << 4)
+        if self.versioned:
+            flags |= (1 << 5)
+        if self.min:
+            flags |= (1 << 8)
+        if self.muted_by_you:
+            flags |= (1 << 9)
+        if self.volume_by_admin:
+            flags |= (1 << 10)
+        if self.is_self:
+            flags |= (1 << 12)
+        if self.video_joined:
+            flags |= (1 << 15)
+        if self.active_date is not None:
+            flags |= (1 << 3)
+        if self.volume is not None:
+            flags |= (1 << 7)
+        if self.about is not None:
+            flags |= (1 << 11)
+        if self.raise_hand_rating is not None:
+            flags |= (1 << 13)
+        writer.write_uint32(flags)
+        if hasattr(self.peer, "write"):
+            self.peer.write(writer)
+        writer.write_int32(self.date)
+        if self.active_date is not None:
+            writer.write_int32(self.active_date)
+        writer.write_int32(self.source)
+        if self.volume is not None:
+            writer.write_int32(self.volume)
+        if self.about is not None:
+            writer.write_string(self.about)
+        if self.raise_hand_rating is not None:
+            writer.write_int64(self.raise_hand_rating)
+    @classmethod
+    def read(cls, reader: TLReader) -> "GroupCallParticipant":
+        flags = reader.read_uint32()
+        muted = bool(flags & (1 << 0))
+        left = bool(flags & (1 << 1))
+        can_self_unmute = bool(flags & (1 << 2))
+        just_joined = bool(flags & (1 << 4))
+        versioned = bool(flags & (1 << 5))
+        min_flag = bool(flags & (1 << 8))
+        muted_by_you = bool(flags & (1 << 9))
+        volume_by_admin = bool(flags & (1 << 10))
+        is_self = bool(flags & (1 << 12))
+        video_joined = bool(flags & (1 << 15))
+        peer = reader.read_object()
+        date = reader.read_int32()
+        active_date = reader.read_int32() if (flags & (1 << 3)) else None
+        source = reader.read_int32()
+        volume = reader.read_int32() if (flags & (1 << 7)) else None
+        about = reader.read_string() if (flags & (1 << 11)) else None
+        raise_hand_rating = reader.read_int64() if (flags & (1 << 13)) else None
+        return cls(
+            peer=peer,
+            date=date,
+            source=source,
+            muted=muted,
+            left=left,
+            can_self_unmute=can_self_unmute,
+            just_joined=just_joined,
+            versioned=versioned,
+            min=min_flag,
+            muted_by_you=muted_by_you,
+            volume_by_admin=volume_by_admin,
+            is_self=is_self,
+            video_joined=video_joined,
+            active_date=active_date,
+            volume=volume,
+            about=about,
+            raise_hand_rating=raise_hand_rating,
+        )
+
+
+@register_tl
+class PhoneGroupCall(TLObject):
+    ID: int = 0x9E727AAD
+    def __init__(
+        self,
+        call: Any = None,
+        participants: list[Any] | None = None,
+        participants_next_offset: str = "",
+        chats: list[Any] | None = None,
+        users: list[Any] | None = None,
+    ) -> None:
+        self.call = call
+        self.participants = participants or []
+        self.participants_next_offset = participants_next_offset
+        self.chats = chats or []
+        self.users = users or []
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+        writer.write_vector(self.participants, lambda w, x: w.write_object(x))
+        writer.write_string(self.participants_next_offset)
+        writer.write_vector(self.chats, lambda w, x: w.write_object(x))
+        writer.write_vector(self.users, lambda w, x: w.write_object(x))
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneGroupCall":
+        call = reader.read_object()
+        participants = reader.read_vector(lambda r: r.read_object())
+        next_offset = reader.read_string()
+        chats = reader.read_vector(lambda r: r.read_object())
+        users = reader.read_vector(lambda r: r.read_object())
+        return cls(call=call, participants=participants, participants_next_offset=next_offset, chats=chats, users=users)
+
+
+@register_tl
+class PhoneGroupParticipants(TLObject):
+    ID: int = 0xF47751B6
+    def __init__(
+        self,
+        count: int = 0,
+        participants: list[Any] | None = None,
+        next_offset: str = "",
+        chats: list[Any] | None = None,
+        users: list[Any] | None = None,
+        version: int = 0,
+    ) -> None:
+        self.count = count
+        self.participants = participants or []
+        self.next_offset = next_offset
+        self.chats = chats or []
+        self.users = users or []
+        self.version = version
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int32(self.count)
+        writer.write_vector(self.participants, lambda w, x: w.write_object(x))
+        writer.write_string(self.next_offset)
+        writer.write_vector(self.chats, lambda w, x: w.write_object(x))
+        writer.write_vector(self.users, lambda w, x: w.write_object(x))
+        writer.write_int32(self.version)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneGroupParticipants":
+        count = reader.read_int32()
+        participants = reader.read_vector(lambda r: r.read_object())
+        next_offset = reader.read_string()
+        chats = reader.read_vector(lambda r: r.read_object())
+        users = reader.read_vector(lambda r: r.read_object())
+        version = reader.read_int32()
+        return cls(count=count, participants=participants, next_offset=next_offset, chats=chats, users=users, version=version)
