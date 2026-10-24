@@ -20,49 +20,50 @@ class MessageEntity:
 
 
 # Formatting Helpers
-def bold(text: str) -> str:
-    return f"<b>{html.escape(text)}</b>"
+def bold(text: Any) -> str:
+    return f"<b>{html.escape(str(text or ''))}</b>"
 
 
-def italic(text: str) -> str:
-    return f"<i>{html.escape(text)}</i>"
+def italic(text: Any) -> str:
+    return f"<i>{html.escape(str(text or ''))}</i>"
 
 
-def underline(text: str) -> str:
-    return f"<u>{html.escape(text)}</u>"
+def underline(text: Any) -> str:
+    return f"<u>{html.escape(str(text or ''))}</u>"
 
 
-def strikethrough(text: str) -> str:
-    return f"<s>{html.escape(text)}</s>"
+def strikethrough(text: Any) -> str:
+    return f"<s>{html.escape(str(text or ''))}</s>"
 
 
-def spoiler(text: str) -> str:
-    return f"<tg-spoiler>{html.escape(text)}</tg-spoiler>"
+def spoiler(text: Any) -> str:
+    return f"<tg-spoiler>{html.escape(str(text or ''))}</tg-spoiler>"
 
 
-def code(text: str) -> str:
-    return f"<code>{html.escape(text)}</code>"
+def code(text: Any) -> str:
+    return f"<code>{html.escape(str(text or ''))}</code>"
 
 
-def pre(text: str, language: str = "") -> str:
+def pre(text: Any, language: str = "") -> str:
+    content = html.escape(str(text or ''))
     if language:
-        return f'<pre><code class="language-{language}">{html.escape(text)}</code></pre>'
-    return f"<pre>{html.escape(text)}</pre>"
+        return f'<pre><code class="language-{language}">{content}</code></pre>'
+    return f"<pre>{content}</pre>"
 
 
-def custom_emoji(text: str, custom_emoji_id: Union[str, int] = "", emoji_id: Union[str, int] = "") -> str:
+def custom_emoji(text: Any, custom_emoji_id: Union[str, int] = "", emoji_id: Union[str, int] = "") -> str:
     """Rich Custom Animated Emoji (Layer 180–225)"""
     cid = custom_emoji_id or emoji_id
-    return f'<tg-emoji emoji-id="{cid}">{html.escape(text)}</tg-emoji>'
+    return f'<tg-emoji emoji-id="{cid}">{html.escape(str(text or ""))}</tg-emoji>'
 
 
-def blockquote(text: str, expandable: bool = False) -> str:
+def blockquote(text: Any, expandable: bool = False) -> str:
     """
     Rich Blockquote or Collapsible/Expandable Blockquote (Layer 180–225).
     """
     tag = "blockquote"
     attr = ' expandable="true"' if expandable else ""
-    return f"<{tag}{attr}>{html.escape(text)}</{tag}>"
+    return f"<{tag}{attr}>{html.escape(str(text or ''))}</{tag}>"
 
 
 # ==========================================================
