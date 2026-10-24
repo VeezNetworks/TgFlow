@@ -26,6 +26,7 @@ Table of Contents
    auth
    methods
    keyboards
+   advanced_features
    calls
    mtproto
    filters

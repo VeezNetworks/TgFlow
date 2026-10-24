@@ -281,14 +281,18 @@ class TgFlow:
         effect: int | None = None,
         invert_media: bool = False,
     ) -> Message:
-        plain_text = text
+        plain_text = text if isinstance(text, str) else str(text)
         entities: list[Any] = []
-        if parse_mode == "html":
-            plain_text, parsed_entities = parse_html(text)
+        if hasattr(text, "build"):
+            built_text, built_entities = text.build()
+            plain_text = built_text
+            entities = built_entities
+        elif parse_mode == "html":
+            plain_text, parsed_entities = parse_html(plain_text)
             entities = [e.to_tl() for e in parsed_entities]
         elif parse_mode in ("markdown", "md"):
             from .formatting import parse_markdown
-            plain_text, parsed_entities = parse_markdown(text)
+            plain_text, parsed_entities = parse_markdown(plain_text)
             entities = [e.to_tl() for e in parsed_entities]
 
         reply_to_obj = None
@@ -1170,6 +1174,42 @@ class TgFlow:
         chan = self._resolve_input_channel(chat_id)
         req = fn.DeleteTopicHistory(channel=chan, topic_id=topic_id)
         return await self.invoke(req)
+
+    async def send_ephemeral(
+        self,
+        chat_id: int | str,
+        text: Any,
+        ttl_seconds: int = 10,
+        **kwargs: Any,
+    ) -> Message:
+        return await self.send_message(chat_id=chat_id, text=text, **kwargs)
+
+    async def set_chat_ttl(self, chat_id: int | str, period: int) -> Any:
+        peer = self._resolve_peer(chat_id)
+        req = fn.SetHistoryTTL(peer=peer, period=period)
+        return await self.invoke(req)
+
+    async def translate_text(
+        self,
+        text: str,
+        to_lang: str = "en",
+        chat_id: int | str | None = None,
+        message_id: int | None = None,
+    ) -> Any:
+        peer = self._resolve_peer(chat_id) if chat_id else None
+        ids = [message_id] if message_id is not None else None
+        req = fn.TranslateText(to_lang=to_lang, peer=peer, id=ids)
+        return await self.invoke(req)
+
+    def ai_compose(
+        self,
+        prompt: str,
+        tone: str = "professional",
+        bullet_points: bool = False,
+        max_words: int | None = None,
+    ) -> Any:
+        from .rich import AIComposer
+        return AIComposer.compose(prompt=prompt, tone=tone, bullet_points=bullet_points, max_words=max_words)
 
     def export_session_string(self) -> str:
         return self.session.export_string()

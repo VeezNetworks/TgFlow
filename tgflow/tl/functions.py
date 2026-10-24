@@ -2027,3 +2027,61 @@ class DeleteTopicHistory(TLRequest):
     @classmethod
     def read(cls, reader: TLReader) -> "DeleteTopicHistory":
         return cls(channel=reader.read_object(), topic_id=reader.read_int32())
+
+
+@register_tl
+class SetHistoryTTL(TLRequest):
+    ID: int = 0xB80E5FE4
+
+    def __init__(self, peer: Any = None, period: int = 0) -> None:
+        self.peer = peer
+        self.period = period
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_int32(self.period)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SetHistoryTTL":
+        return cls(peer=reader.read_object(), period=reader.read_int32())
+
+
+@register_tl
+class TranslateText(TLRequest):
+    ID: int = 0x63183030
+
+    def __init__(self, to_lang: str = "en", peer: Any = None, id: list[int] | None = None, text: list[Any] | None = None) -> None:
+        self.to_lang = to_lang
+        self.peer = peer
+        self.id = id
+        self.text = text
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.peer is not None:
+            flags |= (1 << 0)
+        if self.text is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        if self.peer is not None:
+            writer.write_object(self.peer)
+            writer.write_vector(self.id or [], lambda w, i: w.write_int32(i))
+        if self.text is not None:
+            writer.write_vector(self.text, lambda w, t: w.write_object(t))
+        writer.write_string(self.to_lang)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "TranslateText":
+        flags = reader.read_uint32()
+        peer = None
+        ids = None
+        if flags & (1 << 0):
+            peer = reader.read_object()
+            ids = reader.read_vector(lambda r: r.read_int32())
+        text_list = None
+        if flags & (1 << 1):
+            text_list = reader.read_vector(lambda r: r.read_object())
+        to_lang = reader.read_string()
+        return cls(to_lang=to_lang, peer=peer, id=ids, text=text_list)
