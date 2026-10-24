@@ -672,6 +672,177 @@ class TgFlow:
             return tl.InputGroupCall(id=call[0], access_hash=call[1])
         return tl.InputGroupCall(id=int(call) if isinstance(call, int) else 0, access_hash=0)
 
+    def _resolve_phone_call(self, call: Any) -> Any:
+        if isinstance(call, tl.InputPhoneCall):
+            return call
+        if hasattr(call, "id") and hasattr(call, "access_hash"):
+            return tl.InputPhoneCall(id=call.id, access_hash=call.access_hash)
+        if isinstance(call, (list, tuple)) and len(call) == 2:
+            return tl.InputPhoneCall(id=call[0], access_hash=call[1])
+        return tl.InputPhoneCall(id=int(call) if isinstance(call, int) else 0, access_hash=0)
+
+    def _resolve_input_user(self, user_id: Any) -> Any:
+        if isinstance(user_id, tl.InputUser):
+            return user_id
+        if hasattr(user_id, "id") and hasattr(user_id, "access_hash"):
+            return tl.InputUser(user_id=user_id.id, access_hash=user_id.access_hash)
+        if isinstance(user_id, int):
+            return tl.InputUser(user_id=user_id, access_hash=0)
+        return tl.InputUserSelf()
+
+    async def invite_to_group_call(self, call: Any, users: list[Any]) -> Any:
+        call_obj = self._resolve_group_call(call)
+        input_users = [self._resolve_input_user(u) for u in users]
+        req = fn.InviteToGroupCall(call=call_obj, users=input_users)
+        return await self.invoke(req)
+
+    async def toggle_group_call_settings(
+        self,
+        call: Any,
+        join_muted: bool | None = None,
+        reset_invite_hash: bool = False,
+    ) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.ToggleGroupCallSettings(
+            call=call_obj,
+            join_muted=join_muted,
+            reset_invite_hash=reset_invite_hash,
+        )
+        return await self.invoke(req)
+
+    async def start_scheduled_group_call(self, call: Any) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.StartScheduledGroupCall(call=call_obj)
+        return await self.invoke(req)
+
+    async def toggle_group_call_record(
+        self,
+        call: Any,
+        start: bool = True,
+        video: bool = False,
+        title: str | None = None,
+        video_portrait: bool | None = None,
+    ) -> Any:
+        call_obj = self._resolve_group_call(call)
+        req = fn.ToggleGroupCallRecord(
+            call=call_obj,
+            start=start,
+            video=video,
+            title=title,
+            video_portrait=video_portrait,
+        )
+        return await self.invoke(req)
+
+    async def request_call(
+        self,
+        user_id: Any,
+        g_a_hash: bytes,
+        protocol: Any = None,
+        video: bool = False,
+    ) -> Any:
+        peer_user = self._resolve_input_user(user_id)
+        rand_id = int.from_bytes(os.urandom(4), "little")
+        proto = protocol or tl.PhoneCallProtocol(
+            min_layer=65,
+            max_layer=225,
+            udp_p2p=True,
+            udp_reflector=True,
+            library_versions=["1.0.0"],
+        )
+        req = fn.RequestCall(
+            user_id=peer_user,
+            random_id=rand_id,
+            g_a_hash=g_a_hash,
+            protocol=proto,
+            video=video,
+        )
+        return await self.invoke(req)
+
+    async def accept_call(
+        self,
+        call: Any,
+        g_b: bytes,
+        protocol: Any = None,
+    ) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        proto = protocol or tl.PhoneCallProtocol(
+            min_layer=65,
+            max_layer=225,
+            udp_p2p=True,
+            udp_reflector=True,
+            library_versions=["1.0.0"],
+        )
+        req = fn.AcceptCall(peer=call_obj, g_b=g_b, protocol=proto)
+        return await self.invoke(req)
+
+    async def confirm_call(
+        self,
+        call: Any,
+        g_a: bytes,
+        key_fingerprint: int,
+        protocol: Any = None,
+    ) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        proto = protocol or tl.PhoneCallProtocol(
+            min_layer=65,
+            max_layer=225,
+            udp_p2p=True,
+            udp_reflector=True,
+            library_versions=["1.0.0"],
+        )
+        req = fn.ConfirmCall(
+            peer=call_obj,
+            g_a=g_a,
+            key_fingerprint=key_fingerprint,
+            protocol=proto,
+        )
+        return await self.invoke(req)
+
+    async def received_call(self, call: Any) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        req = fn.ReceivedCall(peer=call_obj)
+        return await self.invoke(req)
+
+    async def discard_call(
+        self,
+        call: Any,
+        duration: int = 0,
+        reason: Any = None,
+        connection_id: int = 0,
+        video: bool = False,
+    ) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        disc_reason = reason or tl.PhoneCallDiscardReasonHangup()
+        req = fn.DiscardCall(
+            peer=call_obj,
+            duration=duration,
+            reason=disc_reason,
+            connection_id=connection_id,
+            video=video,
+        )
+        return await self.invoke(req)
+
+    async def set_call_rating(
+        self,
+        call: Any,
+        rating: int,
+        comment: str = "",
+        user_initiative: bool = False,
+    ) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        req = fn.SetCallRating(
+            peer=call_obj,
+            rating=rating,
+            comment=comment,
+            user_initiative=user_initiative,
+        )
+        return await self.invoke(req)
+
+    async def save_call_debug(self, call: Any, debug_data: Any) -> Any:
+        call_obj = self._resolve_phone_call(call)
+        req = fn.SaveCallDebug(peer=call_obj, debug=debug_data)
+        return await self.invoke(req)
+
     def export_session_string(self) -> str:
         return self.session.export_string()
 

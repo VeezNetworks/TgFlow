@@ -16956,3 +16956,524 @@ class PhoneGroupParticipants(TLObject):
         users = reader.read_vector(lambda r: r.read_object())
         version = reader.read_int32()
         return cls(count=count, participants=participants, next_offset=next_offset, chats=chats, users=users, version=version)
+
+
+@register_tl
+class InputPhoneCall(TLObject):
+    ID: int = 0x1E36FDDA
+    def __init__(self, id: int = 0, access_hash: int = 0) -> None:
+        self.id = id
+        self.access_hash = access_hash
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+    @classmethod
+    def read(cls, reader: TLReader) -> "InputPhoneCall":
+        return cls(id=reader.read_int64(), access_hash=reader.read_int64())
+
+
+@register_tl
+class PhoneCallEmpty(TLObject):
+    ID: int = 0x5366C915
+    def __init__(self, id: int = 0) -> None:
+        self.id = id
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_int64(self.id)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallEmpty":
+        return cls(id=reader.read_int64())
+
+
+@register_tl
+class PhoneCallWaiting(TLObject):
+    ID: int = 0xC5226F1A
+    def __init__(
+        self,
+        id: int = 0,
+        access_hash: int = 0,
+        date: int = 0,
+        admin_id: int = 0,
+        participant_id: int = 0,
+        protocol: Any = None,
+        video: bool = False,
+        receive_date: int | None = None,
+    ) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.date = date
+        self.admin_id = admin_id
+        self.participant_id = participant_id
+        self.protocol = protocol
+        self.video = video
+        self.receive_date = receive_date
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.video:
+            flags |= (1 << 0)
+        if self.receive_date is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.date)
+        writer.write_int64(self.admin_id)
+        writer.write_int64(self.participant_id)
+        writer.write_object(self.protocol)
+        if self.receive_date is not None:
+            writer.write_int32(self.receive_date)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallWaiting":
+        flags = reader.read_uint32()
+        video = bool(flags & (1 << 0))
+        call_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        date = reader.read_int32()
+        admin_id = reader.read_int64()
+        participant_id = reader.read_int64()
+        protocol = reader.read_object()
+        receive_date = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(
+            id=call_id,
+            access_hash=access_hash,
+            date=date,
+            admin_id=admin_id,
+            participant_id=participant_id,
+            protocol=protocol,
+            video=video,
+            receive_date=receive_date,
+        )
+
+
+@register_tl
+class PhoneCallRequested(TLObject):
+    ID: int = 0x14B0ED58
+    def __init__(
+        self,
+        id: int = 0,
+        access_hash: int = 0,
+        date: int = 0,
+        admin_id: int = 0,
+        participant_id: int = 0,
+        g_a_hash: bytes = b"",
+        protocol: Any = None,
+        video: bool = False,
+    ) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.date = date
+        self.admin_id = admin_id
+        self.participant_id = participant_id
+        self.g_a_hash = g_a_hash
+        self.protocol = protocol
+        self.video = video
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 1 if self.video else 0
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.date)
+        writer.write_int64(self.admin_id)
+        writer.write_int64(self.participant_id)
+        writer.write_bytes(self.g_a_hash)
+        writer.write_object(self.protocol)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallRequested":
+        flags = reader.read_uint32()
+        video = bool(flags & (1 << 0))
+        call_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        date = reader.read_int32()
+        admin_id = reader.read_int64()
+        participant_id = reader.read_int64()
+        g_a_hash = reader.read_bytes()
+        protocol = reader.read_object()
+        return cls(
+            id=call_id,
+            access_hash=access_hash,
+            date=date,
+            admin_id=admin_id,
+            participant_id=participant_id,
+            g_a_hash=g_a_hash,
+            protocol=protocol,
+            video=video,
+        )
+
+
+@register_tl
+class PhoneCallAccepted(TLObject):
+    ID: int = 0x99D30B42
+    def __init__(
+        self,
+        id: int = 0,
+        access_hash: int = 0,
+        date: int = 0,
+        admin_id: int = 0,
+        participant_id: int = 0,
+        g_b: bytes = b"",
+        protocol: Any = None,
+        video: bool = False,
+    ) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.date = date
+        self.admin_id = admin_id
+        self.participant_id = participant_id
+        self.g_b = g_b
+        self.protocol = protocol
+        self.video = video
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 1 if self.video else 0
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.date)
+        writer.write_int64(self.admin_id)
+        writer.write_int64(self.participant_id)
+        writer.write_bytes(self.g_b)
+        writer.write_object(self.protocol)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallAccepted":
+        flags = reader.read_uint32()
+        video = bool(flags & (1 << 0))
+        call_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        date = reader.read_int32()
+        admin_id = reader.read_int64()
+        participant_id = reader.read_int64()
+        g_b = reader.read_bytes()
+        protocol = reader.read_object()
+        return cls(
+            id=call_id,
+            access_hash=access_hash,
+            date=date,
+            admin_id=admin_id,
+            participant_id=participant_id,
+            g_b=g_b,
+            protocol=protocol,
+            video=video,
+        )
+
+
+@register_tl
+class PhoneCall(TLObject):
+    ID: int = 0x967F7C4C
+    def __init__(
+        self,
+        id: int = 0,
+        access_hash: int = 0,
+        date: int = 0,
+        admin_id: int = 0,
+        participant_id: int = 0,
+        g_a_or_b: bytes = b"",
+        key_fingerprint: int = 0,
+        protocol: Any = None,
+        connections: list[Any] | None = None,
+        start_date: int = 0,
+        p2p_allowed: bool = True,
+        video: bool = False,
+        custom_parameters: Any = None,
+    ) -> None:
+        self.id = id
+        self.access_hash = access_hash
+        self.date = date
+        self.admin_id = admin_id
+        self.participant_id = participant_id
+        self.g_a_or_b = g_a_or_b
+        self.key_fingerprint = key_fingerprint
+        self.protocol = protocol
+        self.connections = connections or []
+        self.start_date = start_date
+        self.p2p_allowed = p2p_allowed
+        self.video = video
+        self.custom_parameters = custom_parameters
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.p2p_allowed:
+            flags |= (1 << 0)
+        if self.video:
+            flags |= (1 << 5)
+        if self.custom_parameters is not None:
+            flags |= (1 << 7)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_int64(self.access_hash)
+        writer.write_int32(self.date)
+        writer.write_int64(self.admin_id)
+        writer.write_int64(self.participant_id)
+        writer.write_bytes(self.g_a_or_b)
+        writer.write_int64(self.key_fingerprint)
+        writer.write_object(self.protocol)
+        writer.write_vector(self.connections, lambda w, x: w.write_object(x))
+        writer.write_int32(self.start_date)
+        if self.custom_parameters is not None:
+            writer.write_object(self.custom_parameters)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCall":
+        flags = reader.read_uint32()
+        p2p_allowed = bool(flags & (1 << 0))
+        video = bool(flags & (1 << 5))
+        call_id = reader.read_int64()
+        access_hash = reader.read_int64()
+        date = reader.read_int32()
+        admin_id = reader.read_int64()
+        participant_id = reader.read_int64()
+        g_a_or_b = reader.read_bytes()
+        key_fingerprint = reader.read_int64()
+        protocol = reader.read_object()
+        connections = reader.read_vector(lambda r: r.read_object())
+        start_date = reader.read_int32()
+        custom_parameters = reader.read_object() if (flags & (1 << 7)) else None
+        return cls(
+            id=call_id,
+            access_hash=access_hash,
+            date=date,
+            admin_id=admin_id,
+            participant_id=participant_id,
+            g_a_or_b=g_a_or_b,
+            key_fingerprint=key_fingerprint,
+            protocol=protocol,
+            connections=connections,
+            start_date=start_date,
+            p2p_allowed=p2p_allowed,
+            video=video,
+            custom_parameters=custom_parameters,
+        )
+
+
+@register_tl
+class PhoneCallDiscarded(TLObject):
+    ID: int = 0x50CA4DE1
+    def __init__(
+        self,
+        id: int = 0,
+        need_rating: bool = False,
+        need_debug: bool = False,
+        video: bool = False,
+        reason: Any = None,
+        duration: int | None = None,
+    ) -> None:
+        self.id = id
+        self.need_rating = need_rating
+        self.need_debug = need_debug
+        self.video = video
+        self.reason = reason
+        self.duration = duration
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.need_rating:
+            flags |= (1 << 2)
+        if self.need_debug:
+            flags |= (1 << 3)
+        if self.video:
+            flags |= (1 << 6)
+        if self.reason is not None:
+            flags |= (1 << 0)
+        if self.duration is not None:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        if self.reason is not None:
+            writer.write_object(self.reason)
+        if self.duration is not None:
+            writer.write_int32(self.duration)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallDiscarded":
+        flags = reader.read_uint32()
+        need_rating = bool(flags & (1 << 2))
+        need_debug = bool(flags & (1 << 3))
+        video = bool(flags & (1 << 6))
+        call_id = reader.read_int64()
+        reason = reader.read_object() if (flags & (1 << 0)) else None
+        duration = reader.read_int32() if (flags & (1 << 1)) else None
+        return cls(id=call_id, need_rating=need_rating, need_debug=need_debug, video=video, reason=reason, duration=duration)
+
+
+@register_tl
+class PhoneCallProtocol(TLObject):
+    ID: int = 0xFC88194B
+    def __init__(
+        self,
+        min_layer: int = 65,
+        max_layer: int = 225,
+        udp_p2p: bool = True,
+        udp_reflector: bool = True,
+        library_versions: list[str] | None = None,
+    ) -> None:
+        self.min_layer = min_layer
+        self.max_layer = max_layer
+        self.udp_p2p = udp_p2p
+        self.udp_reflector = udp_reflector
+        self.library_versions = library_versions or ["10.0.0"]
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.udp_p2p:
+            flags |= (1 << 0)
+        if self.udp_reflector:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_int32(self.min_layer)
+        writer.write_int32(self.max_layer)
+        writer.write_vector(self.library_versions, lambda w, x: w.write_string(x))
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallProtocol":
+        flags = reader.read_uint32()
+        udp_p2p = bool(flags & (1 << 0))
+        udp_reflector = bool(flags & (1 << 1))
+        min_layer = reader.read_int32()
+        max_layer = reader.read_int32()
+        library_versions = reader.read_vector(lambda r: r.read_string())
+        return cls(min_layer=min_layer, max_layer=max_layer, udp_p2p=udp_p2p, udp_reflector=udp_reflector, library_versions=library_versions)
+
+
+@register_tl
+class PhoneConnection(TLObject):
+    ID: int = 0x9D460E4B
+    def __init__(
+        self,
+        id: int = 0,
+        ip: str = "",
+        ipv6: str = "",
+        port: int = 0,
+        peer_tag: bytes = b"",
+        tcp: bool = False,
+    ) -> None:
+        self.id = id
+        self.ip = ip
+        self.ipv6 = ipv6
+        self.port = port
+        self.peer_tag = peer_tag
+        self.tcp = tcp
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 1 if self.tcp else 0
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_string(self.ip)
+        writer.write_string(self.ipv6)
+        writer.write_int32(self.port)
+        writer.write_bytes(self.peer_tag)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneConnection":
+        flags = reader.read_uint32()
+        tcp = bool(flags & (1 << 0))
+        conn_id = reader.read_int64()
+        ip = reader.read_string()
+        ipv6 = reader.read_string()
+        port = reader.read_int32()
+        peer_tag = reader.read_bytes()
+        return cls(id=conn_id, ip=ip, ipv6=ipv6, port=port, peer_tag=peer_tag, tcp=tcp)
+
+
+@register_tl
+class PhoneConnectionWebrtc(TLObject):
+    ID: int = 0x635FEAF1
+    def __init__(
+        self,
+        id: int = 0,
+        ip: str = "",
+        ipv6: str = "",
+        port: int = 0,
+        username: str = "",
+        password: str = "",
+        turn: bool = True,
+        stun: bool = False,
+    ) -> None:
+        self.id = id
+        self.ip = ip
+        self.ipv6 = ipv6
+        self.port = port
+        self.username = username
+        self.password = password
+        self.turn = turn
+        self.stun = stun
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.turn:
+            flags |= (1 << 0)
+        if self.stun:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_int64(self.id)
+        writer.write_string(self.ip)
+        writer.write_string(self.ipv6)
+        writer.write_int32(self.port)
+        writer.write_string(self.username)
+        writer.write_string(self.password)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneConnectionWebrtc":
+        flags = reader.read_uint32()
+        turn = bool(flags & (1 << 0))
+        stun = bool(flags & (1 << 1))
+        conn_id = reader.read_int64()
+        ip = reader.read_string()
+        ipv6 = reader.read_string()
+        port = reader.read_int32()
+        username = reader.read_string()
+        password = reader.read_string()
+        return cls(id=conn_id, ip=ip, ipv6=ipv6, port=port, username=username, password=password, turn=turn, stun=stun)
+
+
+@register_tl
+class PhoneCallDiscardReasonMissed(TLObject):
+    ID: int = 0x85E42301
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonMissed":
+        return cls()
+
+
+@register_tl
+class PhoneCallDiscardReasonDisconnect(TLObject):
+    ID: int = 0xE095C1A0
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonDisconnect":
+        return cls()
+
+
+@register_tl
+class PhoneCallDiscardReasonHangup(TLObject):
+    ID: int = 0x57ADC690
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonHangup":
+        return cls()
+
+
+@register_tl
+class PhoneCallDiscardReasonBusy(TLObject):
+    ID: int = 0xFAF7E8C9
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhoneCallDiscardReasonBusy":
+        return cls()
+
+
+@register_tl
+class PhonePhoneCall(TLObject):
+    ID: int = 0xEC82E140
+    def __init__(self, phone_call: Any = None, users: list[Any] | None = None) -> None:
+        self.phone_call = phone_call
+        self.users = users or []
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.phone_call)
+        writer.write_vector(self.users, lambda w, x: w.write_object(x))
+    @classmethod
+    def read(cls, reader: TLReader) -> "PhonePhoneCall":
+        phone_call = reader.read_object()
+        users = reader.read_vector(lambda r: r.read_object())
+        return cls(phone_call=phone_call, users=users)

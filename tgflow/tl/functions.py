@@ -598,3 +598,311 @@ class DiscardGroupCall(TLRequest):
     def read(cls, reader: TLReader) -> "DiscardGroupCall":
         call = reader.read_object()
         return cls(call=call)
+
+
+@register_tl
+class RequestCall(TLRequest):
+    ID: int = 0x42FF96ED
+
+    def __init__(
+        self,
+        user_id: Any = None,
+        random_id: int = 0,
+        g_a_hash: bytes = b"",
+        protocol: Any = None,
+        video: bool = False,
+    ) -> None:
+        self.user_id = user_id
+        self.random_id = random_id
+        self.g_a_hash = g_a_hash
+        self.protocol = protocol
+        self.video = video
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.video:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_object(self.user_id)
+        writer.write_int32(self.random_id)
+        writer.write_bytes(self.g_a_hash)
+        writer.write_object(self.protocol)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "RequestCall":
+        flags = reader.read_uint32()
+        video = bool(flags & (1 << 0))
+        user_id = reader.read_object()
+        random_id = reader.read_int32()
+        g_a_hash = reader.read_bytes()
+        protocol = reader.read_object()
+        return cls(user_id=user_id, random_id=random_id, g_a_hash=g_a_hash, protocol=protocol, video=video)
+
+
+@register_tl
+class AcceptCall(TLRequest):
+    ID: int = 0x3BD2B4A0
+
+    def __init__(self, peer: Any = None, g_b: bytes = b"", protocol: Any = None) -> None:
+        self.peer = peer
+        self.g_b = g_b
+        self.protocol = protocol
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_bytes(self.g_b)
+        writer.write_object(self.protocol)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "AcceptCall":
+        peer = reader.read_object()
+        g_b = reader.read_bytes()
+        protocol = reader.read_object()
+        return cls(peer=peer, g_b=g_b, protocol=protocol)
+
+
+@register_tl
+class ConfirmCall(TLRequest):
+    ID: int = 0x2EFE1722
+
+    def __init__(self, peer: Any = None, g_a: bytes = b"", key_fingerprint: int = 0, protocol: Any = None) -> None:
+        self.peer = peer
+        self.g_a = g_a
+        self.key_fingerprint = key_fingerprint
+        self.protocol = protocol
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_bytes(self.g_a)
+        writer.write_int64(self.key_fingerprint)
+        writer.write_object(self.protocol)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ConfirmCall":
+        peer = reader.read_object()
+        g_a = reader.read_bytes()
+        key_fingerprint = reader.read_int64()
+        protocol = reader.read_object()
+        return cls(peer=peer, g_a=g_a, key_fingerprint=key_fingerprint, protocol=protocol)
+
+
+@register_tl
+class ReceivedCall(TLRequest):
+    ID: int = 0x17D54F61
+
+    def __init__(self, peer: Any = None) -> None:
+        self.peer = peer
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ReceivedCall":
+        peer = reader.read_object()
+        return cls(peer=peer)
+
+
+@register_tl
+class DiscardCall(TLRequest):
+    ID: int = 0xB2CDC4DC
+
+    def __init__(
+        self,
+        peer: Any = None,
+        duration: int = 0,
+        reason: Any = None,
+        connection_id: int = 0,
+        video: bool = False,
+    ) -> None:
+        self.peer = peer
+        self.duration = duration
+        self.reason = reason
+        self.connection_id = connection_id
+        self.video = video
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.video:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_int32(self.duration)
+        writer.write_object(self.reason)
+        writer.write_int64(self.connection_id)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "DiscardCall":
+        flags = reader.read_uint32()
+        video = bool(flags & (1 << 0))
+        peer = reader.read_object()
+        duration = reader.read_int32()
+        reason = reader.read_object()
+        connection_id = reader.read_int64()
+        return cls(peer=peer, duration=duration, reason=reason, connection_id=connection_id, video=video)
+
+
+@register_tl
+class SetCallRating(TLRequest):
+    ID: int = 0x59EAD627
+
+    def __init__(self, peer: Any = None, rating: int = 0, comment: str = "", user_initiative: bool = False) -> None:
+        self.peer = peer
+        self.rating = rating
+        self.comment = comment
+        self.user_initiative = user_initiative
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.user_initiative:
+            flags |= (1 << 0)
+        writer.write_uint32(flags)
+        writer.write_object(self.peer)
+        writer.write_int32(self.rating)
+        writer.write_string(self.comment)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SetCallRating":
+        flags = reader.read_uint32()
+        user_initiative = bool(flags & (1 << 0))
+        peer = reader.read_object()
+        rating = reader.read_int32()
+        comment = reader.read_string()
+        return cls(peer=peer, rating=rating, comment=comment, user_initiative=user_initiative)
+
+
+@register_tl
+class SaveCallDebug(TLRequest):
+    ID: int = 0x277ADD7E
+
+    def __init__(self, peer: Any = None, debug: Any = None) -> None:
+        self.peer = peer
+        self.debug = debug
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.peer)
+        writer.write_object(self.debug)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "SaveCallDebug":
+        peer = reader.read_object()
+        debug = reader.read_object()
+        return cls(peer=peer, debug=debug)
+
+
+@register_tl
+class InviteToGroupCall(TLRequest):
+    ID: int = 0x7B393160
+
+    def __init__(self, call: Any = None, users: list[Any] | None = None) -> None:
+        self.call = call
+        self.users = users or []
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+        writer.write_vector(self.users, lambda w, u: w.write_object(u))
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "InviteToGroupCall":
+        call = reader.read_object()
+        users = reader.read_vector(lambda r: r.read_object())
+        return cls(call=call, users=users)
+
+
+@register_tl
+class ToggleGroupCallSettings(TLRequest):
+    ID: int = 0x74BA41CB
+
+    def __init__(self, call: Any = None, join_muted: bool | None = None, reset_invite_hash: bool = False) -> None:
+        self.call = call
+        self.join_muted = join_muted
+        self.reset_invite_hash = reset_invite_hash
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.join_muted is not None:
+            flags |= (1 << 0)
+        if self.reset_invite_hash:
+            flags |= (1 << 1)
+        writer.write_uint32(flags)
+        writer.write_object(self.call)
+        if self.join_muted is not None:
+            writer.write_bool(self.join_muted)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ToggleGroupCallSettings":
+        flags = reader.read_uint32()
+        reset_invite_hash = bool(flags & (1 << 1))
+        call = reader.read_object()
+        join_muted = reader.read_bool() if (flags & (1 << 0)) else None
+        return cls(call=call, join_muted=join_muted, reset_invite_hash=reset_invite_hash)
+
+
+@register_tl
+class StartScheduledGroupCall(TLRequest):
+    ID: int = 0x564D16E1
+
+    def __init__(self, call: Any = None) -> None:
+        self.call = call
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        writer.write_object(self.call)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "StartScheduledGroupCall":
+        call = reader.read_object()
+        return cls(call=call)
+
+
+@register_tl
+class ToggleGroupCallRecord(TLRequest):
+    ID: int = 0xF128C708
+
+    def __init__(
+        self,
+        call: Any = None,
+        start: bool = False,
+        video: bool = False,
+        title: str | None = None,
+        video_portrait: bool | None = None,
+    ) -> None:
+        self.call = call
+        self.start = start
+        self.video = video
+        self.title = title
+        self.video_portrait = video_portrait
+
+    def write(self, writer: TLWriter) -> None:
+        writer.write_uint32(self.ID)
+        flags = 0
+        if self.start:
+            flags |= (1 << 0)
+        if self.title is not None:
+            flags |= (1 << 1)
+        if self.video:
+            flags |= (1 << 2)
+        writer.write_uint32(flags)
+        writer.write_object(self.call)
+        if self.title is not None:
+            writer.write_string(self.title)
+        if self.video and self.video_portrait is not None:
+            writer.write_bool(self.video_portrait)
+
+    @classmethod
+    def read(cls, reader: TLReader) -> "ToggleGroupCallRecord":
+        flags = reader.read_uint32()
+        start = bool(flags & (1 << 0))
+        video = bool(flags & (1 << 2))
+        call = reader.read_object()
+        title = reader.read_string() if (flags & (1 << 1)) else None
+        video_portrait = reader.read_bool() if video and (flags & (1 << 2)) else None
+        return cls(call=call, start=start, video=video, title=title, video_portrait=video_portrait)

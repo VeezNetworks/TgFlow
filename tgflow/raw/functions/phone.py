@@ -6,6 +6,17 @@ from ...tl.functions import (
     EditGroupCallParticipant,
     CreateGroupCall,
     DiscardGroupCall,
+    InviteToGroupCall,
+    ToggleGroupCallSettings,
+    StartScheduledGroupCall,
+    ToggleGroupCallRecord,
+    RequestCall,
+    AcceptCall,
+    ConfirmCall,
+    ReceivedCall,
+    DiscardCall,
+    SetCallRating,
+    SaveCallDebug,
 )
 
 __all__ = [
@@ -16,4 +27,15 @@ __all__ = [
     "EditGroupCallParticipant",
     "CreateGroupCall",
     "DiscardGroupCall",
+    "InviteToGroupCall",
+    "ToggleGroupCallSettings",
+    "StartScheduledGroupCall",
+    "ToggleGroupCallRecord",
+    "RequestCall",
+    "AcceptCall",
+    "ConfirmCall",
+    "ReceivedCall",
+    "DiscardCall",
+    "SetCallRating",
+    "SaveCallDebug",
 ]

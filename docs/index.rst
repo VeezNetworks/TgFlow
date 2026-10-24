@@ -24,6 +24,7 @@ Table of Contents
 
    quickstart
    mtproto
+   calls
    filters
    formatting
    sessions
